@@ -1,0 +1,52 @@
+// -----------------------------------------------------------------------------
+// Site-wide configuration for "Hold This Today".
+//
+// This is the single place to change the domain, timezone, and default
+// translation. It is imported by astro.config.mjs (build) and by pages/scripts
+// at runtime, so it must stay dependency-free (plain .mjs).
+// -----------------------------------------------------------------------------
+
+// The public base URL of the site. Canonical URLs, the sitemap, Pinterest
+// destination URLs, Open Graph tags, and email links all derive from this.
+// Set this to the real domain before the first production deploy. On Netlify
+// you can also set SITE_URL as an environment variable; that wins if present.
+export const SITE_URL =
+  (typeof process !== 'undefined' && process.env && process.env.SITE_URL) ||
+  'https://simplifytoglorify.com';
+
+// Base path where the whole feature lives, e.g. "/hold-this-today".
+export const BASE_PATH = '/hold-this-today';
+
+// The site's operating timezone. Daily scheduling and rotation resolve "today"
+// against this zone so an entry flips at local midnight, not UTC midnight.
+// Use an IANA name. Change to the brand's home timezone.
+export const SITE_TIMEZONE = 'America/Denver';
+
+// Default Scripture translation for new entries. The system NEVER alters or
+// invents Scripture; this only sets the default label expected during review.
+export const DEFAULT_TRANSLATION = 'NASB 2020';
+
+export const BRAND = {
+  name: 'Simplify to Glorify',
+  featureName: 'Hold This Today',
+  tagline:
+    'One Scripture, one gentle encouragement, one prayer, and one small step for today.',
+  emailProgramName: 'A Gentle Note',
+  emailProgramDescription:
+    'Receive one Scripture, one gentle encouragement, one prayer, and one small step for the day ahead.',
+  // Used as the sending identity label in email templates. The actual sending
+  // address comes from environment variables (see .env.example).
+  fromName: 'Simplify to Glorify',
+};
+
+// Established Simplify to Glorify palette. Mirrored in CSS custom properties in
+// src/styles/global.css — change both if the brand palette ever shifts.
+export const PALETTE = {
+  ivory: '#fbf9f6',
+  sage: '#b2c6b1',
+  lavender: '#c6b5c8',
+  slate: '#7b9fb3',
+  warmNeutral: '#e6d7d3',
+  lightGray: '#c4c4c4',
+  charcoal: '#404040',
+};

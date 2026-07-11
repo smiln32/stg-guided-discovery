@@ -1,0 +1,95 @@
+---
+// /hold-this-today/topics/ — the browse-by-need library.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { publishedTopics } from '../../../lib/topics';
+import { paths } from '../../../lib/urls';
+import { itemListJsonLd, breadcrumbJsonLd } from '../../../lib/jsonld';
+import { buildNow } from '../../../lib/entries';
+
+const now = buildNow();
+const topics = await publishedTopics(now);
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Browse by need', href: paths.topics },
+];
+const jsonLd = [
+  breadcrumbJsonLd(crumbs),
+  itemListJsonLd(
+    'Encouragement topics',
+    topics.map((t) => ({ url: paths.topic(t.slug), name: t.title })),
+  ),
+];
+---
+
+<BaseLayout
+  title="Browse by need"
+  description="Find Scripture-centered encouragement for what you are carrying — anxiety, grief, caregiving, waiting, regret, learning to pray, and more."
+  path={paths.topics}
+  jsonLd={jsonLd}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="stack" style="margin-top: var(--space-md);">
+      <p class="eyebrow">Browse by need</p>
+      <h1>Start with what you are carrying</h1>
+      <p>
+        You do not have to explain all of it. Choose whatever is closest to
+        today, and begin there.
+      </p>
+      <p><a href={paths.search}>Or search for a word, verse, or feeling →</a></p>
+    </header>
+
+    {
+      topics.length === 0 ? (
+        <p class="card" style="margin-top: var(--space-lg);">
+          New encouragement is being prepared. Please check back soon.
+        </p>
+      ) : (
+        <ul class="topic-grid grid grid--2" style="margin-top: var(--space-lg);">
+          {topics.map((t) => (
+            <li class="card topic-card" style={`--topic-accent:${t.accent}`}>
+              <a href={paths.topic(t.slug)} class="topic-card__link">
+                <span class="topic-chip">{t.title}</span>
+                <span class="topic-card__count">
+                  {t.count} {t.count === 1 ? 'encouragement' : 'encouragements'}
+                </span>
+              </a>
+              <p class="topic-card__intro">{t.intro}</p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .topic-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .topic-card__link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    text-decoration: none;
+  }
+  .topic-card__link .topic-chip {
+    font-size: var(--step-0);
+  }
+  .topic-card__count {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .topic-card__intro {
+    margin: var(--space-xs) 0 0;
+    color: var(--text-soft);
+  }
+  .topic-card:hover {
+    border-color: var(--topic-accent);
+  }
+</style>

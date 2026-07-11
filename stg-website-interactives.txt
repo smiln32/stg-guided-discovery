@@ -1,0 +1,4009 @@
+MASTER BUILD PROMPT
+
+Build the “Hold This Today” Scripture Content and Distribution System for Simplify to Glorify
+
+You are working inside the existing Simplify to Glorify website project.
+
+Your task is to design and build a complete, production-minded content system called:
+
+Hold This Today
+
+Working tagline: One Scripture, one gentle encouragement, one prayer, and one small step for today.
+
+This must be more than a visual daily devotional page. Build an interconnected system that can use one approved master content entry to power:
+
+
+
+
+
+A daily website feature
+
+
+
+Permanent, indexable website pages
+
+
+
+A topic-based encouragement library
+
+
+
+Pinterest-ready graphics and Pin metadata
+
+
+
+An email subscription funnel
+
+
+
+Automated or scheduled email sequences
+
+
+
+Topic-specific subscriber journeys
+
+
+
+Related-resource recommendations
+
+
+
+Content scheduling and publishing
+
+
+
+Long-term reuse of evergreen content
+
+The system should help women discover meaningful Scripture-centered encouragement, save it, share it, subscribe to receive more, and naturally explore relevant Simplify to Glorify resources.
+
+1. PRIMARY GOAL
+
+Create a calm, trustworthy, Scripture-centered experience that becomes a repeat destination for women who are:
+
+
+
+
+
+Anxious
+
+
+
+Grieving
+
+
+
+Caregiving
+
+
+
+Exhausted
+
+
+
+Waiting
+
+
+
+Struggling with regret
+
+
+
+Living with chronic pain
+
+
+
+Feeling discouraged
+
+
+
+Learning to pray
+
+
+
+Trying to trust God
+
+
+
+Feeling far from God
+
+
+
+Carrying more than they can easily explain
+
+The visitor should be able to arrive from Pinterest, search, email, or another website page and quickly receive something genuinely useful.
+
+The experience should communicate:
+
+You do not have to solve everything today. Here is one truth from Scripture to hold onto right now.
+
+Do not build a generic quote generator, shallow inspirational feed, personality quiz, gamified devotional app, or AI-generated spiritual advice tool.
+
+2. CORE CONTENT PHILOSOPHY
+
+All published content must come from a reviewed and approved source of truth.
+
+The application must never:
+
+
+
+
+
+Invent Scripture
+
+
+
+Paraphrase Scripture without explicit approval
+
+
+
+Change a supplied Bible verse
+
+
+
+Combine unrelated verses
+
+
+
+Generate theology independently
+
+
+
+Automatically publish unreviewed AI-generated spiritual content
+
+
+
+Diagnose mental-health conditions
+
+
+
+Promise healing or emotional resolution
+
+
+
+Suggest that one activity will fix a difficult circumstance
+
+
+
+Pressure visitors to feel better, forgive quickly, stop grieving, or reach a spiritual conclusion
+
+The system may format, organize, schedule, filter, distribute, and display approved content.
+
+It must not become the theological author.
+
+Default Scripture translation is:
+
+NASB 2020
+
+Every Scripture entry must retain its supplied:
+
+
+
+
+
+Reference
+
+
+
+Exact Scripture text
+
+
+
+Translation label
+
+
+
+Verification status
+
+3. BRAND AND VOICE
+
+Brand
+
+Simplify to Glorify
+
+Audience
+
+Primarily Christian women seeking gentle, biblically grounded, practical support during difficult or emotionally tiring seasons.
+
+Voice
+
+The experience should feel:
+
+
+
+
+
+Gentle
+
+
+
+Honest
+
+
+
+Faith-rooted
+
+
+
+Emotionally safe
+
+
+
+Practical
+
+
+
+Warm
+
+
+
+Mature
+
+
+
+Calm
+
+
+
+Clear
+
+
+
+Compassionate
+
+
+
+Scripture-forward
+
+
+
+Woman-to-woman
+
+Avoid language that feels:
+
+
+
+
+
+Dramatic
+
+
+
+Preachy
+
+
+
+Clinical
+
+
+
+Trendy
+
+
+
+Overly polished
+
+
+
+Shame-based
+
+
+
+Emotionally forced
+
+
+
+Saccharine
+
+
+
+Performative
+
+
+
+Sales-heavy
+
+
+
+Vague
+
+
+
+Theologically careless
+
+Do not rush the reader toward resolution.
+
+A difficult day may remain difficult after reading the entry. The purpose is to offer truth, companionship, prayer, and one manageable next step.
+
+4. VISUAL DIRECTION
+
+Use the established Simplify to Glorify palette:
+
+
+
+
+
+Ivory: #fbf9f6
+
+
+
+Sage green: #b2c6b1
+
+
+
+Lavender: #c6b5c8
+
+
+
+Slate blue: #7b9fb3
+
+
+
+Warm neutral: #e6d7d3
+
+
+
+Light gray: #c4c4c4
+
+
+
+Charcoal: #404040
+
+Typography should feel editorial, readable, warm, and established.
+
+Preferred direction:
+
+
+
+
+
+Headings: Playfair Display or Lora
+
+
+
+Body: Source Sans 3 or another highly readable existing brand font
+
+Use:
+
+
+
+
+
+Generous white space
+
+
+
+Clear visual hierarchy
+
+
+
+High contrast
+
+
+
+Quiet borders
+
+
+
+Soft section separation
+
+
+
+Restrained botanical details
+
+
+
+Mobile-first spacing
+
+
+
+Large tap targets
+
+
+
+Accessible form controls
+
+
+
+Readable Pin previews
+
+
+
+Minimal animation
+
+Avoid:
+
+
+
+
+
+Busy backgrounds
+
+
+
+Tiny script fonts
+
+
+
+Excessive florals
+
+
+
+Decorative clutter
+
+
+
+Carousel overload
+
+
+
+Large amounts of lavender or pink used without balance
+
+
+
+Childlike illustrations
+
+
+
+Trend-driven design
+
+
+
+Gamification
+
+
+
+Confetti
+
+
+
+Badges
+
+
+
+Streaks
+
+
+
+Progress points
+
+
+
+Artificial urgency
+
+5. SYSTEM OVERVIEW
+
+One approved master content entry should be capable of feeding multiple outputs.
+
+Master entry outputs
+
+Website
+
+
+
+
+
+Today’s featured encouragement
+
+
+
+Permanent entry page
+
+
+
+Topic archive
+
+
+
+Search results
+
+
+
+Related-entry modules
+
+
+
+Related product or article suggestions
+
+
+
+Social share preview
+
+
+
+Pinterest save gallery
+
+Pinterest
+
+
+
+
+
+Scripture Pin
+
+
+
+Encouragement quote Pin
+
+
+
+Prayer Pin
+
+
+
+Practical next-step Pin
+
+
+
+Optional title or curiosity Pin
+
+
+
+Pin title
+
+
+
+Pin description
+
+
+
+Alt text
+
+
+
+Destination URL
+
+
+
+Topic board recommendation
+
+
+
+Campaign or tracking parameters
+
+Email
+
+
+
+
+
+Daily email
+
+
+
+Topic-specific drip email
+
+
+
+Welcome series inclusion
+
+
+
+Weekly digest inclusion
+
+
+
+Subject line
+
+
+
+Preview text
+
+
+
+Email body
+
+
+
+Call-to-action text
+
+
+
+Destination URL
+
+
+
+Related resource
+
+
+
+Subscriber segment
+
+Future channels
+
+Structure the data so it could later support:
+
+
+
+
+
+Facebook
+
+
+
+Instagram
+
+
+
+An app
+
+
+
+Printable weekly collections
+
+
+
+RSS
+
+
+
+Browser notifications
+
+
+
+Content syndication
+
+Do not build all future channels now unless already supported by the project. Build a clean and extensible data model.
+
+6. REQUIRED WEBSITE EXPERIENCES
+
+A. Main “Hold This Today” landing page
+
+Recommended URL:
+
+/hold-this-today/
+
+This page should display the currently scheduled daily entry.
+
+Include:
+
+
+
+
+
+Small topic or circumstance label
+
+
+
+Main entry title
+
+
+
+Today’s Scripture
+
+
+
+Scripture reference and translation
+
+
+
+“A Gentle Word for Today”
+
+
+
+“A Prayer to Borrow”
+
+
+
+“One Question to Carry”
+
+
+
+“One Small Step”
+
+
+
+“Save This Encouragement”
+
+
+
+Related encouragement
+
+
+
+Relevant article or guide
+
+
+
+Relevant product, when appropriate
+
+
+
+Email subscription invitation
+
+
+
+Browse-by-need navigation
+
+
+
+Previous entry
+
+
+
+Another encouragement
+
+
+
+Return-to-today control when viewing an older page
+
+The page must not disappear or break when no entry is specifically scheduled for the current date.
+
+Define a clear fallback rule.
+
+Recommended fallback order:
+
+
+
+
+
+Today’s scheduled entry
+
+
+
+Next eligible evergreen entry in the rotation
+
+
+
+Most recently published active entry
+
+
+
+A clearly marked default welcome entry
+
+Do not silently show errors or blank sections.
+
+B. Permanent entry pages
+
+Every entry must have a stable, permanent, indexable URL.
+
+Recommended pattern:
+
+/hold-this-today/[slug]/
+
+Example:
+
+/hold-this-today/when-you-are-worried-about-what-comes-next/
+
+These URLs must continue to display the same entry after its feature date passes.
+
+A Pinterest Pin published today may continue circulating for years. It must never point to a rotating page whose content later changes.
+
+Each permanent page should include:
+
+
+
+
+
+Entry title
+
+
+
+Topic
+
+
+
+Scripture
+
+
+
+Scripture reference
+
+
+
+Translation
+
+
+
+Gentle encouragement
+
+
+
+Prayer
+
+
+
+Reflective question
+
+
+
+Small next step
+
+
+
+Pin gallery
+
+
+
+Related entries
+
+
+
+Relevant article
+
+
+
+Relevant product
+
+
+
+Email subscription callout
+
+
+
+Breadcrumbs
+
+
+
+Appropriate metadata
+
+
+
+Structured data where valid
+
+
+
+Canonical URL
+
+
+
+Social sharing metadata
+
+C. Browse-by-need library
+
+Recommended URL:
+
+/hold-this-today/topics/
+
+Create a visual, accessible topic library.
+
+Initial topics:
+
+
+
+
+
+Anxiety
+
+
+
+ADHD
+
+
+
+Caregiving
+
+
+
+Chronic pain
+
+
+
+Depression
+
+
+
+Faith
+
+
+
+Gratitude
+
+
+
+Grief
+
+
+
+Learning to pray
+
+
+
+Patience
+
+
+
+Regret
+
+
+
+Trusting God
+
+
+
+Feeling far from God
+
+
+
+Waiting
+
+
+
+Loneliness
+
+
+
+Overwhelm
+
+
+
+Exhaustion
+
+
+
+Uncertainty
+
+
+
+Forgiveness
+
+
+
+Hope
+
+Each topic should have its own archive page.
+
+Recommended URL:
+
+/hold-this-today/topics/[topic-slug]/
+
+Each topic page should include:
+
+
+
+
+
+Topic title
+
+
+
+Short approved introduction
+
+
+
+Relevant encouragement entries
+
+
+
+Related articles
+
+
+
+Related journals
+
+
+
+Related devotionals
+
+
+
+Related prayer cards
+
+
+
+Related Scripture cards
+
+
+
+Email signup for that topic
+
+
+
+Optional “Start with this one” featured entry
+
+Do not automatically create thin pages with no meaningful content.
+
+If a topic has too few entries, either:
+
+
+
+
+
+Keep it unpublished
+
+
+
+Combine it with a broader approved topic
+
+
+
+Display a useful curated page rather than an empty archive
+
+D. Search and filtering
+
+Allow visitors to find encouragement by:
+
+
+
+
+
+Topic
+
+
+
+Emotional need
+
+
+
+Scripture reference
+
+
+
+Keyword
+
+
+
+Season or circumstance
+
+
+
+Content format
+
+Filtering should be simple and humane.
+
+Do not ask visitors to complete a long diagnostic form.
+
+Useful search examples:
+
+
+
+
+
+“I feel overwhelmed”
+
+
+
+“caregiver burnout”
+
+
+
+“waiting”
+
+
+
+“regret”
+
+
+
+“God feels far away”
+
+
+
+“what to pray”
+
+
+
+“fear of the future”
+
+Search results should prioritize relevance without making clinical claims.
+
+7. MASTER CONTENT MODEL
+
+Use the most appropriate storage method for the existing project.
+
+Possible sources:
+
+
+
+
+
+Markdown with frontmatter
+
+
+
+MDX
+
+
+
+JSON
+
+
+
+CSV import
+
+
+
+CMS
+
+
+
+Database
+
+
+
+Existing content collection
+
+First inspect the existing project and use the current architecture when practical.
+
+Do not introduce an unnecessary database or third-party CMS merely because one is available.
+
+The system must support bulk creation and updating.
+
+Required entry fields
+
+id:
+status:
+publish_date:
+featured_date:
+expiration_date:
+rotation_eligible:
+slug:
+page_title:
+short_title:
+topic:
+secondary_topics:
+audience:
+season_or_circumstance:
+keywords:
+search_phrases:
+
+scripture_reference:
+scripture_text:
+scripture_translation:
+scripture_verified:
+scripture_verification_notes:
+
+gentle_word:
+prayer:
+journal_question:
+small_step:
+carry_phrase:
+
+pin_quote:
+pin_prayer:
+pin_practical_text:
+pin_curiosity_text:
+pin_title:
+pin_description:
+pin_alt_text:
+pinterest_board:
+pinterest_status:
+pinterest_publish_date:
+
+email_subject:
+email_preview_text:
+email_opening:
+email_body:
+email_cta_text:
+email_status:
+email_send_date:
+email_segment:
+
+related_entry_ids:
+related_article_urls:
+related_product_ids:
+related_resource_urls:
+
+seo_title:
+meta_description:
+canonical_url:
+social_title:
+social_description:
+social_image:
+
+author:
+reviewed_by:
+content_review_status:
+scripture_review_status:
+last_reviewed_date:
+version:
+created_at:
+updated_at:
+
+
+Not every field must be manually written for every entry if safe defaults can be derived.
+
+However, do not derive or alter Scripture text.
+
+8. CONTENT STATUS AND REVIEW WORKFLOW
+
+Build a clear publishing workflow.
+
+Recommended statuses:
+
+
+
+
+
+Draft
+
+
+
+Needs content review
+
+
+
+Needs Scripture verification
+
+
+
+Approved
+
+
+
+Scheduled
+
+
+
+Published
+
+
+
+Paused
+
+
+
+Archived
+
+An entry may not publish unless:
+
+
+
+
+
+Content review status is approved
+
+
+
+Scripture verification status is approved
+
+
+
+Required fields are present
+
+
+
+Slug is unique
+
+
+
+Publication date is valid
+
+
+
+Destination URL is valid
+
+
+
+No prohibited placeholder content remains
+
+Create validation messages that identify the exact missing or invalid fields.
+
+Do not publish unfinished sample content.
+
+Clearly label sample data during development.
+
+9. DAILY SCHEDULING AND ROTATION
+
+The system should support both:
+
+Scheduled publication
+
+A specific entry is assigned to a specific date.
+
+Evergreen rotation
+
+Approved entries may be selected from a rotation pool.
+
+Rotation rules should prevent:
+
+
+
+
+
+The same entry appearing too frequently
+
+
+
+The same topic dominating multiple consecutive days
+
+
+
+Inappropriate seasonal timing
+
+
+
+Archived content resurfacing
+
+
+
+Unreviewed content appearing
+
+
+
+Duplicate email delivery to the same subscriber
+
+
+
+Repetitive Pinterest output
+
+Recommended rotation controls:
+
+
+
+
+
+Minimum days before reuse
+
+
+
+Topic spacing
+
+
+
+Seasonal eligibility
+
+
+
+Subscriber-history checks
+
+
+
+Manual priority
+
+
+
+Exclusion dates
+
+
+
+Campaign assignment
+
+Manual scheduling must always override automatic rotation.
+
+10. PINTEREST CONTENT SYSTEM
+
+Pinterest is a primary discovery channel for this project.
+
+The system should create or prepare Pinterest-ready assets from each approved entry.
+
+Pin dimensions
+
+Primary:
+
+
+
+
+
+Vertical 2:3 ratio
+
+
+
+Recommended working size: 1000 × 1500 pixels
+
+Templates should remain readable on mobile.
+
+Required Pin types
+
+1. Scripture Pin
+
+Contains:
+
+
+
+
+
+Exact Scripture text or a carefully chosen approved excerpt
+
+
+
+Reference
+
+
+
+Subtle Simplify to Glorify branding
+
+
+
+Destination URL or brand identifier
+
+2. Encouragement Pin
+
+Contains:
+
+
+
+
+
+Standalone, meaningful excerpt from the gentle encouragement
+
+
+
+Enough value to be saved without requiring a click
+
+
+
+Clear but understated branding
+
+3. Prayer Pin
+
+Contains:
+
+
+
+
+
+A complete short prayer or an approved excerpt
+
+
+
+Calm, readable layout
+
+
+
+No cramped typography
+
+4. Practical Pin
+
+Contains:
+
+
+
+
+
+One small step
+
+
+
+A short list of gentle actions
+
+
+
+A useful, saveable format
+
+5. Curiosity or entry-point Pin
+
+Contains a compassionate, relevant hook such as:
+
+
+
+
+
+Hold this today when you feel overwhelmed
+
+
+
+A Scripture to hold when the future feels uncertain
+
+
+
+What can you pray when you do not know what to say?
+
+
+
+A gentle reminder for the exhausted caregiver
+
+This Pin may rely more heavily on the click than the other formats, but it must not use manipulative clickbait.
+
+Pinterest design requirements
+
+Build reusable template layouts.
+
+Templates should allow:
+
+
+
+
+
+Topic-based accent colors
+
+
+
+Varying text lengths
+
+
+
+Scripture references
+
+
+
+Brand mark
+
+
+
+Destination indicator
+
+
+
+Optional floral or botanical motif
+
+
+
+Safe text margins
+
+
+
+Export-quality output
+
+Avoid:
+
+
+
+
+
+Text that is too small
+
+
+
+Dense paragraphs
+
+
+
+Generic stock photography
+
+
+
+Unreadable script fonts
+
+
+
+Excessive branding
+
+
+
+“Click here” language
+
+
+
+Engagement bait
+
+
+
+Emotionally manipulative hooks
+
+
+
+Claims such as “This verse will cure your anxiety”
+
+Pinterest metadata
+
+Each Pin record should support:
+
+
+
+
+
+Pin title
+
+
+
+Pin description
+
+
+
+Alt text
+
+
+
+Destination URL
+
+
+
+Source entry
+
+
+
+Pin template type
+
+
+
+Topic
+
+
+
+Suggested board
+
+
+
+Publication status
+
+
+
+Scheduled date
+
+
+
+Campaign
+
+
+
+UTM parameters
+
+
+
+Export filename
+
+
+
+Version
+
+
+
+Date created
+
+
+
+Date last published
+
+Use clean filenames.
+
+Example:
+
+hold-this-today-overwhelmed-scripture-pin-01.png
+
+Do not include:
+
+
+
+
+
+Copy numbers
+
+
+
+Parentheses
+
+
+
+“final-final”
+
+
+
+Random export suffixes
+
+Pinterest visitor experience
+
+On every entry page, include a section titled:
+
+Save This Encouragement
+
+Display Pinterest-ready previews with individual actions.
+
+Possible actions:
+
+
+
+
+
+Save to Pinterest
+
+
+
+Open full-size image
+
+
+
+Copy page link
+
+Do not force a download before saving.
+
+The Pin must point to the permanent entry URL, not the rotating daily landing page.
+
+11. EMAIL SUBSCRIPTION SYSTEM
+
+Email is a core distribution channel.
+
+The system must support a visitor journey from:
+
+Pinterest Pin → permanent encouragement page → topic-relevant email signup → welcome email → ongoing encouragement sequence → relevant articles and resources
+
+Email signup invitation
+
+Use warm, specific language.
+
+Recommended concept:
+
+A Gentle Note
+
+Possible description:
+
+Receive one Scripture, one gentle encouragement, one prayer, and one small step for the day ahead.
+
+Do not call it merely “Join our newsletter.”
+
+Do not overpromise daily delivery unless daily delivery is configured.
+
+Signup form fields
+
+Required:
+
+
+
+
+
+Email address
+
+Optional:
+
+
+
+
+
+First name
+
+
+
+Primary area of encouragement
+
+
+
+Preferred frequency
+
+Suggested topic question:
+
+What kind of encouragement would be most helpful right now?
+
+Options:
+
+
+
+
+
+Anxiety and overwhelm
+
+
+
+Caregiving
+
+
+
+Grief
+
+
+
+Chronic pain
+
+
+
+Discouragement
+
+
+
+Trusting God
+
+
+
+Learning to pray
+
+
+
+Waiting and uncertainty
+
+
+
+Feeling far from God
+
+
+
+General encouragement
+
+
+
+I am not sure
+
+Use the project’s existing email provider if one is already connected.
+
+Do not invent a working third-party integration.
+
+If no provider exists, create:
+
+
+
+
+
+The interface
+
+
+
+The subscriber data contract
+
+
+
+The integration layer
+
+
+
+Environment-variable placeholders
+
+
+
+Clear setup documentation
+
+
+
+A development-safe mock implementation
+
+Never expose API keys in client-side code.
+
+12. EMAIL PROGRAMS TO SUPPORT
+
+A. Welcome series
+
+Create the architecture for a short welcome sequence.
+
+Suggested flow:
+
+Email 1: Welcome
+
+
+
+
+
+Explain what the reader will receive
+
+
+
+Set a gentle expectation
+
+
+
+Link to the current encouragement
+
+
+
+Invite the reader to choose or update a topic
+
+Email 2: How to use Hold This Today
+
+
+
+
+
+Read one entry
+
+
+
+Save one Pin
+
+
+
+Carry one question
+
+
+
+Explore by need
+
+Email 3: A helpful starting point
+
+
+
+
+
+Send a topic-relevant entry
+
+
+
+Link to a related article or resource
+
+Email 4: Invitation to continue
+
+
+
+
+
+Present delivery options
+
+
+
+Invite the reader to a seven-day journey
+
+
+
+Mention relevant products only when appropriate
+
+Do not pressure the reader to purchase.
+
+B. Ongoing daily encouragement
+
+Each email may contain:
+
+
+
+
+
+Subject line
+
+
+
+Preview text
+
+
+
+Brief greeting
+
+
+
+Scripture
+
+
+
+Short encouragement
+
+
+
+Prayer
+
+
+
+One question or one small step
+
+
+
+Link to full entry
+
+
+
+Optional related resource
+
+Keep the email useful even if the reader does not click.
+
+The website may contain the fuller experience.
+
+C. Weekly digest
+
+Support a weekly option containing:
+
+
+
+
+
+One featured Scripture
+
+
+
+Several recent encouragements
+
+
+
+One article
+
+
+
+One prayer
+
+
+
+One practical resource
+
+
+
+Optional related product
+
+The digest should not feel like a list of promotions.
+
+D. Topic-specific seven-day journeys
+
+Support structured sequences such as:
+
+
+
+
+
+Seven Days of Encouragement for the Caregiver
+
+
+
+Seven Days for an Anxious Heart
+
+
+
+Seven Days of Scripture While You Wait
+
+
+
+Seven Days When God Feels Far Away
+
+
+
+Seven Days of Learning to Pray
+
+
+
+Seven Days for Grief
+
+
+
+Seven Days of Trusting God
+
+Each journey should use approved existing entries or specially authored journey entries.
+
+Track:
+
+
+
+
+
+Journey ID
+
+
+
+Subscriber ID
+
+
+
+Enrollment date
+
+
+
+Current day
+
+
+
+Delivery status
+
+
+
+Completion status
+
+
+
+Paused status
+
+
+
+Exit reason
+
+
+
+Last email sent
+
+
+
+Next eligible email
+
+Do not enroll a person in multiple high-frequency sequences without clear consent.
+
+13. EMAIL SEGMENTATION
+
+Support segments based on:
+
+
+
+
+
+Signup topic
+
+
+
+Selected frequency
+
+
+
+Journey enrollment
+
+
+
+General subscriber status
+
+
+
+Content interests
+
+
+
+Product interest
+
+
+
+Last engagement
+
+
+
+Date subscribed
+
+
+
+Source campaign
+
+
+
+Pinterest source Pin
+
+
+
+Completed journey
+
+Segmentation must remain helpful, not invasive.
+
+Do not infer a diagnosis from browsing behavior.
+
+For example:
+
+Acceptable:
+
+This reader has selected caregiving encouragement.
+
+Not acceptable:
+
+This reader is clinically depressed because she opened several depression-related pages.
+
+Allow subscribers to change preferences easily.
+
+14. EMAIL COMPLIANCE AND TRUST
+
+Build or preserve:
+
+
+
+
+
+Explicit consent
+
+
+
+Unsubscribe functionality
+
+
+
+Preference management
+
+
+
+Sender identification
+
+
+
+Privacy notice
+
+
+
+Consent timestamp
+
+
+
+Subscription source
+
+
+
+Suppression status
+
+
+
+Email frequency selection
+
+
+
+Double opt-in support where configured
+
+Do not send production emails from the development environment.
+
+Provide a safe preview or test-send mode.
+
+15. RELATED CONTENT AND PRODUCT RECOMMENDATIONS
+
+Each entry may connect to:
+
+
+
+
+
+Articles
+
+
+
+Guides
+
+
+
+Journals
+
+
+
+Devotionals
+
+
+
+Prayer cards
+
+
+
+Scripture cards
+
+
+
+First Steps products
+
+
+
+Free downloads
+
+Recommendations should be contextually relevant.
+
+Examples:
+
+An entry about caregiver exhaustion may link to:
+
+
+
+
+
+A caregiving article
+
+
+
+Strength for the Caregiver journal
+
+
+
+Caregiving prayer cards
+
+
+
+A caregiver First Steps resource
+
+An entry about regret may link to:
+
+
+
+
+
+An article about regret that cannot be undone
+
+
+
+Grace for What You Cannot Change
+
+
+
+Related Scripture cards
+
+Do not show a product simply because it exists.
+
+Recommendation priority:
+
+
+
+
+
+Most directly helpful free content
+
+
+
+Closely related encouragement entry
+
+
+
+Relevant downloadable resource
+
+
+
+Relevant product
+
+Use language such as:
+
+You may also find this helpful.
+
+Avoid:
+
+
+
+
+
+You need this
+
+
+
+Fix your life
+
+
+
+Get healed
+
+
+
+Do not miss out
+
+
+
+Last chance
+
+
+
+Everyone needs this
+
+16. SEO, AEO, AND DISCOVERABILITY
+
+Build the system so every meaningful permanent entry can be understood by:
+
+
+
+
+
+Search engines
+
+
+
+AI answer systems
+
+
+
+Social platforms
+
+
+
+Pinterest
+
+
+
+Screen readers
+
+
+
+Human visitors
+
+Each entry should support:
+
+
+
+
+
+Unique page title
+
+
+
+Unique meta description
+
+
+
+Canonical URL
+
+
+
+Open Graph metadata
+
+
+
+Pinterest-friendly social metadata
+
+
+
+Author information
+
+
+
+Date published
+
+
+
+Date modified
+
+
+
+Breadcrumbs
+
+
+
+Semantic headings
+
+
+
+Descriptive alt text
+
+
+
+Internal linking
+
+
+
+Topic relationships
+
+
+
+Crawlable text
+
+
+
+Fast rendering
+
+
+
+XML sitemap inclusion when published
+
+
+
+Exclusion from indexing while draft or unapproved
+
+Use structured data only when it accurately applies.
+
+Do not add misleading review, medical, FAQ, or product schema.
+
+Potentially appropriate types may include:
+
+
+
+
+
+Article
+
+
+
+BlogPosting
+
+
+
+BreadcrumbList
+
+
+
+WebPage
+
+
+
+ItemList
+
+Determine what is technically and semantically valid before implementation.
+
+17. ACCESSIBILITY
+
+Target WCAG 2.2 AA where practical.
+
+Requirements:
+
+
+
+
+
+Keyboard navigation
+
+
+
+Visible focus states
+
+
+
+Semantic HTML
+
+
+
+Proper heading order
+
+
+
+Sufficient contrast
+
+
+
+Form labels
+
+
+
+Clear error messages
+
+
+
+Accessible buttons
+
+
+
+Alt text
+
+
+
+Reduced-motion support
+
+
+
+No essential information conveyed by color alone
+
+
+
+Mobile screen-reader usability
+
+
+
+Pin preview descriptions
+
+
+
+Accessible topic filters
+
+
+
+Descriptive link text
+
+Avoid links labeled only:
+
+
+
+
+
+Click here
+
+
+
+Read more
+
+
+
+Learn more
+
+Use contextual link text.
+
+18. PRIVACY AND SECURITY
+
+Do not expose:
+
+
+
+
+
+Email provider API keys
+
+
+
+Admin controls
+
+
+
+Subscriber information
+
+
+
+Draft content
+
+
+
+Review notes
+
+
+
+Internal IDs
+
+
+
+Private analytics
+
+Use server-side actions or secure endpoints for subscriber operations.
+
+Validate and sanitize:
+
+
+
+
+
+Form submissions
+
+
+
+Search input
+
+
+
+Query parameters
+
+
+
+Imported CSV or JSON
+
+
+
+URLs
+
+
+
+Metadata fields
+
+Add reasonable:
+
+
+
+
+
+Rate limiting
+
+
+
+Bot protection
+
+
+
+Duplicate subscription handling
+
+
+
+Error logging
+
+
+
+Form validation
+
+
+
+Safe failure states
+
+Do not collect more subscriber data than the system needs.
+
+19. ADMIN OR CONTENT-MANAGEMENT EXPERIENCE
+
+Create a practical content-management workflow appropriate to the existing project.
+
+At minimum, the owner should be able to:
+
+
+
+
+
+Add an entry
+
+
+
+Edit an entry
+
+
+
+Preview an entry
+
+
+
+Review Scripture status
+
+
+
+Approve content
+
+
+
+Schedule publication
+
+
+
+Pause publication
+
+
+
+Archive content
+
+
+
+Assign topics
+
+
+
+Assign related resources
+
+
+
+Enter Pin copy
+
+
+
+Preview Pin layouts
+
+
+
+Enter email copy
+
+
+
+Preview email output
+
+
+
+Assign email segment
+
+
+
+Add an entry to a seven-day journey
+
+
+
+See validation errors
+
+
+
+Export or import entries
+
+
+
+Filter by status
+
+
+
+Filter by topic
+
+
+
+Search by title, Scripture, or keyword
+
+If a complete custom admin panel is inappropriate for the current stack, create the best maintainable alternative.
+
+Examples:
+
+
+
+
+
+Structured Markdown files with schemas
+
+
+
+A validated CSV importer
+
+
+
+A lightweight content dashboard
+
+
+
+CMS configuration
+
+
+
+Admin-only route
+
+Do not build a fragile visual editor merely to look impressive.
+
+Maintainability matters more than spectacle.
+
+20. CSV IMPORT AND EXPORT
+
+Support a bulk workflow because content will often be prepared in batches.
+
+Required CSV import behavior:
+
+
+
+
+
+Validate column names
+
+
+
+Validate required fields
+
+
+
+Preserve exact Scripture text
+
+
+
+Reject duplicate IDs or slugs
+
+
+
+Flag invalid dates
+
+
+
+Flag missing topics
+
+
+
+Flag missing verification status
+
+
+
+Detect blank required fields
+
+
+
+Report row-specific errors
+
+
+
+Preview changes before publishing
+
+
+
+Never silently alter content
+
+
+
+Support UTF-8
+
+
+
+Avoid smart-character corruption
+
+
+
+Preserve line breaks where supported
+
+Provide a sample CSV template.
+
+Also support export for backup or editing where practical.
+
+21. PIN IMAGE GENERATION OR TEMPLATE OUTPUT
+
+Determine what the current environment can reliably support.
+
+Preferred outcomes, in order:
+
+
+
+
+
+Generate export-ready Pin images from approved templates
+
+
+
+Generate Pin preview pages and downloadable image files
+
+
+
+Produce structured data that can be imported into Canva or another design workflow
+
+
+
+Provide a clearly documented manual export step
+
+Do not pretend an image-generation or Canva integration works if it has not actually been connected.
+
+If images are rendered from HTML or SVG:
+
+
+
+
+
+Use embedded-safe or available fonts
+
+
+
+Maintain 1000 × 1500 output
+
+
+
+Confirm text wrapping
+
+
+
+Prevent clipping
+
+
+
+Support longer Scripture
+
+
+
+Provide overflow warnings
+
+
+
+Generate high-resolution output
+
+
+
+Use consistent margins
+
+
+
+Include approved branding
+
+
+
+Generate descriptive filenames
+
+22. ANALYTICS
+
+Add event hooks or analytics support for:
+
+
+
+
+
+Entry viewed
+
+
+
+Topic selected
+
+
+
+Pin save clicked
+
+
+
+Pin image opened
+
+
+
+Email signup started
+
+
+
+Email signup completed
+
+
+
+Journey selected
+
+
+
+Related article clicked
+
+
+
+Related product clicked
+
+
+
+Search performed
+
+
+
+No search results
+
+
+
+Preference updated
+
+Do not add invasive tracking.
+
+Respect the project’s existing privacy and cookie practices.
+
+Use descriptive event names and document them.
+
+23. ERROR AND EMPTY STATES
+
+Create thoughtful states for:
+
+
+
+
+
+No entry scheduled
+
+
+
+Topic with no entries
+
+
+
+Search with no results
+
+
+
+Email already subscribed
+
+
+
+Invalid email
+
+
+
+Email provider unavailable
+
+
+
+Pin asset missing
+
+
+
+Related product unavailable
+
+
+
+Archived entry
+
+
+
+Draft URL accessed
+
+
+
+Import validation failure
+
+Messages should be calm and specific.
+
+Example:
+
+We could not complete your subscription just now. Your information was not lost. Please try again in a moment.
+
+Do not use alarming error language.
+
+24. PERFORMANCE
+
+Prioritize:
+
+
+
+
+
+Fast first load
+
+
+
+Responsive images
+
+
+
+Lazy-loaded Pin gallery images
+
+
+
+Minimal client-side JavaScript
+
+
+
+Static generation where appropriate
+
+
+
+Cached approved content
+
+
+
+Optimized fonts
+
+
+
+Stable layout
+
+
+
+Small page payloads
+
+
+
+Efficient search
+
+
+
+No autoplay media
+
+
+
+No unnecessary animation libraries
+
+The experience will receive mobile traffic from Pinterest.
+
+Design and test for that first.
+
+25. REQUIRED SAMPLE DATA
+
+Create enough clearly labeled sample entries to demonstrate the complete system.
+
+Use at least six varied topics:
+
+
+
+
+
+Anxiety or overwhelm
+
+
+
+Caregiving
+
+
+
+Grief
+
+
+
+Regret
+
+
+
+Waiting or uncertainty
+
+
+
+Learning to pray
+
+Sample content must be clearly identified as demonstration content until reviewed.
+
+Do not mark sample Scripture as verified unless it has actually been verified against the requested translation.
+
+Where exact NASB 2020 quotation licensing or access is uncertain, use placeholders such as:
+
+[VERIFIED NASB 2020 SCRIPTURE TEXT REQUIRED]
+
+Do not fabricate the verse wording.
+
+26. REQUIRED USER FLOWS
+
+Build and test these complete flows.
+
+Flow 1: Pinterest visitor
+
+
+
+
+
+Visitor sees an encouragement Pin
+
+
+
+Visitor opens the permanent entry page
+
+
+
+Visitor reads the complete entry
+
+
+
+Visitor saves a second Pin
+
+
+
+Visitor explores the related topic
+
+
+
+Visitor subscribes to A Gentle Note
+
+
+
+Visitor selects a topic preference
+
+Flow 2: Returning daily visitor
+
+
+
+
+
+Visitor opens /hold-this-today/
+
+
+
+Visitor sees today’s entry
+
+
+
+Visitor reads the Scripture and prayer
+
+
+
+Visitor chooses another encouragement
+
+
+
+Visitor browses a relevant topic
+
+Flow 3: New email subscriber
+
+
+
+
+
+Visitor enters email address
+
+
+
+Visitor selects preferred topic and frequency
+
+
+
+Consent is recorded
+
+
+
+Welcome sequence begins
+
+
+
+Subscriber receives an appropriate first entry
+
+
+
+Subscriber can update preferences or unsubscribe
+
+Flow 4: Seven-day journey
+
+
+
+
+
+Subscriber chooses a journey
+
+
+
+Subscriber receives Day 1
+
+
+
+Progress is recorded
+
+
+
+The next email is sent on schedule
+
+
+
+Subscriber pauses or exits if desired
+
+
+
+Completion is recorded
+
+
+
+A gentle next-step recommendation is shown
+
+Flow 5: Content owner
+
+
+
+
+
+Owner imports a content entry
+
+
+
+System validates the fields
+
+
+
+Scripture verification remains required
+
+
+
+Owner previews website, Pin, and email outputs
+
+
+
+Owner approves the entry
+
+
+
+Owner schedules it
+
+
+
+Entry publishes on the correct date
+
+
+
+Permanent URL remains stable
+
+27. TESTING REQUIREMENTS
+
+Test:
+
+
+
+
+
+Mobile layouts
+
+
+
+Tablet layouts
+
+
+
+Desktop layouts
+
+
+
+Long titles
+
+
+
+Long Scripture text
+
+
+
+Long prayers
+
+
+
+Missing optional fields
+
+
+
+Invalid dates
+
+
+
+Duplicate slugs
+
+
+
+Draft content
+
+
+
+Archived content
+
+
+
+Empty topic archives
+
+
+
+Search synonyms
+
+
+
+Keyboard navigation
+
+
+
+Screen-reader labels
+
+
+
+Email validation
+
+
+
+Duplicate subscribers
+
+
+
+Provider failure
+
+
+
+Pin image overflow
+
+
+
+Broken related links
+
+
+
+Scheduled publication
+
+
+
+Evergreen rotation
+
+
+
+Time-zone handling
+
+
+
+Permanent URL stability
+
+
+
+Sitemap inclusion
+
+
+
+Draft indexing prevention
+
+Use the website’s configured time zone.
+
+If none exists, make the time zone configurable rather than hard-coding it.
+
+28. ACCEPTANCE CRITERIA
+
+The project is not complete unless:
+
+
+
+
+
+The daily landing page works
+
+
+
+Permanent entry URLs work
+
+
+
+Topic archives work
+
+
+
+Search or filtering works
+
+
+
+Entries come from structured approved content
+
+
+
+Unapproved entries cannot publish
+
+
+
+Exact Scripture content is preserved
+
+
+
+Pinterest-ready outputs are demonstrated
+
+
+
+Pin destination URLs are permanent
+
+
+
+Email signup architecture works
+
+
+
+Topic preference selection works
+
+
+
+Welcome-sequence architecture exists
+
+
+
+Daily or weekly email output can be created
+
+
+
+Seven-day journey architecture exists
+
+
+
+Subscriber preferences can be changed
+
+
+
+Unsubscribe handling is supported
+
+
+
+Related content is contextually mapped
+
+
+
+Mobile usability is strong
+
+
+
+Accessibility basics are implemented
+
+
+
+SEO metadata is generated
+
+
+
+Drafts are excluded from indexing
+
+
+
+Validation errors are clear
+
+
+
+Sample data is separated from production content
+
+
+
+Setup documentation is complete
+
+
+
+No fake integrations are represented as working
+
+29. BUILD PROCESS
+
+Proceed in this order.
+
+Phase 1: Inspect
+
+Before changing code:
+
+
+
+
+
+Inspect the project structure
+
+
+
+Identify the framework
+
+
+
+Identify current content storage
+
+
+
+Identify styling conventions
+
+
+
+Identify existing routes
+
+
+
+Identify current product and article data
+
+
+
+Identify email integrations
+
+
+
+Identify analytics
+
+
+
+Identify deployment constraints
+
+
+
+Identify reusable components
+
+Do not replace existing architecture unnecessarily.
+
+Phase 2: Plan
+
+Create a concise implementation plan including:
+
+
+
+
+
+Data model
+
+
+
+Routes
+
+
+
+Components
+
+
+
+Publishing logic
+
+
+
+Email integration approach
+
+
+
+Pinterest asset approach
+
+
+
+Review workflow
+
+
+
+Migration needs
+
+
+
+Risks
+
+
+
+Assumptions
+
+Phase 3: Build the foundation
+
+Implement:
+
+
+
+
+
+Content schema
+
+
+
+Validation
+
+
+
+Entry storage
+
+
+
+Status controls
+
+
+
+Daily-entry resolver
+
+
+
+Permanent routes
+
+
+
+Topic routes
+
+Phase 4: Build the visitor experience
+
+Implement:
+
+
+
+
+
+Daily page
+
+
+
+Permanent page
+
+
+
+Topic library
+
+
+
+Search
+
+
+
+Related content
+
+
+
+Subscription forms
+
+Phase 5: Build distribution outputs
+
+Implement:
+
+
+
+
+
+Pin templates or Pin data exports
+
+
+
+Email templates
+
+
+
+Welcome sequence support
+
+
+
+Ongoing delivery support
+
+
+
+Seven-day journey support
+
+Phase 6: Test and document
+
+Provide:
+
+
+
+
+
+Test results
+
+
+
+Known limitations
+
+
+
+Environment variables
+
+
+
+Integration instructions
+
+
+
+Content-import instructions
+
+
+
+Publishing instructions
+
+
+
+Pin-export instructions
+
+
+
+Email-preview instructions
+
+
+
+Deployment notes
+
+30. IMPORTANT DECISION RULES
+
+When uncertain:
+
+
+
+
+
+Preserve existing project conventions.
+
+
+
+Prefer maintainability over novelty.
+
+
+
+Prefer approved content over generated content.
+
+
+
+Prefer a working integration layer over a fake integration.
+
+
+
+Prefer permanent URLs over rotating destinations.
+
+
+
+Prefer mobile usability over decorative complexity.
+
+
+
+Prefer gentle relevance over aggressive conversion tactics.
+
+
+
+Prefer a simple owner workflow over a complicated dashboard.
+
+
+
+Never alter Scripture silently.
+
+
+
+Never publish unreviewed content.
+
+31. DO NOT DO THESE THINGS
+
+Do not:
+
+
+
+
+
+Redesign the entire website
+
+
+
+Replace working systems without cause
+
+
+
+Publish sample content
+
+
+
+Hard-code all entries into components
+
+
+
+Store subscriber data insecurely
+
+
+
+Expose secrets
+
+
+
+Use fake buttons
+
+
+
+Create nonfunctional email controls
+
+
+
+Build a rotating page as the only Pin destination
+
+
+
+Generate spiritual advice dynamically for visitors
+
+
+
+Add AI chat without explicit approval
+
+
+
+Add scores or emotional assessments
+
+
+
+Add streaks or daily completion tracking
+
+
+
+Use manipulative urgency
+
+
+
+Overload pages with product promotions
+
+
+
+Create dozens of thin SEO pages
+
+
+
+Claim integrations are complete when they are placeholders
+
+
+
+Guess at Scripture wording
+
+
+
+Remove existing functionality
+
+
+
+use lorem ipsum in the final implementation
+
+32. FINAL DELIVERABLES
+
+At completion, provide:
+
+
+
+
+
+A summary of what was built
+
+
+
+A list of files added
+
+
+
+A list of files modified
+
+
+
+The finalized content schema
+
+
+
+A sample CSV template
+
+
+
+Sample structured entries
+
+
+
+Website routes created
+
+
+
+Pinterest output process
+
+
+
+Email integration process
+
+
+
+Subscriber segmentation model
+
+
+
+Seven-day journey structure
+
+
+
+Environment variables required
+
+
+
+Testing performed
+
+
+
+Accessibility checks performed
+
+
+
+SEO checks performed
+
+
+
+Known limitations
+
+
+
+Remaining manual setup
+
+
+
+Recommended next steps
+
+Also create a handoff document:
+
+docs/hold-this-today-system.md
+
+The handoff document should explain how Carla can:
+
+
+
+
+
+Add an entry
+
+
+
+Verify Scripture
+
+
+
+Approve an entry
+
+
+
+Schedule an entry
+
+
+
+Preview the website page
+
+
+
+Preview the Pins
+
+
+
+Export the Pins
+
+
+
+Add an entry to an email sequence
+
+
+
+Create a seven-day journey
+
+
+
+Map related articles and products
+
+
+
+Pause an entry
+
+
+
+Archive an entry
+
+
+
+Troubleshoot common errors
+
+FINAL PRODUCT STANDARD
+
+The completed system should feel as though Simplify to Glorify created a quiet, trustworthy place where a woman can arrive from Pinterest, find one carefully chosen truth from Scripture, receive a prayer she can borrow, take one manageable next step, and choose to continue receiving that kind of support by email.
+
+It should also give the site owner a sustainable system in which one carefully reviewed content entry can become:
+
+
+
+
+
+A permanent website resource
+
+
+
+A daily feature
+
+
+
+Several saveable Pinterest Pins
+
+
+
+An email
+
+
+
+Part of a topic library
+
+
+
+Part of a seven-day journey
+
+
+
+A doorway to a related article
+
+
+
+A natural introduction to a relevant product
+
+Build the underlying engine, not merely the appearance of one.

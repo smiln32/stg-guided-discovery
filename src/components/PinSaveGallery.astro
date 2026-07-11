@@ -1,0 +1,128 @@
+---
+// "Save This Encouragement" — Pinterest-ready previews with per-Pin actions.
+// Previews are inline SVG (brand-correct in the browser). Each Pin links to
+// Pinterest's save flow pointing at the PERMANENT entry URL, offers a full-size
+// vector download, and the whole section offers "copy page link".
+import { buildPins, renderPinSvg } from '../lib/pins.mjs';
+import type { EntryData } from '../lib/entries';
+
+const { data, pageUrl } = Astro.props as { data: EntryData; pageUrl: string };
+const pins = buildPins(data).map((pin) => ({ pin, ...renderPinSvg(pin) }));
+
+function pinterestSave(destination: string, description: string) {
+  const u = new URL('https://www.pinterest.com/pin/create/button/');
+  u.searchParams.set('url', destination);
+  u.searchParams.set('description', description);
+  return u.toString();
+}
+function svgDataUri(svg: string) {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+---
+
+<section class="save section" aria-labelledby="save-heading" data-page-url={pageUrl}>
+  <h2 id="save-heading">Save This Encouragement</h2>
+  <p class="save__intro">
+    Keep it for a hard day, or share it with someone who needs it. Saving is
+    free — you never have to download anything first.
+  </p>
+
+  <div class="grid grid--2 save__grid">
+    {
+      pins.map(({ pin, svg, overflow }) => (
+        <figure class="save__pin">
+          <div class="save__preview" set:html={svg} />
+          {overflow && (
+            <p class="verify-note">
+              This Pin's text is long — preview before publishing to be sure
+              nothing is clipped.
+            </p>
+          )}
+          <figcaption class="save__actions">
+            <a
+              class="btn btn--soft"
+              href={pinterestSave(pin.destination, pin.pin_description)}
+              target="_blank"
+              rel="noopener"
+              data-track="pin_save_clicked"
+              data-track-label={pin.type}
+            >
+              Save to Pinterest<span class="visually-hidden"> — {pin.eyebrow} pin</span>
+            </a>
+            <a
+              class="btn btn--soft"
+              href={svgDataUri(svg)}
+              download={pin.filename.replace(/\.png$/, '.svg')}
+              data-track="pin_image_opened"
+              data-track-label={pin.type}
+            >
+              Open full-size<span class="visually-hidden"> {pin.eyebrow} image</span>
+            </a>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+
+  <p class="save__copy">
+    <button class="btn btn--soft" type="button" data-copy-link>Copy page link</button>
+    <span class="form-status" role="status" aria-live="polite" hidden></span>
+  </p>
+</section>
+
+<style>
+  .save__intro {
+    color: var(--text-soft);
+    max-width: 40ch;
+  }
+  .save__preview :global(svg) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-soft);
+    display: block;
+  }
+  .save__pin {
+    margin: 0;
+  }
+  .save__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+  }
+  .save__actions .btn {
+    min-height: 44px;
+    font-size: var(--step--1);
+    flex: 1 1 auto;
+  }
+  .save__copy {
+    margin-top: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.save').forEach((section) => {
+    const btn = section.querySelector<HTMLButtonElement>('[data-copy-link]');
+    const status = section.querySelector<HTMLElement>('.form-status');
+    const url = section.dataset.pageUrl || window.location.href;
+    btn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        if (status) {
+          status.hidden = false;
+          status.className = 'form-status form-status--ok';
+          status.textContent = 'Link copied.';
+        }
+      } catch {
+        if (status) {
+          status.hidden = false;
+          status.textContent = url;
+        }
+      }
+    });
+  });
+</script>

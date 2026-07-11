@@ -1,0 +1,68 @@
+# DRAFT SAMPLE — demonstrates the review workflow and Scripture placeholder.
+# This entry is intentionally NOT published: its Scripture is not yet verified,
+# so it must never appear on the site or in the sitemap. It shows how an entry
+# looks while it is still awaiting Scripture verification.
+#
+# To "publish" it after review you would: paste the verified NASB 2020 text into
+# scripture_text, set scripture_verified: true, set both review statuses to
+# "approved", and change status to "published" (or "scheduled" with a date).
+id: when-you-feel-far-from-god
+status: needs_scripture_verification
+is_sample: true
+
+rotation_eligible: false
+
+slug: when-you-feel-far-from-god
+page_title: When God Feels Far Away
+short_title: When God Feels Far Away
+topic: feeling-far-from-god
+secondary_topics:
+  - faith
+audience: Christian women
+season_or_circumstance: a season when God feels distant
+keywords: [feeling far from god, distance, dryness, spiritual dryness]
+search_phrases:
+  - God feels far away
+  - I feel distant from God
+  - spiritual dryness
+
+scripture_reference: James 4:8
+scripture_text: "[VERIFIED NASB 2020 SCRIPTURE TEXT REQUIRED]"
+scripture_translation: NASB 2020
+scripture_verified: false
+scripture_verification_notes: >-
+  Awaiting verified NASB 2020 text for James 4:8. Do not publish until the exact
+  verse text is confirmed and pasted in.
+
+gentle_word: |
+  Distance you can feel does not always mean distance that is real. There are
+  seasons when God feels far — when prayers seem to hit the ceiling and the
+  familiar warmth is gone. That ache is not a verdict on your faith.
+
+  (Draft encouragement — pending content review.)
+prayer: |
+  God, You feel far away, and I miss You. Even now, I am turning toward You.
+  Would You close the distance I cannot close myself? Amen.
+journal_question: Where do you most want to sense God's nearness right now?
+small_step: >-
+  Turn toward God with one honest sentence, even if it is only, "I feel far from
+  You, and I am still here."
+carry_phrase: Draw near, and He will draw near to you.
+
+pin_curiosity_text: A gentle word for the season when God feels far away.
+pinterest_status: not_started
+
+email_status: not_started
+
+related_entry_ids:
+  - when-you-dont-know-what-to-pray
+related_articles: []
+related_product_ids: []
+related_resources: []
+
+author: Simplify to Glorify
+content_review_status: in_review
+scripture_review_status: pending
+version: 1
+created_at: 2026-07-01
+updated_at: 2026-07-01

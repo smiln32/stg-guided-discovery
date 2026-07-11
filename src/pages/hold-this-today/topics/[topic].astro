@@ -1,0 +1,93 @@
+---
+// /hold-this-today/topics/[topic]/ — a single topic archive.
+// Only topics meeting the min-entry threshold are built, so no thin pages ship.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EntryCard from '../../../components/EntryCard.astro';
+import SubscribeForm from '../../../components/SubscribeForm.astro';
+import RelatedContent from '../../../components/RelatedContent.astro';
+import { publishedTopics } from '../../../lib/topics';
+import { getEntriesByTopic, buildNow } from '../../../lib/entries';
+import { paths } from '../../../lib/urls';
+import { PRODUCTS } from '../../../config/products.mjs';
+import { emailTopicForContentTopic } from '../../../config/email.mjs';
+import { itemListJsonLd, breadcrumbJsonLd } from '../../../lib/jsonld';
+
+export async function getStaticPaths() {
+  const topics = await publishedTopics();
+  const out = [];
+  for (const t of topics) {
+    const entries = await getEntriesByTopic(t.slug);
+    out.push({ params: { topic: t.slug }, props: { topic: t, entries } });
+  }
+  return out;
+}
+
+const { topic, entries } = Astro.props;
+const now = buildNow();
+const featured = entries[0];
+const rest = entries.slice(1);
+
+const relatedProducts = PRODUCTS.filter((p) => p.topics.includes(topic.slug)).map((p) => p.id);
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Browse by need', href: paths.topics },
+  { label: topic.title, href: paths.topic(topic.slug) },
+];
+const jsonLd = [
+  breadcrumbJsonLd(crumbs),
+  itemListJsonLd(
+    `${topic.title} encouragements`,
+    entries.map((e) => ({ url: paths.entry(e.data.slug), name: e.data.short_title })),
+  ),
+];
+---
+
+<BaseLayout
+  title={`${topic.title} — encouragement to hold today`}
+  description={topic.intro}
+  path={paths.topic(topic.slug)}
+  jsonLd={jsonLd}
+>
+  <div class="container section" style={`--topic-accent:${topic.accent}`}>
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="stack" style="margin-top: var(--space-md);">
+      <span class="topic-chip" style="font-size: var(--step-0);">{topic.title}</span>
+      <h1>{topic.title}</h1>
+      <p>{topic.intro}</p>
+    </header>
+
+    {
+      featured && (
+        <section class="section" aria-labelledby="start-here">
+          <h2 id="start-here">Start with this one</h2>
+          <EntryCard data={featured.data} />
+        </section>
+      )
+    }
+
+    {
+      rest.length > 0 && (
+        <section class="section" aria-labelledby="more-in-topic">
+          <h2 id="more-in-topic">More encouragement for {topic.title.toLowerCase()}</h2>
+          <div class="grid grid--3">
+            {rest.map((e) => (
+              <EntryCard data={e.data} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <RelatedContent productIds={relatedProducts} />
+
+    <div class="section">
+      <SubscribeForm
+        source={`topic:${topic.slug}`}
+        defaultTopic={emailTopicForContentTopic(topic.slug)}
+        heading={`A gentle note for ${topic.title.toLowerCase()}`}
+      />
+    </div>
+  </div>
+</BaseLayout>

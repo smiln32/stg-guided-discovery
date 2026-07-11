@@ -1,0 +1,42 @@
+---
+// /hold-this-today/subscribe/ — the full "A Gentle Note" signup page.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SubscribeForm from '../../components/SubscribeForm.astro';
+import { paths } from '../../lib/urls';
+import { BRAND } from '../../config/site.mjs';
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: BRAND.emailProgramName, href: paths.subscribe },
+];
+---
+
+<BaseLayout
+  title={BRAND.emailProgramName}
+  description={BRAND.emailProgramDescription}
+  path={paths.subscribe}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="stack" style="margin-top: var(--space-md);">
+      <p class="eyebrow">{BRAND.emailProgramName}</p>
+      <h1>A gentle note, when you need one</h1>
+      <p>
+        No pressure, no clutter — just {BRAND.emailProgramDescription.toLowerCase()}
+        You choose how often, and what kind of encouragement fits your season.
+        You can change your mind anytime.
+      </p>
+    </header>
+
+    <div style="margin-top: var(--space-lg);">
+      <SubscribeForm source="subscribe-page" />
+    </div>
+
+    <p style="margin-top: var(--space-md); color: var(--text-muted);">
+      Already subscribed? You can
+      <a href={paths.preferences}>update your preferences</a> or
+      <a href={paths.unsubscribe}>unsubscribe</a> at any time.
+    </p>
+  </div>
+</BaseLayout>

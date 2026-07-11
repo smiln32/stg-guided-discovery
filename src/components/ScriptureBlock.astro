@@ -1,0 +1,33 @@
+---
+// Renders the Scripture exactly as supplied, always with reference + translation.
+// If the text still holds the verification placeholder, we show a calm note and
+// never present it as verified.
+const {
+  text,
+  reference,
+  translation,
+  verified = true,
+} = Astro.props as {
+  text: string;
+  reference: string;
+  translation: string;
+  verified?: boolean;
+};
+
+const PLACEHOLDER = '[VERIFIED NASB 2020 SCRIPTURE TEXT REQUIRED]';
+const isPlaceholder = text.trim() === PLACEHOLDER;
+---
+
+<figure class="scripture">
+  <blockquote class="scripture__text">
+    {isPlaceholder ? <em>Scripture text pending verification.</em> : text}
+  </blockquote>
+  <figcaption>
+    <cite class="scripture__ref">{reference} · {translation}</cite>
+    {
+      (!verified || isPlaceholder) && (
+        <span class="verify-note"> (awaiting Scripture verification)</span>
+      )
+    }
+  </figcaption>
+</figure>

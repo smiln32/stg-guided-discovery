@@ -1,0 +1,122 @@
+---
+// /hold-this-today/journeys/[slug]/ — one seven-day journey with its days and
+// an enrollment form. Days reference approved entries, so no unreviewed
+// Scripture is ever introduced. Missing/unapproved day entries are skipped with
+// a build-time warning rather than shown broken.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { JOURNEYS, JOURNEY_BY_SLUG } from '../../../config/email.mjs';
+import { getVisibleEntryBySlug } from '../../../lib/entries';
+import { paths } from '../../../lib/urls';
+import { topicAccent, topicTitle } from '../../../lib/topics';
+
+export async function getStaticPaths() {
+  return JOURNEYS.map((j) => ({ params: { slug: j.slug }, props: { journey: j } }));
+}
+
+const { journey } = Astro.props;
+
+const days = [];
+for (let i = 0; i < journey.days.length; i++) {
+  const entry = await getVisibleEntryBySlug(journey.days[i]);
+  if (!entry) {
+    console.warn(`[journey:${journey.slug}] day ${i + 1} references missing/unapproved entry "${journey.days[i]}" — skipping.`);
+    continue;
+  }
+  days.push({ day: i + 1, entry });
+}
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Seven-day journeys', href: paths.journeys },
+  { label: journey.title, href: paths.journey(journey.slug) },
+];
+const accent = topicAccent(journey.topic);
+---
+
+<BaseLayout
+  title={journey.title}
+  description={journey.description}
+  path={paths.journey(journey.slug)}
+>
+  <div class="container section" style={`--topic-accent:${accent}`}>
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="stack" style="margin-top: var(--space-md);">
+      <span class="topic-chip">{topicTitle(journey.topic)}</span>
+      <h1>{journey.title}</h1>
+      <p>{journey.description}</p>
+    </header>
+
+    <section class="card" style="margin-top: var(--space-lg);">
+      <h2 style="font-size: var(--step-1);">Begin the journey</h2>
+      <p>Enter your email and we will send Day 1, then one gentle day at a time.</p>
+      <form class="enhance-form" method="post" action="/.netlify/functions/journey-enroll" novalidate>
+        <input type="hidden" name="journey" value={journey.slug} />
+        <div class="field">
+          <label for="j-email">Your email address</label>
+          <input id="j-email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <button class="btn btn--primary" type="submit">Start the seven days</button>
+        <p class="form-status" role="status" aria-live="polite" hidden></p>
+      </form>
+      <p class="hint" style="margin-top: var(--space-xs);">
+        You can pause or leave the journey at any time, and every email includes
+        an unsubscribe link.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="days-heading">
+      <h2 id="days-heading">The seven days</h2>
+      <ol class="days">
+        {
+          days.map(({ day, entry }) => (
+            <li class="day card">
+              <span class="day__num">Day {day}</span>
+              <div>
+                <h3 style="margin:0 0 .2em;font-size: var(--step-1);">
+                  <a href={paths.entry(entry.data.slug)} style="text-decoration:none;color:inherit;">
+                    {entry.data.short_title}
+                  </a>
+                </h3>
+                <p class="day__ref">{entry.data.scripture_reference} · {entry.data.scripture_translation}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </div>
+
+  <script>
+    import { enhanceForm } from '../../../lib/formEnhance';
+    enhanceForm('.enhance-form', 'You are enrolled. Day one is on its way.');
+  </script>
+</BaseLayout>
+
+<style>
+  .days {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-sm);
+  }
+  .day {
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+  }
+  .day__num {
+    flex: 0 0 auto;
+    font-family: var(--font-heading);
+    font-size: var(--step-1);
+    color: var(--topic-accent, var(--accent));
+    min-width: 4.5rem;
+  }
+  .day__ref {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text-soft);
+    font-weight: 600;
+  }
+</style>

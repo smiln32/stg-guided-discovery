@@ -1,0 +1,43 @@
+---
+// Privacy-respecting analytics dispatcher. No third-party scripts, no cookies.
+// Honors Do-Not-Track. Emits documented events (src/lib/analytics.ts) as:
+//   • a `window.dataLayer` push (if you add GA/GTM later), and
+//   • a DOM CustomEvent `htt:event` you can listen for.
+// If neither is consumed, it is a harmless no-op. Events are wired via
+// data-attributes so pages stay declarative.
+---
+
+<script>
+  (function () {
+    const dnt =
+      navigator.doNotTrack === '1' ||
+      (window as any).doNotTrack === '1' ||
+      (navigator as any).msDoNotTrack === '1';
+
+    function track(event: string, detail: Record<string, unknown> = {}) {
+      if (dnt) return;
+      const payload = { event, ...detail };
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push(payload);
+      window.dispatchEvent(new CustomEvent('htt:event', { detail: payload }));
+    }
+    (window as any).htt = { track };
+
+    // entry_viewed
+    const entry = document.querySelector('article.entry');
+    if (entry) track('entry_viewed', { path: location.pathname });
+
+    // Delegated click tracking via data-track attributes.
+    document.addEventListener('click', (e) => {
+      const el = (e.target as HTMLElement)?.closest('[data-track]') as HTMLElement | null;
+      if (!el) return;
+      track(el.dataset.track!, { label: el.dataset.trackLabel || el.textContent?.trim()?.slice(0, 80) });
+    });
+
+    // Bridge the subscribe form's own event.
+    window.addEventListener('htt:signup', (e: any) => track('email_signup_completed', e.detail || {}));
+    // Search events (dispatched by the search page).
+    window.addEventListener('htt:search', (e: any) => track('search_performed', e.detail || {}));
+    window.addEventListener('htt:search-empty', (e: any) => track('no_search_results', e.detail || {}));
+  })();
+</script>

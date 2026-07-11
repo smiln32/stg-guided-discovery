@@ -1,0 +1,44 @@
+---
+// Compact entry card for archives, related lists, and the daily page footer.
+import { paths } from '../lib/urls';
+import { topicTitle, topicAccent } from '../lib/topics';
+import { truncate } from '../lib/text';
+import type { EntryData } from '../lib/entries';
+
+const { data } = Astro.props as { data: EntryData };
+---
+
+<a class="entry-card card" href={paths.entry(data.slug)} style={`--topic-accent:${topicAccent(data.topic)}`}>
+  <span class="topic-chip">{topicTitle(data.topic)}</span>
+  <h3 class="entry-card__title">{data.short_title}</h3>
+  <p class="entry-card__ref">{data.scripture_reference}</p>
+  <p class="entry-card__excerpt">{truncate(data.gentle_word, 120)}</p>
+</a>
+
+<style>
+  .entry-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.18s ease, transform 0.18s ease;
+  }
+  .entry-card:hover {
+    border-color: var(--topic-accent);
+    transform: translateY(-2px);
+  }
+  .entry-card__title {
+    margin: 0.4em 0 0.2em;
+    font-size: var(--step-1);
+  }
+  .entry-card__ref {
+    margin: 0 0 0.4em;
+    font-size: var(--step--1);
+    color: var(--text-soft);
+    font-weight: 600;
+  }
+  .entry-card__excerpt {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: var(--step-0);
+  }
+</style>

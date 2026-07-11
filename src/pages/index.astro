@@ -1,0 +1,21 @@
+---
+// Site root. This project is the "Hold This Today" module; the root simply
+// forwards to the feature. (A netlify.toml redirect also covers this at the
+// edge; this page is the no-JS/static fallback.)
+import { paths } from '../lib/urls';
+const target = paths.home;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Hold This Today · Simplify to Glorify</title>
+  </head>
+  <body>
+    <p>Redirecting to <a href={target}>Hold This Today</a>…</p>
+  </body>
+</html>

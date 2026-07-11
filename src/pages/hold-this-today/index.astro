@@ -1,0 +1,136 @@
+---
+// /hold-this-today/ — the daily landing page.
+// Shows the currently-resolved entry via the fallback chain. Its canonical URL
+// points at the entry's PERMANENT page so the rotating daily page never
+// competes with the permanent page in search or splits Pin equity.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryArticle from '../../components/EntryArticle.astro';
+import PinSaveGallery from '../../components/PinSaveGallery.astro';
+import RelatedContent from '../../components/RelatedContent.astro';
+import SubscribeForm from '../../components/SubscribeForm.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { resolveDailyEntry } from '../../lib/daily';
+import { getRelatedEntries, getPreviousEntry, buildNow } from '../../lib/entries';
+import { publishedTopics } from '../../lib/topics';
+import { paths, absolute } from '../../lib/urls';
+import { BRAND } from '../../config/site.mjs';
+import { formatDisplayDate } from '../../lib/datetime';
+
+const now = buildNow();
+const { entry, source } = await resolveDailyEntry(now);
+const topics = await publishedTopics(now);
+
+const related = entry ? await getRelatedEntries(entry, 3, now) : [];
+const previous = entry ? await getPreviousEntry(entry, now) : undefined;
+const permalink = entry ? absolute(paths.entry(entry.data.slug)) : absolute(paths.home);
+const today = formatDisplayDate(now);
+---
+
+<BaseLayout
+  title={`${BRAND.featureName} — Today`}
+  description={BRAND.tagline}
+  path={paths.home}
+  canonicalOverride={permalink}
+  ogType="article"
+>
+  <div class="container section">
+    {
+      entry ? (
+        <>
+          <EntryArticle data={entry.data} eyebrow={`Today · ${today}`} />
+
+          <div class="entry-links">
+            <a class="btn btn--primary" href={paths.entry(entry.data.slug)}>
+              Open this encouragement's own page
+            </a>
+          </div>
+
+          <hr class="divider" />
+          <PinSaveGallery data={entry.data} pageUrl={permalink} />
+
+          <hr class="divider" />
+          <RelatedContent
+            relatedEntries={related}
+            articles={entry.data.related_articles}
+            resources={entry.data.related_resources}
+            productIds={entry.data.related_product_ids}
+          />
+        </>
+      ) : (
+        <article class="stack">
+          <p class="eyebrow">Welcome</p>
+          <h1>You do not have to solve everything today.</h1>
+          <p>
+            {BRAND.featureName} offers one truth from Scripture, one gentle
+            encouragement, one prayer, and one small step — a quiet place to
+            begin again. New encouragement is on the way. In the meantime, you
+            are welcome to browse by what you are carrying.
+          </p>
+          <a class="btn btn--primary" href={paths.topics}>Browse by need</a>
+        </article>
+      )
+    }
+  </div>
+
+  {/* Browse by need */}
+  {
+    topics.length > 0 && (
+      <section class="container section" aria-labelledby="browse-heading">
+        <h2 id="browse-heading">Browse by what you are carrying</h2>
+        <ul class="need-nav">
+          {topics.map((t) => (
+            <li>
+              <a href={paths.topic(t.slug)} style={`--topic-accent:${t.accent}`}>
+                <span class="topic-chip">{t.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {/* Continue */}
+  {
+    (previous || related.length > 0) && (
+      <section class="container section" aria-labelledby="more-heading">
+        <h2 id="more-heading">Another encouragement</h2>
+        <div class="grid grid--3">
+          {previous && <EntryCard data={previous.data} />}
+          {related.slice(0, previous ? 2 : 3).map((e) => (
+            <EntryCard data={e.data} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <div class="container section">
+    <SubscribeForm source="daily-page" />
+  </div>
+</BaseLayout>
+
+<style>
+  .entry-links {
+    margin-top: var(--space-md);
+  }
+  .need-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  .need-nav a {
+    display: inline-block;
+    padding: 0.6em 1em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    text-decoration: none;
+  }
+  .need-nav a:hover {
+    border-color: var(--topic-accent);
+  }
+</style>

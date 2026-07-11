@@ -1,0 +1,30 @@
+{
+  "name": "stg-hold-this-today",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Hold This Today — Scripture content and distribution system for Simplify to Glorify",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "validate": "node scripts/validate.mjs",
+    "import:csv": "node scripts/import-csv.mjs",
+    "export:csv": "node scripts/export-csv.mjs",
+    "pins:export": "node scripts/export-pins.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.3.0",
+    "@fontsource/lora": "^5.2.8",
+    "@fontsource/playfair-display": "^5.2.8",
+    "@fontsource/source-sans-3": "^5.2.9",
+    "astro": "^5.6.1"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "papaparse": "^5.4.1",
+    "yaml": "^2.4.5"
+  }
+}

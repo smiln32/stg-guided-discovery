@@ -1,0 +1,96 @@
+---
+// Contextual "You may also find this helpful" module.
+// Ordering follows the spec priority: closely related encouragement first, then
+// free content / downloads, then relevant paid products — never product-first,
+// never "you need this" language.
+import EntryCard from './EntryCard.astro';
+import { PRODUCT_BY_ID, KIND_PRIORITY } from '../config/products.mjs';
+import type { Entry } from '../lib/entries';
+
+const { relatedEntries = [], articles = [], resources = [], productIds = [] } =
+  Astro.props as {
+    relatedEntries?: Entry[];
+    articles?: { label: string; url: string }[];
+    resources?: { label: string; url: string }[];
+    productIds?: string[];
+  };
+
+const products = productIds
+  .map((id) => PRODUCT_BY_ID[id])
+  .filter(Boolean)
+  .sort(
+    (a, b) =>
+      (KIND_PRIORITY[a.kind] ?? 9) - (KIND_PRIORITY[b.kind] ?? 9),
+  );
+
+const hasAnything =
+  relatedEntries.length || articles.length || resources.length || products.length;
+---
+
+{
+  hasAnything && (
+    <aside class="related section" aria-labelledby="related-heading">
+      <h2 id="related-heading">You may also find this helpful</h2>
+
+      {relatedEntries.length > 0 && (
+        <div class="grid grid--3" style="margin-bottom: var(--space-lg);">
+          {relatedEntries.map((e) => (
+            <EntryCard data={e.data} />
+          ))}
+        </div>
+      )}
+
+      {(articles.length > 0 || resources.length > 0 || products.length > 0) && (
+        <ul class="related__links">
+          {articles.map((a) => (
+            <li>
+              <span class="related__kind">Article</span>
+              <a href={a.url} data-track="related_article_clicked" data-track-label={a.label}>{a.label}</a>
+            </li>
+          ))}
+          {resources.map((r) => (
+            <li>
+              <span class="related__kind">Resource</span>
+              <a href={r.url} data-track="related_article_clicked" data-track-label={r.label}>{r.label}</a>
+            </li>
+          ))}
+          {products.map((p) => (
+            <li>
+              <span class="related__kind">
+                {p.kind === 'free' ? 'Free' : 'From the shop'}
+              </span>
+              <a href={p.url} data-track="related_product_clicked" data-track-label={p.id}>{p.title}</a>
+              <span class="related__blurb"> — {p.blurb}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </aside>
+  )
+}
+
+<style>
+  .related__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-sm);
+  }
+  .related__links li {
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+  }
+  .related__kind {
+    display: inline-block;
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-right: 0.5em;
+    font-weight: 600;
+  }
+  .related__blurb {
+    color: var(--text-soft);
+  }
+</style>

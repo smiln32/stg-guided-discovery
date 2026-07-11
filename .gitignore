@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Netlify
+.netlify/
+
+# Generated artifacts (regenerate with npm scripts; not source of truth)
+pin-exports/
+content/entries-export.csv
+
+# Local dev subscriber store (mock; never commit subscriber data)
+.data/
+.data-test/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

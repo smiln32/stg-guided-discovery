@@ -1,0 +1,126 @@
+---
+// Base layout: <head> SEO, fonts, skip link, header, footer.
+// Every page passes a title + description; canonical/OG/robots are derived here.
+import '@fontsource/source-sans-3/400.css';
+import '@fontsource/source-sans-3/600.css';
+import '@fontsource/playfair-display/400.css';
+import '@fontsource/playfair-display/600.css';
+import '@fontsource/lora/400.css';
+import '@fontsource/lora/400-italic.css';
+import '@fontsource/lora/600.css';
+import '../styles/global.css';
+import { BRAND } from '../config/site.mjs';
+import { paths, absolute } from '../lib/urls';
+import Analytics from '../components/Analytics.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Site-relative path of THIS page; used for canonical + OG url. */
+  path: string;
+  canonicalOverride?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  /** JSON-LD objects to embed (already validated by the caller). */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  path,
+  canonicalOverride,
+  ogImage,
+  ogType = 'website',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+
+const canonical = canonicalOverride ?? absolute(path);
+const fullTitle = title.includes(BRAND.name)
+  ? title
+  : `${title} · ${BRAND.featureName}`;
+const socialImage = ogImage ? absolute(ogImage) : undefined;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph / social -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={BRAND.name} />
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    <meta
+      name="twitter:card"
+      content={socialImage ? 'summary_large_image' : 'summary'}
+    />
+
+    <meta name="theme-color" content="#fbf9f6" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {
+      jsonLd.map((obj) => (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(obj)}
+        />
+      ))
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container container-wide site-header__inner">
+        <a class="site-header__brand" href={paths.home}>
+          {BRAND.featureName}
+          <span>{BRAND.name}</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href={paths.home}>Today</a>
+          <a href={paths.topics}>Browse by need</a>
+          <a href={paths.search}>Search</a>
+          <a href={paths.journeys}>Journeys</a>
+          <a href={paths.subscribe}>A Gentle Note</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container container-wide site-footer__inner">
+        <div class="stack" style="gap: var(--space-2xs);">
+          <strong>{BRAND.name}</strong>
+          <p style="margin:0;">{BRAND.tagline}</p>
+        </div>
+        <nav class="site-nav" aria-label="Footer" style="margin-left:auto;">
+          <a href={paths.topics}>Topics</a>
+          <a href={paths.subscribe}>Subscribe</a>
+          <a href={paths.preferences}>Manage email</a>
+          <a href={paths.unsubscribe}>Unsubscribe</a>
+        </nav>
+      </div>
+      <div class="container container-wide" style="padding-block: var(--space-sm); color: var(--text-muted);">
+        <p style="margin:0;">© {year} {BRAND.name}. Scripture is quoted with its
+          translation noted; verse text is never altered.</p>
+      </div>
+    </footer>
+
+    <Analytics />
+  </body>
+</html>

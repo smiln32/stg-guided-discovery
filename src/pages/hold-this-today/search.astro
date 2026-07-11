@@ -1,0 +1,204 @@
+---
+// /hold-this-today/search/ — humane keyword/topic/Scripture search.
+// Client-side over the static JSON index. No long diagnostic form: one gentle
+// input plus quick topic chips. Handles the "no results" state calmly.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { publishedTopics } from '../../lib/topics';
+import { paths } from '../../lib/urls';
+import { BASE_PATH } from '../../config/site.mjs';
+
+const topics = await publishedTopics();
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Search', href: paths.search },
+];
+const examples = [
+  'I feel overwhelmed',
+  'caregiver burnout',
+  'waiting',
+  'regret',
+  'God feels far away',
+  'what to pray',
+  'fear of the future',
+];
+---
+
+<BaseLayout
+  title="Search for encouragement"
+  description="Search Scripture-centered encouragement by topic, feeling, keyword, or verse."
+  path={paths.search}
+  noindex={true}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="stack" style="margin-top: var(--space-md);">
+      <p class="eyebrow">Search</p>
+      <h1>Find something to hold</h1>
+      <p>Try a word, a feeling, or a verse. There is no wrong way to look.</p>
+    </header>
+
+    <form class="search-form" role="search" data-index={`${BASE_PATH}/search-index.json`}>
+      <div class="field">
+        <label for="q">What are you carrying today?</label>
+        <input
+          id="q"
+          name="q"
+          type="search"
+          autocomplete="off"
+          placeholder="e.g. “I feel overwhelmed” or “Psalm 34”"
+        />
+      </div>
+      <ul class="examples" aria-label="Example searches">
+        {examples.map((ex) => <li><button type="button" class="chip" data-example={ex}>{ex}</button></li>)}
+      </ul>
+    </form>
+
+    <div class="quick-topics">
+      <h2 class="visually-hidden">Browse topics</h2>
+      {topics.map((t) => (
+        <a class="chip" href={paths.topic(t.slug)} style={`--topic-accent:${t.accent}`}>{t.title}</a>
+      ))}
+    </div>
+
+    <div id="results" class="section" aria-live="polite"></div>
+  </div>
+</BaseLayout>
+
+<style>
+  .examples,
+  .quick-topics {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    padding: 0;
+    margin: var(--space-sm) 0 0;
+  }
+  .chip {
+    display: inline-block;
+    padding: 0.4em 0.9em;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--accent-ink);
+    font: inherit;
+    font-size: var(--step--1);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .chip:hover {
+    border-color: var(--topic-accent, var(--accent));
+  }
+  #results :global(.result) {
+    display: block;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+  }
+  #results :global(.result h3) {
+    margin: 0 0 0.2em;
+    font-size: var(--step-1);
+  }
+  #results :global(.result .ref) {
+    font-size: var(--step--1);
+    color: var(--text-soft);
+    font-weight: 600;
+  }
+  #results :global(.result p) {
+    margin: 0.3em 0 0;
+    color: var(--text-soft);
+  }
+</style>
+
+<script>
+  type Rec = {
+    slug: string; url: string; title: string; topic: string; topicTitle: string;
+    topics: string[]; reference: string; circumstance: string; excerpt: string;
+    keywords: string[]; phrases: string[];
+  };
+
+  const form = document.querySelector<HTMLFormElement>('.search-form')!;
+  const input = document.querySelector<HTMLInputElement>('#q')!;
+  const results = document.querySelector<HTMLDivElement>('#results')!;
+  const indexUrl = form.dataset.index!;
+  let data: Rec[] = [];
+  let loaded = false;
+
+  async function ensureIndex() {
+    if (loaded) return;
+    try {
+      const res = await fetch(indexUrl);
+      data = await res.json();
+      loaded = true;
+    } catch {
+      results.innerHTML = '<p class="form-status form-status--error">Search is unavailable just now. Please try browsing by need instead.</p>';
+    }
+  }
+
+  function scoreOf(rec: Rec, terms: string[]): number {
+    const hay = [
+      rec.title, rec.topicTitle, rec.reference, rec.circumstance, rec.excerpt,
+      rec.keywords.join(' '), rec.phrases.join(' '), rec.topics.join(' '),
+    ].join(' ').toLowerCase();
+    let score = 0;
+    for (const t of terms) {
+      if (!t) continue;
+      if (rec.title.toLowerCase().includes(t)) score += 5;
+      if (rec.reference.toLowerCase().includes(t)) score += 5;
+      if (rec.phrases.join(' ').toLowerCase().includes(t)) score += 4;
+      if (rec.keywords.join(' ').toLowerCase().includes(t)) score += 3;
+      if (hay.includes(t)) score += 1;
+    }
+    return score;
+  }
+
+  function esc(s: string) {
+    return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
+  }
+
+  function render(query: string) {
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    if (terms.length === 0) { results.innerHTML = ''; return; }
+    const ranked = data
+      .map((rec) => ({ rec, score: scoreOf(rec, terms) }))
+      .filter((r) => r.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 20);
+
+    if (ranked.length === 0) {
+      window.dispatchEvent(new CustomEvent('htt:search-empty', { detail: { query } }));
+      results.innerHTML = `<div class="card"><p><strong>No results for “${esc(query)}” yet.</strong></p>
+        <p>That does not mean there is nothing here for you. Try a simpler word, or browse by what you are carrying.</p>
+        <p><a class="btn btn--soft" href="${form.dataset.index!.replace('search-index.json','topics/')}">Browse by need</a></p></div>`;
+      return;
+    }
+    window.dispatchEvent(new CustomEvent('htt:search', { detail: { query, results: ranked.length } }));
+    results.innerHTML = `<p class="eyebrow">${ranked.length} ${ranked.length === 1 ? 'encouragement' : 'encouragements'}</p>` +
+      ranked.map(({ rec }) => `<a class="result" href="${rec.url}">
+        <h3>${esc(rec.title)}</h3>
+        <span class="ref">${esc(rec.reference)} · ${esc(rec.topicTitle)}</span>
+        <p>${esc(rec.excerpt)}</p></a>`).join('');
+  }
+
+  let timer: number | undefined;
+  input.addEventListener('input', async () => {
+    await ensureIndex();
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => render(input.value.trim()), 120);
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-example]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      input.value = btn.dataset.example || '';
+      await ensureIndex();
+      render(input.value.trim());
+      input.focus();
+    });
+  });
+
+  // Support ?q= deep links from other pages.
+  const initial = new URLSearchParams(location.search).get('q');
+  if (initial) { input.value = initial; ensureIndex().then(() => render(initial)); }
+</script>

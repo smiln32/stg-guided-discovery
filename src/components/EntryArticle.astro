@@ -1,0 +1,86 @@
+---
+// Full rendering of one entry's "four gifts": Scripture, gentle word, prayer,
+// question, and small step. Used on both the daily landing page and the
+// permanent entry page so the two never drift apart.
+import ScriptureBlock from './ScriptureBlock.astro';
+import { paths } from '../lib/urls';
+import { topicTitle, topicAccent } from '../lib/topics';
+import { paragraphs } from '../lib/text';
+import type { EntryData } from '../lib/entries';
+
+const { data, eyebrow } = Astro.props as {
+  data: EntryData;
+  eyebrow?: string;
+};
+const accent = topicAccent(data.topic);
+---
+
+<article class="entry stack" style={`--topic-accent:${accent}`}>
+  {
+    data.is_sample && (
+      <p class="sample-banner" role="note">
+        <strong>Demonstration content.</strong> This sample entry is not yet
+        reviewed for publication.
+      </p>
+    )
+  }
+
+  <header class="entry__head stack">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <a class="topic-chip" href={paths.topic(data.topic)}>{topicTitle(data.topic)}</a>
+    <h1>{data.page_title}</h1>
+    {
+      data.season_or_circumstance && (
+        <p class="entry__circumstance">For {data.season_or_circumstance}.</p>
+      )
+    }
+  </header>
+
+  <ScriptureBlock
+    text={data.scripture_text}
+    reference={data.scripture_reference}
+    translation={data.scripture_translation}
+    verified={data.scripture_verified}
+  />
+
+  <section class="gift" aria-labelledby="gentle-word">
+    <h2 class="gift__label" id="gentle-word">A Gentle Word for Today</h2>
+    <div set:html={paragraphs(data.gentle_word)} />
+  </section>
+
+  <section class="gift" aria-labelledby="prayer">
+    <h2 class="gift__label" id="prayer">A Prayer to Borrow</h2>
+    <div class="prayer" set:html={paragraphs(data.prayer)} />
+  </section>
+
+  {
+    data.journal_question && (
+      <section class="gift" aria-labelledby="question">
+        <h2 class="gift__label" id="question">One Question to Carry</h2>
+        <p>{data.journal_question}</p>
+      </section>
+    )
+  }
+
+  {
+    data.small_step && (
+      <section class="gift" aria-labelledby="step">
+        <h2 class="gift__label" id="step">One Small Step</h2>
+        <p>{data.small_step}</p>
+      </section>
+    )
+  }
+
+  {data.carry_phrase && <p class="carry">“{data.carry_phrase}”</p>}
+</article>
+
+<style>
+  .entry__circumstance {
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+  .entry :global(.gift p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

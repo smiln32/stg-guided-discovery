@@ -1,0 +1,47 @@
+---
+// /hold-this-today/journeys/ — the seven-day journeys library.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { JOURNEYS } from '../../../config/email.mjs';
+import { paths } from '../../../lib/urls';
+import { topicAccent, topicTitle } from '../../../lib/topics';
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Seven-day journeys', href: paths.journeys },
+];
+---
+
+<BaseLayout
+  title="Seven-day journeys"
+  description="Gentle, week-long Scripture journeys — for an anxious heart, for the caregiver, for learning to pray, and more."
+  path={paths.journeys}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="stack" style="margin-top: var(--space-md);">
+      <p class="eyebrow">Seven-day journeys</p>
+      <h1>A gentle week, one day at a time</h1>
+      <p>
+        Each journey is a short, borrowable companion — one Scripture, one
+        prayer, and one small step a day, for seven days. Begin whenever you are
+        ready. You can pause or step away anytime.
+      </p>
+    </header>
+
+    <ul class="grid grid--2" style="list-style:none;padding:0;margin:var(--space-lg) 0 0;">
+      {
+        JOURNEYS.map((j) => (
+          <li class="card" style={`--topic-accent:${topicAccent(j.topic)}`}>
+            <span class="topic-chip">{topicTitle(j.topic)}</span>
+            <h2 style="font-size: var(--step-1); margin:.4em 0 .2em;">
+              <a href={paths.journey(j.slug)} style="text-decoration:none;color:inherit;">{j.title}</a>
+            </h2>
+            <p style="color: var(--text-soft);">{j.description}</p>
+            <a class="btn btn--soft" href={paths.journey(j.slug)}>See the seven days</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</BaseLayout>

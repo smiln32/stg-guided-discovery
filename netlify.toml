@@ -1,0 +1,38 @@
+# Netlify configuration for Hold This Today.
+# The site is fully static (Astro output: 'static'); subscriber operations run
+# as standalone Functions in netlify/functions.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Set SITE_URL (and EMAIL_PROVIDER + provider credentials) in the Netlify UI,
+  # not here, so secrets never live in the repo. See .env.example.
+
+[functions]
+  node_bundler = "esbuild"
+
+# Security headers (calm defaults; adjust CSP if you add third-party scripts).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+
+# Long-cache fingerprinted assets.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Optional: uncomment to 301 the bare root to the feature if this is a
+# standalone deploy and you removed src/pages/index.astro.
+# [[redirects]]
+#   from = "/"
+#   to = "/hold-this-today/"
+#   status = 301

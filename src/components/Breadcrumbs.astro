@@ -1,0 +1,50 @@
+---
+// Accessible breadcrumb trail. Emits BreadcrumbList JSON-LD via the caller if
+// desired (see buildBreadcrumbLd in the entry page).
+export interface Crumb {
+  label: string;
+  href?: string;
+}
+const { crumbs } = Astro.props as { crumbs: Crumb[] };
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    {
+      crumbs.map((c, i) => (
+        <li>
+          {c.href && i < crumbs.length - 1 ? (
+            <a href={c.href}>{c.label}</a>
+          ) : (
+            <span aria-current="page">{c.label}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    padding: 0;
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .breadcrumbs li + li::before {
+    content: '›';
+    margin-right: 0.4em;
+    color: var(--light-gray);
+  }
+  .breadcrumbs a {
+    color: var(--text-soft);
+    text-decoration: none;
+  }
+  .breadcrumbs a:hover {
+    text-decoration: underline;
+  }
+</style>

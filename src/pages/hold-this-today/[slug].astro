@@ -1,0 +1,105 @@
+---
+// /hold-this-today/[slug]/ — the PERMANENT, indexable entry page.
+// Built only for visible entries, so draft/unapproved URLs 404 rather than leak.
+// This URL never changes content once published — it is the stable destination
+// for every Pin and email link.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EntryArticle from '../../components/EntryArticle.astro';
+import PinSaveGallery from '../../components/PinSaveGallery.astro';
+import RelatedContent from '../../components/RelatedContent.astro';
+import SubscribeForm from '../../components/SubscribeForm.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { getVisibleEntries, getRelatedEntries, getPreviousEntry, buildNow } from '../../lib/entries';
+import { paths, absolute } from '../../lib/urls';
+import { topicTitle } from '../../lib/topics';
+import { emailTopicForContentTopic } from '../../config/email.mjs';
+import { entryJsonLd, breadcrumbJsonLd } from '../../lib/jsonld';
+import { BRAND } from '../../config/site.mjs';
+
+export async function getStaticPaths() {
+  const entries = await getVisibleEntries();
+  return entries.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const now = buildNow();
+const related = await getRelatedEntries(entry, 3, now);
+const previous = await getPreviousEntry(entry, now);
+const path = paths.entry(d.slug);
+const permalink = absolute(path);
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Browse by need', href: paths.topics },
+  { label: topicTitle(d.topic), href: paths.topic(d.topic) },
+  { label: d.short_title, href: path },
+];
+
+const jsonLd = [entryJsonLd(d, path), breadcrumbJsonLd(crumbs)];
+const description = d.meta_description || `${d.short_title} — ${d.scripture_reference} (${d.scripture_translation}).`;
+---
+
+<BaseLayout
+  title={d.seo_title || d.page_title}
+  description={description}
+  path={path}
+  canonicalOverride={d.canonical_url || permalink}
+  ogType="article"
+  ogImage={d.social_image}
+  jsonLd={jsonLd}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <div style="margin-top: var(--space-md);">
+      <EntryArticle data={d} />
+    </div>
+
+    <hr class="divider" />
+    <PinSaveGallery data={d} pageUrl={permalink} />
+
+    <hr class="divider" />
+    <RelatedContent
+      relatedEntries={related}
+      articles={d.related_articles}
+      resources={d.related_resources}
+      productIds={d.related_product_ids}
+    />
+  </div>
+
+  <section class="container section" aria-labelledby="continue-heading">
+    <h2 id="continue-heading">Keep going, gently</h2>
+    <div class="continue-nav">
+      {previous && <a class="btn btn--soft" href={paths.entry(previous.data.slug)}>← Another encouragement</a>}
+      <a class="btn btn--soft" href={paths.home}>Return to today →</a>
+      <a class="btn btn--soft" href={paths.topic(d.topic)}>More on {topicTitle(d.topic)}</a>
+    </div>
+    {
+      previous && (
+        <div class="grid grid--3" style="margin-top: var(--space-md);">
+          <EntryCard data={previous.data} />
+          {related.slice(0, 2).map((e) => (
+            <EntryCard data={e.data} />
+          ))}
+        </div>
+      )
+    }
+  </section>
+
+  <div class="container section">
+    <SubscribeForm
+      source={`entry:${d.slug}`}
+      defaultTopic={emailTopicForContentTopic(d.topic)}
+      heading={`Receive more encouragement like this`}
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .continue-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>

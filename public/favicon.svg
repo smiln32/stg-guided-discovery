@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Hold This Today">
+  <rect width="32" height="32" rx="7" fill="#fbf9f6"/>
+  <rect x="2.5" y="2.5" width="27" height="27" rx="5.5" fill="none" stroke="#b2c6b1" stroke-width="1.5"/>
+  <path d="M16 22c-1-4-4-5-4-8a4 4 0 0 1 8 0c0 3-3 4-4 8z" fill="#7b9fb3"/>
+  <circle cx="16" cy="13.5" r="1.6" fill="#fbf9f6"/>
+</svg>

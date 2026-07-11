@@ -1,0 +1,48 @@
+---
+// /hold-this-today/unsubscribe/ — one-step unsubscribe.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { paths } from '../../lib/urls';
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Unsubscribe', href: paths.unsubscribe },
+];
+---
+
+<BaseLayout
+  title="Unsubscribe"
+  description="Unsubscribe from A Gentle Note at any time."
+  path={paths.unsubscribe}
+  noindex={true}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="stack" style="margin-top: var(--space-md);">
+      <h1>Unsubscribe</h1>
+      <p>
+        No hard feelings, and no guilt. Enter your email below and we will stop
+        sending. You are always welcome back.
+      </p>
+    </header>
+
+    <form class="card enhance-form" method="post" action="/.netlify/functions/unsubscribe" novalidate style="margin-top: var(--space-lg);">
+      <div class="field">
+        <label for="email">Your email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <button class="btn btn--primary" type="submit">Unsubscribe</button>
+      <p class="form-status" role="status" aria-live="polite" hidden></p>
+    </form>
+
+    <p style="margin-top: var(--space-md); color: var(--text-muted);">
+      Would you rather just receive less? You can
+      <a href={paths.preferences}>change your frequency instead</a>.
+    </p>
+  </div>
+
+  <script>
+    import { enhanceForm } from '../../lib/formEnhance';
+    enhanceForm('.enhance-form', 'You have been unsubscribed. You are always welcome back.');
+  </script>
+</BaseLayout>

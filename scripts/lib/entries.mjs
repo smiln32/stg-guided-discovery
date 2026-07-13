@@ -7,39 +7,36 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import YAML from 'yaml';
 import { TOPICS } from '../../src/config/topics.mjs';
+import { LIVE_STATUSES as LIVE_STATUS_LIST, SCRIPTURE_PLACEHOLDER } from '../../src/config/entry-fields.mjs';
+
+// Field lists, statuses, and the Scripture placeholder are shared with the Zod
+// schema via src/config/entry-fields.mjs — one source of truth, checked for
+// parity against the schema at build time.
+export {
+  CSV_COLUMNS, LIST_FIELDS, DATE_LIST_FIELDS, LINK_FIELDS, BOOL_FIELDS,
+  NUMBER_FIELDS, SCRIPTURE_PLACEHOLDER as PLACEHOLDER,
+} from '../../src/config/entry-fields.mjs';
 
 export const ROOT = path.resolve(fileURLToPath(import.meta.url), '../../..');
 export const ENTRIES_DIR = path.join(ROOT, 'src', 'data', 'entries');
 export const TOPIC_SLUGS = new Set(TOPICS.map((t) => t.slug));
-export const PLACEHOLDER = '[VERIFIED NASB 2020 SCRIPTURE TEXT REQUIRED]';
-export const LIVE_STATUSES = new Set(['published', 'scheduled']);
+export const LIVE_STATUSES = new Set(LIVE_STATUS_LIST);
 
-// The full column order used for CSV import/export. Keep in sync with the schema.
-export const CSV_COLUMNS = [
-  'id', 'status', 'is_sample', 'publish_date', 'featured_date', 'expiration_date',
-  'rotation_eligible', 'rotation_priority', 'slug', 'page_title', 'short_title',
-  'topic', 'secondary_topics', 'audience', 'season_or_circumstance', 'keywords',
-  'search_phrases', 'scripture_reference', 'scripture_text', 'scripture_translation',
-  'scripture_verified', 'scripture_verification_notes', 'gentle_word', 'prayer',
-  'journal_question', 'small_step', 'carry_phrase', 'pin_quote', 'pin_prayer',
-  'pin_practical_text', 'pin_curiosity_text', 'pin_title', 'pin_description',
-  'pin_alt_text', 'pinterest_board', 'pinterest_status', 'pinterest_publish_date',
-  'email_subject', 'email_preview_text', 'email_opening', 'email_body',
-  'email_cta_text', 'email_status', 'email_send_date', 'email_segment',
-  'related_entry_ids', 'related_articles', 'related_product_ids', 'related_resources',
-  'seo_title', 'meta_description', 'canonical_url', 'social_title',
-  'social_description', 'social_image', 'author', 'reviewed_by',
-  'content_review_status', 'scripture_review_status', 'last_reviewed_date',
-  'version', 'created_at', 'updated_at',
-];
-
-// Fields that are arrays of plain strings (CSV: semicolon-separated).
-export const LIST_FIELDS = new Set([
-  'secondary_topics', 'keywords', 'search_phrases', 'related_entry_ids', 'related_product_ids',
-]);
-// Fields that are arrays of {label,url} (CSV: "Label|url ;; Label|url").
-export const LINK_FIELDS = new Set(['related_articles', 'related_resources']);
-export const BOOL_FIELDS = new Set(['is_sample', 'rotation_eligible', 'scripture_verified']);
+/**
+ * The full publish gate, mirroring the Zod superRefine in content.config.ts:
+ * live status + both reviews approved + Scripture verified and not a
+ * placeholder. Standalone tools (e.g. the Pin exporter) use this so they can
+ * never emit artifacts for an entry the build itself would reject.
+ */
+export function passesPublishGate(data) {
+  return (
+    LIVE_STATUSES.has(data.status) &&
+    data.content_review_status === 'approved' &&
+    data.scripture_review_status === 'approved' &&
+    data.scripture_verified === true &&
+    !String(data.scripture_text || '').includes(SCRIPTURE_PLACEHOLDER)
+  );
+}
 
 export async function listEntryFiles() {
   const files = await fs.readdir(ENTRIES_DIR);

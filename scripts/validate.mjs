@@ -44,6 +44,9 @@ for (const { file, data } of entries) {
   for (const df of ['publish_date', 'featured_date', 'expiration_date', 'last_reviewed_date', 'created_at', 'updated_at']) {
     if (!isValidDate(data[df])) err(`invalid date in "${df}": ${data[df]}`);
   }
+  for (const item of data.exclusion_dates || []) {
+    if (!isValidDate(item)) err(`invalid date in "exclusion_dates": ${item}`);
+  }
 
   for (const link of [...(data.related_articles || []), ...(data.related_resources || [])]) {
     if (!link || !link.url || !isValidUrl(link.url)) err(`related link has an invalid URL: ${JSON.stringify(link)}`);

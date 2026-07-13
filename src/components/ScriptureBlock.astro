@@ -2,6 +2,8 @@
 // Renders the Scripture exactly as supplied, always with reference + translation.
 // If the text still holds the verification placeholder, we show a calm note and
 // never present it as verified.
+import { SCRIPTURE_PLACEHOLDER } from '../config/entry-fields.mjs';
+
 const {
   text,
   reference,
@@ -14,8 +16,7 @@ const {
   verified?: boolean;
 };
 
-const PLACEHOLDER = '[VERIFIED NASB 2020 SCRIPTURE TEXT REQUIRED]';
-const isPlaceholder = text.trim() === PLACEHOLDER;
+const isPlaceholder = text.trim() === SCRIPTURE_PLACEHOLDER;
 ---
 
 <figure class="scripture">

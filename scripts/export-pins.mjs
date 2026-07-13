@@ -11,7 +11,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { Resvg } from '@resvg/resvg-js';
-import { loadAllEntries, ROOT, PLACEHOLDER, LIVE_STATUSES } from './lib/entries.mjs';
+import { loadAllEntries, ROOT, passesPublishGate } from './lib/entries.mjs';
 import { buildPins, renderPinSvg, PIN_W } from '../src/lib/pins.mjs';
 
 const only = process.argv.slice(2).find((a) => !a.startsWith('--'));
@@ -26,13 +26,15 @@ try {
   // No bundled fonts — resvg falls back to system fonts.
 }
 
+// Full publish gate (not just live status), so Pins can never be rendered for
+// an entry the site build itself would reject as unapproved.
 const entries = (await loadAllEntries())
   .map((x) => x.data)
-  .filter((d) => LIVE_STATUSES.has(d.status) && !String(d.scripture_text).includes(PLACEHOLDER))
+  .filter((d) => passesPublishGate(d))
   .filter((d) => !only || d.slug === only);
 
 if (entries.length === 0) {
-  console.error(only ? `No live entry with slug "${only}".` : 'No live entries to export.');
+  console.error(only ? `No publishable entry with slug "${only}".` : 'No publishable entries to export.');
   process.exit(1);
 }
 

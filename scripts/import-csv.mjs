@@ -14,15 +14,13 @@ import path from 'node:path';
 import Papa from 'papaparse';
 import YAML from 'yaml';
 import {
-  ENTRIES_DIR, CSV_COLUMNS, LIST_FIELDS, LINK_FIELDS, BOOL_FIELDS,
-  TOPIC_SLUGS, PLACEHOLDER, LIVE_STATUSES, loadAllEntries, isValidUrl, isValidDate,
+  ENTRIES_DIR, CSV_COLUMNS, LIST_FIELDS, DATE_LIST_FIELDS, LINK_FIELDS, BOOL_FIELDS,
+  NUMBER_FIELDS, TOPIC_SLUGS, PLACEHOLDER, LIVE_STATUSES, loadAllEntries, isValidUrl, isValidDate,
 } from './lib/entries.mjs';
 
 const args = process.argv.slice(2);
 const commit = args.includes('--commit');
 const input = args.find((a) => !a.startsWith('--')) || 'content/import.csv';
-
-const NUMBER_FIELDS = new Set(['rotation_priority', 'version']);
 const REQUIRED = ['slug', 'page_title', 'short_title', 'topic', 'scripture_reference', 'scripture_text', 'scripture_translation', 'gentle_word', 'prayer'];
 
 function parseList(v) {
@@ -54,7 +52,7 @@ function rowToEntry(row) {
     if (LIST_FIELDS.has(col)) e[col] = parseList(val);
     else if (LINK_FIELDS.has(col)) e[col] = parseLinks(val);
     else if (BOOL_FIELDS.has(col)) e[col] = parseBool(val);
-    else if (NUMBER_FIELDS.has(col)) e[col] = Number(val) || 0;
+    else if (NUMBER_FIELDS.has(col)) e[col] = Number(val); // validated per-row below
     else e[col] = val; // scripture_text and all prose preserved verbatim
   }
   if (!e.id && e.slug) e.id = e.slug;
@@ -70,6 +68,16 @@ function validateRow(e, rowNum, seen) {
   if (e.topic && !TOPIC_SLUGS.has(e.topic)) errs.push(`row ${rowNum}: unknown topic "${e.topic}"`);
   for (const df of ['publish_date', 'featured_date', 'expiration_date']) {
     if (!isValidDate(e[df])) errs.push(`row ${rowNum}: invalid date "${df}"=${e[df]}`);
+  }
+  for (const dl of DATE_LIST_FIELDS) {
+    for (const item of e[dl] || []) {
+      if (!isValidDate(item)) errs.push(`row ${rowNum}: invalid date in "${dl}": ${item}`);
+    }
+  }
+  for (const nf of NUMBER_FIELDS) {
+    if (e[nf] !== undefined && !Number.isInteger(e[nf])) {
+      errs.push(`row ${rowNum}: "${nf}" must be a whole number`);
+    }
   }
   for (const link of [...(e.related_articles || []), ...(e.related_resources || [])]) {
     if (!isValidUrl(link.url)) errs.push(`row ${rowNum}: invalid related URL ${link.url}`);

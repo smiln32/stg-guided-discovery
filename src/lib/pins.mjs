@@ -15,6 +15,7 @@
 // -----------------------------------------------------------------------------
 import { SITE_URL, BASE_PATH, BRAND } from '../config/site.mjs';
 import { TOPIC_BY_SLUG } from '../config/topics.mjs';
+import { SCRIPTURE_PLACEHOLDER } from '../config/entry-fields.mjs';
 
 export const PIN_W = 1000;
 export const PIN_H = 1500;
@@ -75,7 +76,21 @@ function firstSentences(text, max = 220) {
   return (lastStop > 60 ? cut.slice(0, lastStop + 1) : `${cut.trimEnd()}…`).trim();
 }
 
-const PLACEHOLDER = '[VERIFIED NASB 2020 SCRIPTURE TEXT REQUIRED]';
+/**
+ * A Pinterest destination URL always points at the PERMANENT entry page (never
+ * the rotating daily landing page) and carries UTM + Pin-type tracking so a Pin
+ * pinned today still resolves correctly years from now.
+ */
+export function pinDestination(slug, pinType, campaign = 'hold-this-today') {
+  const base = `${SITE_URL.replace(/\/$/, '')}${BASE_PATH}/${slug}/`;
+  const q = new URLSearchParams({
+    utm_source: 'pinterest',
+    utm_medium: 'pin',
+    utm_campaign: campaign,
+    utm_content: pinType,
+  });
+  return `${base}?${q.toString()}`;
+}
 
 /**
  * Build the Pin set for an entry.
@@ -86,18 +101,9 @@ export function buildPins(data) {
   const topic = TOPIC_BY_SLUG[data.topic];
   const accent = topic?.accent || ACCENT_FALLBACK;
   const board = data.pinterest_board || topic?.title || 'Encouragement';
-  const scriptureReady = data.scripture_text.trim() !== PLACEHOLDER;
+  const scriptureReady = data.scripture_text.trim() !== SCRIPTURE_PLACEHOLDER;
 
-  const destination = (pinType) => {
-    const base = `${SITE_URL.replace(/\/$/, '')}${BASE_PATH}/${data.slug}/`;
-    const q = new URLSearchParams({
-      utm_source: 'pinterest',
-      utm_medium: 'pin',
-      utm_campaign: 'hold-this-today',
-      utm_content: pinType,
-    });
-    return `${base}?${q.toString()}`;
-  };
+  const destination = (pinType) => pinDestination(data.slug, pinType);
 
   const filename = (pinType) =>
     `hold-this-today-${data.slug}-${pinType}-pin.png`.toLowerCase();

@@ -42,6 +42,11 @@ export async function publishedTopics(now: Date = buildNow()): Promise<TopicWith
   return (await topicsWithCounts(now)).filter((t) => t.published);
 }
 
+/** Does this topic have a built archive page to link to? */
+export async function isTopicPublished(slug: string, now: Date = buildNow()): Promise<boolean> {
+  return (await publishedTopics(now)).some((t) => t.slug === slug);
+}
+
 export function topicTitle(slug: string): string {
   return TOPIC_BY_SLUG[slug]?.title ?? slug;
 }

@@ -4,7 +4,7 @@
 // permanent entry page so the two never drift apart.
 import ScriptureBlock from './ScriptureBlock.astro';
 import { paths } from '../lib/urls';
-import { topicTitle, topicAccent } from '../lib/topics';
+import { topicTitle, topicAccent, isTopicPublished } from '../lib/topics';
 import { paragraphs } from '../lib/text';
 import type { EntryData } from '../lib/entries';
 
@@ -13,6 +13,8 @@ const { data, eyebrow } = Astro.props as {
   eyebrow?: string;
 };
 const accent = topicAccent(data.topic);
+// Below the archive threshold a topic has no page yet — show a plain chip.
+const topicLinked = await isTopicPublished(data.topic);
 ---
 
 <article class="entry stack" style={`--topic-accent:${accent}`}>
@@ -27,7 +29,13 @@ const accent = topicAccent(data.topic);
 
   <header class="entry__head stack">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <a class="topic-chip" href={paths.topic(data.topic)}>{topicTitle(data.topic)}</a>
+    {
+      topicLinked ? (
+        <a class="topic-chip" href={paths.topic(data.topic)}>{topicTitle(data.topic)}</a>
+      ) : (
+        <span class="topic-chip">{topicTitle(data.topic)}</span>
+      )
+    }
     <h1>{data.page_title}</h1>
     {
       data.season_or_circumstance && (

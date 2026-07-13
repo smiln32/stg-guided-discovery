@@ -11,7 +11,10 @@
 // empty archive pages — matching the spec's "no thin pages" rule.
 // -----------------------------------------------------------------------------
 
-export const MIN_TOPIC_ENTRIES = 1; // demo-friendly; raise to 3+ for production
+// A topic archive page only ships once it has this many visible entries — thin
+// one-entry archives don't. Entry pages and chips degrade gracefully: they only
+// link to a topic page that actually exists (see isTopicPublished).
+export const MIN_TOPIC_ENTRIES = 3;
 
 /**
  * @typedef {Object} Topic

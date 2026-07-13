@@ -24,20 +24,5 @@ export function absolute(path: string): string {
   return `${base}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
-/**
- * A Pinterest destination URL always points at the PERMANENT entry page (never
- * the rotating daily landing page) and carries UTM + Pin-type tracking so a Pin
- * pinned today still resolves correctly years from now.
- */
-export function pinDestination(
-  slug: string,
-  pinType: string,
-  campaign = 'hold-this-today',
-): string {
-  const url = new URL(absolute(paths.entry(slug)));
-  url.searchParams.set('utm_source', 'pinterest');
-  url.searchParams.set('utm_medium', 'pin');
-  url.searchParams.set('utm_campaign', campaign);
-  url.searchParams.set('utm_content', pinType);
-  return url.toString();
-}
+// Pin destination URLs are built by pinDestination() in src/lib/pins.mjs — the
+// single implementation shared by the on-site previews and the PNG exporter.

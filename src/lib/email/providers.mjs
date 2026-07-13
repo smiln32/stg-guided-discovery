@@ -11,6 +11,8 @@
 // credentials, it returns a clear error rather than a fake success.
 // -----------------------------------------------------------------------------
 
+import { confirmSecretConfigured, confirmUrl } from './confirm.mjs';
+
 const env = (k) => (typeof process !== 'undefined' && process.env ? process.env[k] : undefined);
 
 // ---- mock -------------------------------------------------------------------
@@ -23,6 +25,11 @@ export const mockProvider = {
       return { status: 'exists', message: 'Already subscribed (mock).' };
     }
     console.log('[email:mock] subscribe', JSON.stringify({ ...sub, consent: true }));
+    if (confirmSecretConfigured()) {
+      // Dev affordance: print the double opt-in link so the confirm flow can be
+      // exercised locally without a real email.
+      console.log('[email:mock] confirm link:', confirmUrl(sub.email));
+    }
     return {
       status: 'ok',
       message:
@@ -39,20 +46,65 @@ export const mockProvider = {
   },
 };
 
+// ---- Zoho OAuth access-token refresh ----------------------------------------
+// Zoho access tokens expire after ~1 hour, so the provider refreshes them
+// itself from ZOHO_REFRESH_TOKEN + ZOHO_CLIENT_ID/SECRET and caches the result
+// in module scope (shared across warm invocations, refreshed 5 minutes early).
+// A static ZOHO_CAMPAIGNS_ACCESS_TOKEN still works as a fallback for quick
+// manual testing, but on its own it goes stale within the hour.
+let zohoTokenCache = { value: null, expiresAt: 0 };
+
+async function zohoAccessToken() {
+  const refresh = env('ZOHO_REFRESH_TOKEN');
+  const clientId = env('ZOHO_CLIENT_ID');
+  const clientSecret = env('ZOHO_CLIENT_SECRET');
+  if (refresh && clientId && clientSecret) {
+    if (zohoTokenCache.value && Date.now() < zohoTokenCache.expiresAt) {
+      return zohoTokenCache.value;
+    }
+    const region = env('ZOHO_REGION') || 'com';
+    const res = await fetch(`https://accounts.zoho.${region}/oauth/v2/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refresh,
+        client_id: clientId,
+        client_secret: clientSecret,
+      }).toString(),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.access_token) {
+      zohoTokenCache = {
+        value: data.access_token,
+        expiresAt: Date.now() + (Number(data.expires_in) || 3600) * 1000 - 300_000,
+      };
+      return zohoTokenCache.value;
+    }
+    throw new Error(`Zoho token refresh failed: ${data.error || `HTTP ${res.status}`}`);
+  }
+  return env('ZOHO_CAMPAIGNS_ACCESS_TOKEN') || null;
+}
+
 // ---- Zoho Campaigns ---------------------------------------------------------
-// Uses the "List Subscribe" JSON API. Requires an OAuth access token (refresh it
-// with your ZOHO_REFRESH_TOKEN out of band, or set a long-lived token here).
+// Uses the "List Subscribe" JSON API with an auto-refreshed OAuth token (above).
 // Docs: https://www.zoho.com/campaigns/help/developers/
 export const zohoCampaignsProvider = {
   name: 'zoho_campaigns',
   async subscribe(sub) {
-    const token = env('ZOHO_CAMPAIGNS_ACCESS_TOKEN');
     const listKey = env('ZOHO_CAMPAIGNS_LIST_KEY');
     const region = env('ZOHO_REGION') || 'com'; // com, eu, in, com.au...
+    let token;
+    try {
+      token = await zohoAccessToken();
+    } catch (err) {
+      return { status: 'error', message: err.message };
+    }
     if (!token || !listKey) {
       return {
         status: 'error',
-        message: 'Zoho Campaigns is selected but ZOHO_CAMPAIGNS_ACCESS_TOKEN / LIST_KEY are not set.',
+        message:
+          'Zoho Campaigns is selected but credentials are missing: set ZOHO_REFRESH_TOKEN + ZOHO_CLIENT_ID + ZOHO_CLIENT_SECRET (recommended) and ZOHO_CAMPAIGNS_LIST_KEY.',
       };
     }
     const contactInfo = {
@@ -123,15 +175,31 @@ export const zeptoMailProvider = {
   async subscribe(sub) {
     // With a self-managed list, "subscribe" means: persist (store) + send a
     // double opt-in confirmation. Persisting is delegated to the store layer by
-    // the function; here we just send the confirmation email.
+    // the function; here we just send the confirmation email. The link is a
+    // signed token (src/lib/email/confirm.mjs) that the confirm function
+    // verifies and flips the subscriber to "confirmed" — nothing sends to an
+    // address until that happens.
+    if (!confirmSecretConfigured()) {
+      return {
+        status: 'error',
+        message:
+          'ZeptoMail double opt-in requires EMAIL_CONFIRM_SECRET (at least 16 characters) to be set.',
+      };
+    }
+    const link = confirmUrl(sub.email);
     const confirm = await this.sendTransactional({
       to: sub.email,
       toName: sub.first_name,
       subject: 'Please confirm your gentle note',
       htmlBody:
-        '<p>Thank you for subscribing to A Gentle Note. Please confirm your email to begin receiving encouragement.</p>',
+        `<p>Thank you for subscribing to A Gentle Note.</p>` +
+        `<p><a href="${link}">Please confirm your email</a> to begin receiving encouragement.</p>` +
+        `<p>If the link does not work, copy and paste this address into your browser:<br>${link}</p>` +
+        `<p>If you did not request this, you can simply ignore this email — nothing will be sent to you.</p>`,
       textBody:
-        'Thank you for subscribing to A Gentle Note. Please confirm your email to begin receiving encouragement.',
+        'Thank you for subscribing to A Gentle Note.\n\n' +
+        `Please confirm your email to begin receiving encouragement:\n${link}\n\n` +
+        'If you did not request this, you can simply ignore this email — nothing will be sent to you.',
     });
     if (confirm.status === 'ok') {
       return { status: 'ok', message: 'Please check your inbox to confirm your subscription.' };

@@ -1,5 +1,21 @@
 // Shared helpers for the subscriber-facing Netlify Functions.
 // (In a subdirectory so Netlify does not expose it as its own endpoint.)
+import { connectLambda } from '@netlify/blobs';
+
+/**
+ * Wire up Netlify Blobs for legacy handler-style functions. Older runtimes
+ * pass Blobs credentials in the event payload (event.blobs) and need
+ * connectLambda; newer runtimes set NETLIFY_BLOBS_CONTEXT automatically and
+ * this is a no-op. Safe to call locally (plain node / netlify dev).
+ * Call this at the top of every handler that touches the store.
+ */
+export function initStore(event) {
+  try {
+    if (event && event.blobs) connectLambda(event);
+  } catch (err) {
+    console.warn('[store] blobs init skipped:', err.message);
+  }
+}
 
 /** Parse a urlencoded or JSON request body into a plain object. */
 export function parseBody(event) {
@@ -38,11 +54,24 @@ export function jsonResponse(statusCode, body) {
   };
 }
 
-/** A calm, self-contained confirmation/erro page for no-JS submissions. */
-export function htmlResponse(statusCode, { heading, message, ok }) {
+/** Escape a string for safe interpolation into HTML text content. */
+export function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/** A calm, self-contained confirmation/error page for no-JS submissions. */
+export function htmlResponse(statusCode, { heading: rawHeading, message: rawMessage, ok }) {
   const back = '/hold-this-today/';
   const color = ok ? '#33613a' : '#7a3030';
   const bg = ok ? '#eef5ee' : '#fbeeee';
+  // All current messages are server-authored, but escape anyway so a future
+  // pass-through of provider/user text can never inject markup.
+  const heading = escapeHtml(rawHeading);
+  const message = escapeHtml(rawMessage);
   return {
     statusCode,
     headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },

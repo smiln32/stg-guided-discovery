@@ -212,7 +212,9 @@ Environment variables), never in the code:
 ```
 EMAIL_PROVIDER=zoho_campaigns
 ZOHO_REGION=com
-ZOHO_CAMPAIGNS_ACCESS_TOKEN=...     # from a Zoho OAuth self-client
+ZOHO_CLIENT_ID=...                  # from a Zoho OAuth self-client
+ZOHO_CLIENT_SECRET=...
+ZOHO_REFRESH_TOKEN=...              # access tokens are refreshed automatically
 ZOHO_CAMPAIGNS_LIST_KEY=...
 ```
 
@@ -223,20 +225,27 @@ ZOHO_REGION=com
 ZEPTOMAIL_TOKEN=...
 EMAIL_FROM_ADDRESS=hello@simplifytoglorify.com
 EMAIL_FROM_NAME=Simplify to Glorify
+EMAIL_CONFIRM_SECRET=...            # signs double opt-in links; 16+ chars
 ```
+
+On the ZeptoMail path the system runs its own **double opt-in**: the signup email
+contains a signed confirmation link, and nothing is ever sent to an address until
+its owner clicks it (`netlify/functions/confirm.mjs` flips the subscriber to
+`confirmed`). On the Zoho Campaigns path, Zoho runs its own confirmation flow.
 
 > **Note on "Zoho Mail":** plain Zoho *Mail* (mailboxes) cannot manage a subscriber
 > list or run drip sequences by itself. Use **Zoho Campaigns** for lists/automation,
-> or **ZeptoMail** for sending combined with a durable store (below).
+> or **ZeptoMail** for sending with the built-in subscriber store.
 
 **Automated journeys/drips** are driven by the scheduled function
-`netlify/functions/journey-tick.mjs` (runs daily). It needs (a) a real provider as
-above and (b) a **durable subscriber store**. The included store writes to a local
-file for development only; serverless storage is temporary. For production, swap
-`src/lib/email/store.mjs` for Netlify Blobs or a database, **or** let Zoho Campaigns
-own the list and run the sequences as Zoho automations (then the scheduled function
-is optional). Until one of those is configured, no automated emails are sent — the
-system never pretends an integration works when it does not.
+`netlify/functions/journey-tick.mjs` (runs daily). Subscriber and enrollment data
+is stored durably in **Netlify Blobs** automatically when the site runs on Netlify
+(locally it falls back to a JSON file in `.data/`) — nothing to configure. Real
+delivery needs `EMAIL_PROVIDER=zeptomail` with credentials; alternatively, let
+Zoho Campaigns own the list and run the sequences as Zoho automations (then the
+scheduled function is optional). Journey emails only go to **confirmed**
+subscribers. Until a real provider is configured, no automated emails are sent —
+the system never pretends an integration works when it does not.
 
 ---
 

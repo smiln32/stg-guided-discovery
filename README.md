@@ -20,6 +20,7 @@ npm install
 npm run dev        # local dev server at http://localhost:4321
 npm run build      # production build to dist/
 npm run preview    # serve the built site locally
+npm test           # subscriber/email flow test suite (no network needed)
 ```
 
 Open **/hold-this-today/**.

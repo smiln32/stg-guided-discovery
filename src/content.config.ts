@@ -19,30 +19,19 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { TOPICS } from './config/topics.mjs';
 import { DEFAULT_TRANSLATION } from './config/site.mjs';
+import {
+  ENTRY_STATUSES,
+  REVIEW_STATUSES,
+  LIVE_STATUSES,
+  CSV_COLUMNS,
+} from './config/entry-fields.mjs';
+
+// Statuses and field lists live in src/config/entry-fields.mjs (plain .mjs so
+// the Node CLI scripts share them); re-exported here for TS consumers.
+export { ENTRY_STATUSES, REVIEW_STATUSES, LIVE_STATUSES };
 
 const TOPIC_SLUGS = TOPICS.map((t) => t.slug) as [string, ...string[]];
-
-export const ENTRY_STATUSES = [
-  'draft',
-  'needs_content_review',
-  'needs_scripture_verification',
-  'approved',
-  'scheduled',
-  'published',
-  'paused',
-  'archived',
-] as const;
-
-export const REVIEW_STATUSES = [
-  'pending',
-  'in_review',
-  'approved',
-  'changes_requested',
-] as const;
-
-// Statuses that make an entry publicly live (built as an indexable page and
-// eligible for the daily feature / rotation).
-export const LIVE_STATUSES = ['published', 'scheduled'] as const;
+const asEnum = (values: string[]) => z.enum(values as [string, ...string[]]);
 
 // A descriptive link: keeps link text meaningful for accessibility/SEO instead
 // of a bare URL. CSV serializes these as "Label|https://url".
@@ -51,16 +40,14 @@ const linkSchema = z.object({
   url: z.string().url(),
 });
 
-const reviewStatus = z.enum(REVIEW_STATUSES).default('pending');
+const reviewStatus = asEnum(REVIEW_STATUSES).default('pending');
 
-const entries = defineCollection({
-  loader: glob({ pattern: '**/*.{yaml,yml,json}', base: './src/data/entries' }),
-  schema: z
+const entryFields = z
     .object({
       // --- Identity & lifecycle ------------------------------------------
       // id is optional in the file; when omitted Astro uses the filename.
       id: z.string().optional(),
-      status: z.enum(ENTRY_STATUSES).default('draft'),
+      status: asEnum(ENTRY_STATUSES).default('draft'),
       is_sample: z.boolean().default(false),
 
       publish_date: z.coerce.date().optional(),
@@ -146,9 +133,27 @@ const entries = defineCollection({
       version: z.number().int().default(1),
       created_at: z.coerce.date().optional(),
       updated_at: z.coerce.date().optional(),
-    })
-    // ---- Publish gate: the core safety invariant -------------------------
-    .superRefine((data, ctx) => {
+    });
+
+// ---- Schema ↔ CSV parity check (fails the build on drift) -------------------
+// CSV_COLUMNS drives the import/export scripts. If a field exists in one list
+// but not the other, a CSV round-trip would silently drop data — so refuse to
+// build until they agree.
+{
+  const schemaKeys = Object.keys(entryFields.shape);
+  const missingFromCsv = schemaKeys.filter((k) => !CSV_COLUMNS.includes(k));
+  const unknownInCsv = CSV_COLUMNS.filter((k) => !schemaKeys.includes(k));
+  if (missingFromCsv.length || unknownInCsv.length) {
+    throw new Error(
+      `Entry schema and CSV_COLUMNS (src/config/entry-fields.mjs) are out of sync.` +
+        (missingFromCsv.length ? ` Missing from CSV_COLUMNS: ${missingFromCsv.join(', ')}.` : '') +
+        (unknownInCsv.length ? ` In CSV_COLUMNS but not the schema: ${unknownInCsv.join(', ')}.` : ''),
+    );
+  }
+}
+
+// ---- Publish gate: the core safety invariant --------------------------------
+const entrySchema = entryFields.superRefine((data, ctx) => {
       const isLive = (LIVE_STATUSES as readonly string[]).includes(data.status);
       if (!isLive) return;
 
@@ -173,7 +178,11 @@ const entries = defineCollection({
           path: ['scripture_verified'],
         });
       }
-    }),
+    });
+
+const entries = defineCollection({
+  loader: glob({ pattern: '**/*.{yaml,yml,json}', base: './src/data/entries' }),
+  schema: entrySchema,
 });
 
 export const collections = { entries };

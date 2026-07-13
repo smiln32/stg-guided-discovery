@@ -16,6 +16,11 @@ const MAX_HITS = 8;
 function rateLimited(ip) {
   if (!ip) return false;
   const now = Date.now();
+  // Evict other IPs whose window has fully passed so the map cannot grow
+  // unbounded over the life of a warm instance.
+  for (const [key, times] of HITS) {
+    if (times.length === 0 || now - times[times.length - 1] >= WINDOW_MS) HITS.delete(key);
+  }
   const arr = (HITS.get(ip) || []).filter((t) => now - t < WINDOW_MS);
   arr.push(now);
   HITS.set(ip, arr);
@@ -148,6 +153,20 @@ export async function handleJourneyEnroll(raw, { nowIso }) {
   }
   if (!journey) {
     return { statusCode: 400, body: { ok: false, message: 'Please choose a journey.' } };
+  }
+  // Only an existing subscriber may be enrolled, so a third party cannot sign
+  // someone else's address up for a seven-email sequence. (Delivery is further
+  // gated on double opt-in: journey-tick only sends to status 'confirmed'.)
+  const sub = await store.find(email);
+  if (!sub || sub.status === 'unsubscribed') {
+    return {
+      statusCode: 403,
+      body: {
+        ok: false,
+        message:
+          'Please subscribe to A Gentle Note first — then choose a journey and we will walk it with you.',
+      },
+    };
   }
   const res = await store.enrollJourney(email, journey, nowIso);
   if (res.status === 'already_enrolled') {

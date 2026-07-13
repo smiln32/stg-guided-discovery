@@ -12,7 +12,7 @@ import SubscribeForm from '../../components/SubscribeForm.astro';
 import EntryCard from '../../components/EntryCard.astro';
 import { getVisibleEntries, getRelatedEntries, getPreviousEntry, buildNow } from '../../lib/entries';
 import { paths, absolute } from '../../lib/urls';
-import { topicTitle } from '../../lib/topics';
+import { topicTitle, isTopicPublished } from '../../lib/topics';
 import { emailTopicForContentTopic } from '../../config/email.mjs';
 import { entryJsonLd, breadcrumbJsonLd } from '../../lib/jsonld';
 import { BRAND } from '../../config/site.mjs';
@@ -27,13 +27,15 @@ const d = entry.data;
 const now = buildNow();
 const related = await getRelatedEntries(entry, 3, now);
 const previous = await getPreviousEntry(entry, now);
+const topicPublished = await isTopicPublished(d.topic, now);
 const path = paths.entry(d.slug);
 const permalink = absolute(path);
 
 const crumbs = [
   { label: 'Home', href: paths.home },
   { label: 'Browse by need', href: paths.topics },
-  { label: topicTitle(d.topic), href: paths.topic(d.topic) },
+  // Only link the topic crumb when its archive page is actually built.
+  { label: topicTitle(d.topic), ...(topicPublished ? { href: paths.topic(d.topic) } : {}) },
   { label: d.short_title, href: path },
 ];
 
@@ -73,7 +75,7 @@ const description = d.meta_description || `${d.short_title} — ${d.scripture_re
     <div class="continue-nav">
       {previous && <a class="btn btn--soft" href={paths.entry(previous.data.slug)}>← Another encouragement</a>}
       <a class="btn btn--soft" href={paths.home}>Return to today →</a>
-      <a class="btn btn--soft" href={paths.topic(d.topic)}>More on {topicTitle(d.topic)}</a>
+      {topicPublished && <a class="btn btn--soft" href={paths.topic(d.topic)}>More on {topicTitle(d.topic)}</a>}
     </div>
     {
       previous && (

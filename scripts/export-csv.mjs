@@ -11,7 +11,12 @@ const out = process.argv.slice(2).find((a) => !a.startsWith('--')) || 'content/e
 
 function serialize(col, value) {
   if (value === undefined || value === null) return '';
-  if (LIST_FIELDS.has(col)) return (value || []).join('; ');
+  if (LIST_FIELDS.has(col)) {
+    // Items may be Date objects (e.g. exclusion_dates) — export as YYYY-MM-DD.
+    return (value || [])
+      .map((v) => (v instanceof Date ? v.toISOString().slice(0, 10) : String(v)))
+      .join('; ');
+  }
   if (LINK_FIELDS.has(col)) return (value || []).map((l) => `${l.label}|${l.url}`).join(' ;; ');
   if (BOOL_FIELDS.has(col)) return value ? 'true' : 'false';
   if (value instanceof Date) return value.toISOString().slice(0, 10);

@@ -1,0 +1,121 @@
+id: when-the-list-is-longer-than-the-day
+status: published
+is_sample: true
+
+publish_date: 2026-06-06
+rotation_eligible: true
+rotation_priority: 4
+
+slug: when-the-list-is-longer-than-the-day
+page_title: When the List Is Longer Than the Day
+short_title: When the List Is Longer Than the Day
+topic: overwhelm
+secondary_topics:
+  - anxiety
+  - exhaustion
+audience: Christian women
+season_or_circumstance: too much to do and not enough of you to go around
+keywords: [overwhelm, too much to do, rest, Shepherd, Psalm 23]
+search_phrases:
+  - I have too much to do
+  - feeling overwhelmed
+  - everything is too much
+  - how to slow down when busy
+
+scripture_reference: Psalm 23:1-3
+scripture_text: >-
+  Yahweh is my shepherd: I shall lack nothing. He makes me lie down in green
+  pastures. He leads me beside still waters. He restores my soul. He guides me
+  in the paths of righteousness for his name's sake.
+scripture_translation: WEB (World English Bible, public domain)
+scripture_verified: true
+scripture_verification_notes: >-
+  Public-domain WEB text verified against bible-api.com (WEB) for
+  demonstration. WEB renders the divine name as "Yahweh." Replace with
+  verified NASB 2020 for production.
+
+gentle_word: |
+  Some days the list is simply longer than the day. You can feel it before your
+  feet touch the floor — everything that is expected of you, stacked and
+  waiting. And somewhere underneath the doing, a quieter worry: if I stop, it
+  all falls.
+
+  Look at what the Shepherd does in this psalm. He makes me lie down. He leads
+  me beside still waters. The resting is not something the sheep earns after the
+  work is finished. It is something the Shepherd insists on, because He knows
+  what the sheep needs better than the sheep does.
+
+  You will not get to the end of the list today. That was never the condition
+  for being cared for. You are allowed to be led somewhere quiet for a few
+  minutes, right in the middle of the undone things.
+prayer: |
+  God, the list is longer than the day again, and I feel it pressing on me. I
+  cannot do everything, and I am tired of pretending I can. Shepherd me today.
+  Make me lie down when I will not choose it myself. Lead me beside something
+  still, even for a moment, and restore what the hurry has worn thin. Amen.
+journal_question: >-
+  If a good shepherd looked at your day, what is the one thing he would gently
+  take off the list?
+small_step: >-
+  Choose one thing on today's list and move it to tomorrow — on purpose, without
+  apologizing for it. Let that be the still water for today.
+carry_phrase: The Shepherd sets the pace. Not the list.
+
+pin_quote: >-
+  The resting is not something you earn after the work is finished. The Shepherd
+  insists on it.
+pin_prayer: >-
+  God, the list is longer than the day. Shepherd me — make me lie down, lead me
+  beside something still, and restore what the hurry has worn thin.
+pin_practical_text: >-
+  Move one thing from today's list to tomorrow — on purpose, without apology.
+  Let that be today's still water.
+pin_curiosity_text: Hold this today when everything is too much at once.
+pin_title: When the List Is Longer Than the Day
+pin_description: >-
+  Gentle, Scripture-centered encouragement for overwhelming days — Psalm 23,
+  one prayer, one small step. You will not finish the list, and you are still
+  cared for.
+pin_alt_text: >-
+  Soft ivory Scripture card reading, The Shepherd sets the pace, not the list,
+  Psalm 23:1-3.
+pinterest_board: Rest for the Weary
+pinterest_status: ready
+
+email_subject: When the list is longer than the day
+email_preview_text: The Shepherd sets the pace. Not the list.
+email_opening: >-
+  Some days the list is simply longer than the day, and you can feel it before
+  your feet touch the floor.
+email_body: >-
+  In Psalm 23, the resting is not earned after the work is finished — the
+  Shepherd insists on it. You are allowed to be led somewhere quiet for a few
+  minutes, right in the middle of the undone things.
+email_cta_text: Read today's encouragement
+email_status: ready
+email_segment: general
+
+related_entry_ids:
+  - for-the-caregiver-who-is-running-on-empty
+  - when-the-worry-will-not-quiet
+related_articles: []
+related_product_ids:
+  - anxious-heart-scripture-cards
+related_resources: []
+
+seo_title: When the List Is Longer Than the Day — Hold This Today
+meta_description: >-
+  Gentle, Scripture-centered encouragement for overwhelming days — Psalm 23:1-3,
+  one prayer, and one small step. You will not finish the list, and you are
+  still cared for.
+social_title: When the List Is Longer Than the Day
+social_description: The Shepherd sets the pace. Not the list. One verse, one prayer, one small step.
+
+author: Simplify to Glorify
+reviewed_by: Sample Reviewer (demonstration)
+content_review_status: approved
+scripture_review_status: approved
+last_reviewed_date: 2026-06-06
+version: 1
+created_at: 2026-06-02
+updated_at: 2026-06-06

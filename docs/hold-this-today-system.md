@@ -163,7 +163,7 @@ related_articles:
   - label: "A helpful article title"
     url: https://simplifytoglorify.com/blog/whatever
 related_product_ids:
-  - caregiver-strength-journal      # ids from src/config/products.mjs
+  - caregiving-collection           # ids from src/config/products.mjs
 ```
 
 Products are defined in `src/config/products.mjs` (title, URL, kind, blurb, topics).

@@ -98,9 +98,12 @@ email_segment: general
 related_entry_ids:
   - when-you-are-worried-about-what-comes-next
   - when-you-dont-know-what-to-pray
-related_articles: []
+related_articles:
+  - label: "What God Says When Anxiety Won't Quiet"
+    url: https://simplifytoglorify.com/blog/what-god-says-when-anxiety-wont-quiet/
 related_product_ids:
-  - anxious-heart-scripture-cards
+  - free-scripture-for-anxious-hearts
+  - anxiety-collection
 related_resources: []
 
 seo_title: When the Worry Will Not Quiet — Hold This Today

@@ -97,9 +97,12 @@ email_segment: general
 related_entry_ids:
   - when-you-dont-know-what-to-pray
   - strength-for-the-long-wait
-related_articles: []
+related_articles:
+  - label: "When Your Prayers Feel Unanswered"
+    url: https://simplifytoglorify.com/blog/when-your-prayers-feel-unanswered/
 related_product_ids:
-  - learning-to-pray-first-steps
+  - free-learning-to-pray
+  - prayer-collection
 related_resources: []
 
 seo_title: When the Same Prayer Has No Answer Yet — Hold This Today

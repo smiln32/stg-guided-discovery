@@ -98,9 +98,14 @@ email_segment: general
 related_entry_ids:
   - for-the-caregiver-who-is-running-on-empty
   - when-the-worry-will-not-quiet
-related_articles: []
+related_articles:
+  - label: "The Art of Slowing Down"
+    url: https://simplifytoglorify.com/blog/the-art-of-slowing-down/
+  - label: "When Your Emotions Feel Like Too Much"
+    url: https://simplifytoglorify.com/blog/when-your-emotions-feel-like-too-much/
 related_product_ids:
-  - anxious-heart-scripture-cards
+  - free-scripture-for-anxious-hearts
+  - anxiety-collection
 related_resources: []
 
 seo_title: When the List Is Longer Than the Day — Hold This Today

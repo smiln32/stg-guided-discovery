@@ -99,9 +99,14 @@ email_segment: general
 related_entry_ids:
   - when-the-waiting-feels-too-long
   - when-you-cannot-see-the-way-forward
-related_articles: []
+related_articles:
+  - label: "Waiting on God When It's Hard"
+    url: https://simplifytoglorify.com/articles/waiting-on-god-patience/
+  - label: "The Slow Work of Patience With Yourself"
+    url: https://simplifytoglorify.com/blog/the-slow-work-of-patience-with-yourself/
 related_product_ids:
-  - anxious-heart-scripture-cards
+  - free-jesus-in-the-storm
+  - patience-collection
 related_resources: []
 
 seo_title: Strength for the Long Wait — Hold This Today

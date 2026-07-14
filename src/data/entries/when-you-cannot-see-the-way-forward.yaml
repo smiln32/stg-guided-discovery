@@ -100,9 +100,14 @@ email_segment: general
 related_entry_ids:
   - when-you-are-worried-about-what-comes-next
   - when-the-waiting-feels-too-long
-related_articles: []
+related_articles:
+  - label: "Finding Peace in Uncertainty"
+    url: https://simplifytoglorify.com/blog/finding-peace-in-uncertainty/
+  - label: "How to Trust God When You Are Afraid"
+    url: https://simplifytoglorify.com/blog/how-to-trust-god-when-you-are-afraid/
 related_product_ids:
-  - anxious-heart-scripture-cards
+  - free-jesus-in-the-storm
+  - trusting-god-collection
 related_resources: []
 
 seo_title: When You Cannot See the Way Forward — Hold This Today

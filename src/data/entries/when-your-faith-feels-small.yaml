@@ -95,9 +95,14 @@ email_segment: general
 related_entry_ids:
   - a-gentle-place-to-begin
   - when-you-dont-know-what-to-pray
-related_articles: []
+related_articles:
+  - label: "Faith for the Days You Can Barely Get Out of Bed"
+    url: https://simplifytoglorify.com/blog/faith-for-hard-days/
+  - label: "How a Stronger Faith Actually Grows"
+    url: https://simplifytoglorify.com/blog/how-a-stronger-faith-actually-grows/
 related_product_ids:
-  - learning-to-pray-first-steps
+  - free-names-of-god
+  - faith-collection
 related_resources: []
 
 seo_title: When Your Faith Feels Small — Hold This Today

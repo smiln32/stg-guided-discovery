@@ -100,10 +100,14 @@ email_segment: general
 related_entry_ids:
   - for-the-caregiver-who-is-running-on-empty
   - when-the-grief-comes-in-waves
-related_articles: []
+related_articles:
+  - label: "The Quiet Weight of Caregiving: The Grief No One Sees"
+    url: https://simplifytoglorify.com/articles/the-quiet-weight-of-caregiving/
+  - label: "Caregiver Self-Care That Helps"
+    url: https://simplifytoglorify.com/articles/caregiver-self-care-that-actually-helps/
 related_product_ids:
-  - caregiver-prayer-cards
-  - caregiver-strength-journal
+  - free-when-you-cannot-fix-it
+  - caregiving-collection
 related_resources: []
 
 seo_title: Comfort for the Comforter — Hold This Today

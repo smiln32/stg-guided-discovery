@@ -1,8 +1,10 @@
 // -----------------------------------------------------------------------------
 // Related product / resource catalog (mapping only — NOT a store integration).
 //
-// Entries reference these by id via `related_product_ids`. Replace the example
-// URLs with the real Simplify to Glorify shop/Etsy links before publishing.
+// Entries reference these by id via `related_product_ids`. URLs point at the
+// REAL simplifytoglorify.com product collections and free PDF resources
+// (verified against the live sitemap on 2026-07-14).
+//
 // `kind` drives recommendation ordering: free content and downloads are offered
 // before paid products, and nothing is shown "just because it exists".
 //
@@ -14,53 +16,160 @@
 
 /** @type {Product[]} */
 export const PRODUCTS = [
+  // --- Free PDF resources (offered first) -----------------------------------
   {
-    id: 'caregiver-strength-journal',
-    title: 'Strength for the Caregiver Journal',
-    url: 'https://simplifytoglorify.com/shop/strength-for-the-caregiver-journal',
-    kind: 'journal',
-    blurb: 'A gentle guided journal for the long, quiet work of caregiving.',
-    topics: ['caregiving', 'exhaustion'],
+    id: 'free-scripture-for-anxious-hearts',
+    title: '5 Days of Scripture for Anxious Hearts (free PDF)',
+    url: 'https://simplifytoglorify.com/resources/5-days-of-scripture-for-anxious-hearts.pdf',
+    kind: 'free',
+    blurb: 'Five days of verses to hold when worry runs ahead of you.',
+    topics: ['anxiety', 'overwhelm'],
   },
   {
-    id: 'caregiver-prayer-cards',
-    title: 'Prayer Cards for the Caregiver',
-    url: 'https://simplifytoglorify.com/shop/caregiver-prayer-cards',
-    kind: 'prayer_cards',
-    blurb: 'Short, borrowable prayers for tired days.',
-    topics: ['caregiving'],
+    id: 'free-grieve-without-a-timeline',
+    title: 'How to Grieve Without a Timeline (free PDF)',
+    url: 'https://simplifytoglorify.com/resources/how-to-grieve-without-a-timeline.pdf',
+    kind: 'free',
+    blurb: 'A gentle companion for sorrow that keeps its own time.',
+    topics: ['grief'],
   },
   {
-    id: 'grace-for-what-you-cannot-change',
-    title: 'Grace for What You Cannot Change',
-    url: 'https://simplifytoglorify.com/shop/grace-for-what-you-cannot-change',
-    kind: 'devotional',
-    blurb: 'A short devotional for regret and the things we cannot undo.',
-    topics: ['regret', 'forgiveness'],
+    id: 'free-too-tired-to-pray',
+    title: "When You're Too Tired to Pray (free PDF)",
+    url: 'https://simplifytoglorify.com/resources/when-youre-too-tired-to-pray.pdf',
+    kind: 'free',
+    blurb: 'Short, borrowable prayers for the days you have nothing left.',
+    topics: ['exhaustion', 'caregiving', 'learning-to-pray'],
   },
   {
-    id: 'anxious-heart-scripture-cards',
-    title: 'Scripture Cards for an Anxious Heart',
-    url: 'https://simplifytoglorify.com/shop/anxious-heart-scripture-cards',
-    kind: 'scripture_cards',
-    blurb: 'Verses to hold when worry runs ahead of you.',
-    topics: ['anxiety', 'overwhelm', 'uncertainty'],
-  },
-  {
-    id: 'learning-to-pray-first-steps',
-    title: 'Learning to Pray — First Steps',
-    url: 'https://simplifytoglorify.com/shop/learning-to-pray-first-steps',
-    kind: 'first_steps',
+    id: 'free-learning-to-pray',
+    title: 'Learning to Pray (free PDF)',
+    url: 'https://simplifytoglorify.com/resources/learning-to-pray.pdf',
+    kind: 'free',
     blurb: 'A simple starting place for prayer when you do not know what to say.',
     topics: ['learning-to-pray', 'feeling-far-from-god'],
   },
   {
-    id: 'grief-companion-download',
-    title: 'A Companion for Grief (free download)',
-    url: 'https://simplifytoglorify.com/free/grief-companion',
+    id: 'free-when-you-cannot-fix-it',
+    title: 'When You Cannot Fix It (free PDF)',
+    url: 'https://simplifytoglorify.com/resources/when-you-cannot-fix-it.pdf',
     kind: 'free',
-    blurb: 'A free printable of gentle Scripture and prayers for sorrow.',
-    topics: ['grief'],
+    blurb: 'Gentle help for the things that are not yours to mend.',
+    topics: ['regret', 'caregiving'],
+  },
+  {
+    id: 'free-names-of-god',
+    title: 'Names of God for Hard Days (free PDF)',
+    url: 'https://simplifytoglorify.com/resources/names-of-God-for-hard-days.pdf',
+    kind: 'free',
+    blurb: 'Who God says He is, for the days you need reminding.',
+    topics: ['faith', 'trusting-god'],
+  },
+  {
+    id: 'free-jesus-in-the-storm',
+    title: 'Finding Jesus in the Middle of the Storm (free PDF)',
+    url: 'https://simplifytoglorify.com/resources/finding-jesus-in-the-middle-of-the-storm.pdf',
+    kind: 'free',
+    blurb: 'Steadying Scripture for seasons that feel out of control.',
+    topics: ['uncertainty', 'trusting-god', 'waiting'],
+  },
+
+  // --- Product collections (the real shop categories) -----------------------
+  {
+    id: 'anxiety-collection',
+    title: 'Anxiety Collection',
+    url: 'https://simplifytoglorify.com/products/anxiety/',
+    kind: 'product',
+    blurb: 'Gentle encouragement for calm, trust, and steady faith.',
+    topics: ['anxiety', 'overwhelm'],
+  },
+  {
+    id: 'caregiving-collection',
+    title: 'Caregiving Collection',
+    url: 'https://simplifytoglorify.com/products/caregiving/',
+    kind: 'product',
+    blurb: 'Encouragement for the daily work of faithful care.',
+    topics: ['caregiving', 'exhaustion'],
+  },
+  {
+    id: 'grief-collection',
+    title: 'Grief Collection',
+    url: 'https://simplifytoglorify.com/products/grief/',
+    kind: 'product',
+    blurb: 'Gentle faith-filled support for the grieving heart.',
+    topics: ['grief', 'loneliness'],
+  },
+  {
+    id: 'prayer-collection',
+    title: 'Prayer Collection',
+    url: 'https://simplifytoglorify.com/products/prayer/',
+    kind: 'product',
+    blurb: 'Simple help for building an authentic prayer life.',
+    topics: ['learning-to-pray', 'feeling-far-from-god'],
+  },
+  {
+    id: 'regret-collection',
+    title: 'Regret Collection',
+    url: 'https://simplifytoglorify.com/products/regret/',
+    kind: 'product',
+    blurb: 'Gentle encouragement for a heart learning to receive grace.',
+    topics: ['regret', 'forgiveness'],
+  },
+  {
+    id: 'faith-collection',
+    title: 'Faith Collection',
+    url: 'https://simplifytoglorify.com/products/faith/',
+    kind: 'product',
+    blurb: 'Companions for your quiet time with God.',
+    topics: ['faith', 'hope', 'feeling-far-from-god'],
+  },
+  {
+    id: 'trusting-god-collection',
+    title: 'Trusting God Collection',
+    url: 'https://simplifytoglorify.com/products/trusting-god/',
+    kind: 'product',
+    blurb: 'Faith-filled encouragement when the way ahead is unclear.',
+    topics: ['trusting-god', 'uncertainty', 'waiting'],
+  },
+  {
+    id: 'patience-collection',
+    title: 'Patience Collection',
+    url: 'https://simplifytoglorify.com/products/patience/',
+    kind: 'product',
+    blurb: "Quiet encouragement for learning to trust God's timing.",
+    topics: ['patience', 'waiting'],
+  },
+  {
+    id: 'depression-collection',
+    title: 'Depression Collection',
+    url: 'https://simplifytoglorify.com/products/depression/',
+    kind: 'product',
+    blurb: 'Gentle encouragement when your heart feels heavy.',
+    topics: ['depression'],
+  },
+  {
+    id: 'chronic-pain-collection',
+    title: 'Chronic Pain Collection',
+    url: 'https://simplifytoglorify.com/products/chronic-pain/',
+    kind: 'product',
+    blurb: 'Gentle faith-filled support for weary bodies and hearts.',
+    topics: ['chronic-pain'],
+  },
+  {
+    id: 'gratitude-collection',
+    title: 'Gratitude Collection',
+    url: 'https://simplifytoglorify.com/products/gratitude/',
+    kind: 'product',
+    blurb: "Gentle encouragement for noticing God's goodness.",
+    topics: ['gratitude'],
+  },
+  {
+    id: 'adhd-collection',
+    title: 'ADHD Collection',
+    url: 'https://simplifytoglorify.com/products/adhd/',
+    kind: 'product',
+    blurb: 'Gentle encouragement for grace, focus, and faith.',
+    topics: ['adhd'],
   },
 ];
 

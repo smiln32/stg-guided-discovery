@@ -87,11 +87,13 @@ email_segment: general
 related_entry_ids:
   - when-you-dont-know-what-to-pray
   - when-the-waiting-feels-too-long
-related_articles: []
-related_product_ids: []
-related_resources:
-  - label: "How Hold This Today works"
-    url: https://simplifytoglorify.com/hold-this-today/topics/
+related_articles:
+  - label: "How to Grow a Deeper Faith in Ordinary Days"
+    url: https://simplifytoglorify.com/articles/deeper-faith-ordinary-days/
+related_product_ids:
+  - free-names-of-god
+  - faith-collection
+related_resources: []
 
 seo_title: A Gentle Place to Begin — Hold This Today
 meta_description: >-

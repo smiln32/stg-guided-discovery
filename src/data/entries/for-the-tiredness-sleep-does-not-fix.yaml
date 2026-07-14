@@ -96,9 +96,14 @@ email_segment: general
 related_entry_ids:
   - for-the-caregiver-who-is-running-on-empty
   - when-the-list-is-longer-than-the-day
-related_articles: []
+related_articles:
+  - label: "Grace for the Weary"
+    url: https://simplifytoglorify.com/blog/grace-for-the-weary/
+  - label: "When You're Too Tired to Pray"
+    url: https://simplifytoglorify.com/blog/when-youre-too-tired-to-pray/
 related_product_ids:
-  - caregiver-strength-journal
+  - free-too-tired-to-pray
+  - caregiving-collection
 related_resources: []
 
 seo_title: For the Tiredness Sleep Does Not Fix — Hold This Today

@@ -11,8 +11,8 @@ You write **one entry**. From that single approved entry, the system produces:
 
 - a **permanent website page** that never changes address,
 - the **daily feature** on `/daily/`,
-- up to **five Pinterest Pins**, and
-- a place in the **topic library**.
+- a place in the **topic library**, and
+- an entry in the site's search index.
 
 The system will **format, schedule, and distribute** approved content — but it
 will never write theology, invent Scripture, change a verse, or publish anything
@@ -86,8 +86,8 @@ npm run dev             # opens a local site; visit the pages below
 ```
 
 - Website page: `http://localhost:4321/daily/your-slug/`
-- Pins (preview + metadata + overflow warnings): `.../daily/pins/your-slug/`
-- All previews at once: `.../daily/preview/`
+- The daily feature: `http://localhost:4321/daily/`
+- Its topic archive: `.../daily/topics/your-topic/`
 
 ### 5. Schedule or publish
 
@@ -101,25 +101,7 @@ npm run dev             # opens a local site; visit the pages below
 
 Then rebuild and deploy (commit + push; Netlify builds automatically).
 
-### 6. Preview and export the Pins
-
-- Preview: the `/daily/pins/your-slug/` page shows every Pin at full size
-  with its title, description, alt text, board, destination URL, filename, and an
-  **overflow check** (warns if the text is too long).
-- Export PNGs:
-  ```bash
-  npm run pins:export                 # all live entries -> /pin-exports
-  npm run pins:export -- your-slug     # just one entry
-  ```
-- Each Pin's destination is the **permanent** page with tracking added, so a Pin
-  pinned today still works years from now.
-
-> **Brand fonts on exports:** the website previews use the brand fonts perfectly.
-> The exported PNGs use whatever fonts your computer has. To make exports match
-> exactly, drop the brand `.ttf` font files into `src/assets/fonts/` and re-run the
-> export.
-
-### 7. Map related articles and products
+### 6. Map related articles and products
 
 In the entry file:
 
@@ -136,11 +118,11 @@ related_product_ids:
 Products are defined in `src/config/products.mjs` (title, URL, kind, blurb, topics).
 Free content and downloads are always offered before paid products.
 
-### 8. Pause or archive an entry
+### 7. Pause or archive an entry
 
 - **Pause:** set `status: paused`. It drops out of the daily feature and rotation,
-  and its page stops being built. (Because Pins may already point at it, prefer
-  `archived` only when you truly want it gone.)
+  and its page stops being built. (Because outside links may already point at it,
+  prefer `archived` only when you truly want it gone.)
 - **Archive:** set `status: archived`. Same effect; signals it is retired.
 
 ---
@@ -177,7 +159,6 @@ Back up everything to a spreadsheet anytime with `npm run export:csv`.
 | An entry doesn't appear anywhere | Its `status` isn't live, it's expired (`expiration_date`), or a review field isn't approved. Run `npm run validate`. |
 | A topic has no page | It has fewer than the minimum entries. Add entries or lower `MIN_TOPIC_ENTRIES` in `src/config/topics.mjs`. |
 | The daily page shows the "welcome" fallback | Nothing is featured for today and nothing is rotation-eligible. Set a `featured_date` or mark entries `rotation_eligible: true`. |
-| Pin text looks cut off | The Pin page shows an overflow warning — shorten `pin_quote`/`pin_prayer`/etc. |
 | CSV import rejected a row | Read the row-specific message it prints — usually a missing field, bad date, duplicate slug, or a "live" row with unverified Scripture. |
 
 ---
@@ -196,7 +177,6 @@ Back up everything to a spreadsheet anytime with `npm run export:csv`.
 | `audience`, `season_or_circumstance`, `keywords`, `search_phrases` | Discovery/search. |
 | `scripture_reference`, `scripture_text`, `scripture_translation`, `scripture_verified`, `scripture_verification_notes` | The verse — never altered by the system. |
 | `gentle_word`, `prayer`, `journal_question`, `small_step`, `carry_phrase` | The four gifts. |
-| `pin_*`, `pinterest_board`, `pinterest_status` | Pinterest copy + metadata. |
 | `related_entry_ids`, `related_articles`, `related_product_ids`, `related_resources` | Recommendations. |
 | `seo_title`, `meta_description`, `canonical_url`, `social_*` | SEO/social. |
 | `author`, `reviewed_by`, `content_review_status`, `scripture_review_status`, `last_reviewed_date`, `version`, `created_at`, `updated_at` | Governance. |

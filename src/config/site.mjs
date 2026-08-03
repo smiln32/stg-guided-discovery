@@ -6,16 +6,16 @@
 // at runtime, so it must stay dependency-free (plain .mjs).
 // -----------------------------------------------------------------------------
 
-// The public base URL of the site. Canonical URLs, the sitemap, Pinterest
-// destination URLs, and Open Graph tags all derive from this. Set this to the
-// real domain before the first production deploy. On Netlify you can also set
-// SITE_URL as an environment variable; that wins if present.
+// The public base URL of the site. Canonical URLs, the sitemap, and Open Graph
+// tags all derive from this. Set this to the real domain before the first
+// production deploy. On Netlify you can also set SITE_URL as an environment
+// variable; that wins if present.
 export const SITE_URL =
   (typeof process !== 'undefined' && process.env && process.env.SITE_URL) ||
   'https://simplifytoglorify.com';
 
-// Base path where the whole feature lives. Every internal link, canonical URL,
-// and Pin destination derives from this via src/lib/urls.ts.
+// Base path where the whole feature lives. Every internal link and canonical
+// URL derives from this via src/lib/urls.ts.
 export const BASE_PATH = '/daily';
 
 // The site's operating timezone. Daily scheduling and rotation resolve "today"

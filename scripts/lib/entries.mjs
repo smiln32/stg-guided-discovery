@@ -1,4 +1,4 @@
-// Shared helpers for the content CLI scripts (validate / import / export / pins).
+// Shared helpers for the content CLI scripts (validate / import / export).
 // These run in plain Node, so they read the YAML entry files directly rather
 // than through Astro. The AUTHORITATIVE validation is still the Astro build
 // (the Zod schema in src/content.config.ts); this mirror is a fast pre-check.
@@ -25,8 +25,8 @@ export const LIVE_STATUSES = new Set(LIVE_STATUS_LIST);
 /**
  * The full publish gate, mirroring the Zod superRefine in content.config.ts:
  * live status + both reviews approved + Scripture verified and not a
- * placeholder. Standalone tools (e.g. the Pin exporter) use this so they can
- * never emit artifacts for an entry the build itself would reject.
+ * placeholder. Standalone tools use this so they can never emit artifacts for
+ * an entry the build itself would reject.
  */
 export function passesPublishGate(data) {
   return (

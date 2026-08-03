@@ -9,8 +9,6 @@
 export const EVENTS = {
   ENTRY_VIEWED: 'entry_viewed',
   TOPIC_SELECTED: 'topic_selected',
-  PIN_SAVE_CLICKED: 'pin_save_clicked',
-  PIN_IMAGE_OPENED: 'pin_image_opened',
   RELATED_ARTICLE_CLICKED: 'related_article_clicked',
   RELATED_PRODUCT_CLICKED: 'related_product_clicked',
   SEARCH_PERFORMED: 'search_performed',

@@ -1,23 +1,29 @@
 # stg-website-interactives — Handoff (updated 2026-08-03)
 
 Current state of the project and the exact remaining steps to launch.
-For *how to operate* the system (add/approve/publish content, Pins),
-see [owner-guide.md](owner-guide.md).
+For *how to operate* the system (add/approve/publish content), see
+[owner-guide.md](owner-guide.md).
 
 ## Where things stand
 
 **The system is engineering-complete.** All 12 audit findings fixed
 (AUDIT-LOG.md, score 18/20); `npm run validate` and `npm run build` are clean.
 
-**Scope (2026-08-03):** the email/subscriber system was removed from this repo —
-signup forms, the provider integrations, double opt-in, the subscriber store,
-the seven-day journey pages and sender, the email previews, the `email_*` entry
-fields, and the Netlify Functions that backed them. The repo is now a purely
-static content site: permanent pages, the daily feature, topic archives, search,
-and Pins. The extracted code is kept offline outside this repo; the entry schema
+**Scope (2026-08-03):** both distribution modules were removed from this repo.
+
+- *Email/subscriber* — signup forms, provider integrations, double opt-in, the
+  subscriber store, the seven-day journey pages and sender, the email previews,
+  the `email_*` entry fields, and the Netlify Functions behind them.
+- *Pinterest* — the pin builder/SVG renderer, the "Save This Encouragement"
+  gallery, the per-entry Pin preview pages, the `pins:export` PNG exporter, and
+  the `pin_*` / `pinterest_*` entry fields.
+
+What remains is a purely static content site: permanent entry pages, the daily
+feature with its rotation, topic archives, and client-side search. Both extracted
+modules are kept offline outside this repo. The entry schema
 (`src/content.config.ts`) and `CSV_COLUMNS` (`src/config/entry-fields.mjs`) each
-carry a comment marking where the `email_*` fields used to live if it is ever
-reconnected.
+carry a comment listing exactly which fields belonged to each module, should
+either ever be reconnected.
 
 **Content:** 15 published entries + 1 draft. 10 topic archive pages build
 (anxiety, overwhelm, exhaustion, caregiving, waiting, uncertainty,
@@ -84,8 +90,6 @@ is nothing else to configure; the site is fully static.
 ### 4. Nice-to-haves (not blockers)
 - One more entry each for **grief**, **feeling-far-from-god**, and
   **patience** publishes those three archives.
-- `npm run pins:export` renders Pin PNGs to `pin-exports/` for upload;
-  every entry has pin copy marked `ready`.
 - Site nav on the main site — deliberately untouched so far
   ("URL only for now").
 - New brand logo/favicon (was promised, not yet received).

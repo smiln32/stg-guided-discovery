@@ -2,9 +2,9 @@
 // Topic library configuration.
 //
 // Every topic that content can be tagged with is declared here, with a stable
-// slug, an approved short introduction, and a calm accent color used for Pin
-// templates and topic labels. Accents are drawn from (or harmonize with) the
-// brand palette and stay muted so no page is dominated by lavender or pink.
+// slug, an approved short introduction, and a calm accent color used for topic
+// labels. Accents are drawn from (or harmonize with) the brand palette and stay
+// muted so no page is dominated by lavender or pink.
 //
 // A topic only gets a public archive page when it has at least MIN_ENTRIES
 // approved+published entries (see src/lib/topics.js). This prevents thin,
@@ -21,7 +21,7 @@ export const MIN_TOPIC_ENTRIES = 3;
  * @property {string} slug
  * @property {string} title
  * @property {string} intro   Approved, gentle 1–2 sentence introduction.
- * @property {string} accent  Hex accent color for labels and Pin templates.
+ * @property {string} accent  Hex accent color for topic labels.
  * @property {boolean} [alwaysPublish]  Override the min-entries gate.
  */
 

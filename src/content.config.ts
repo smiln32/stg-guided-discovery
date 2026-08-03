@@ -84,25 +84,15 @@ const entryFields = z
       small_step: z.string().optional(),
       carry_phrase: z.string().optional(),
 
-      // --- Pinterest -----------------------------------------------------
-      pin_quote: z.string().optional(),
-      pin_prayer: z.string().optional(),
-      pin_practical_text: z.string().optional(),
-      pin_curiosity_text: z.string().optional(),
-      pin_title: z.string().optional(),
-      pin_description: z.string().optional(),
-      pin_alt_text: z.string().optional(),
-      pinterest_board: z.string().optional(),
-      pinterest_status: z
-        .enum(['not_started', 'ready', 'scheduled', 'published'])
-        .default('not_started'),
-      pinterest_publish_date: z.coerce.date().optional(),
-
-      // (An email block lived here — email_subject, email_preview_text,
-      // email_opening, email_body, email_cta_text, email_status,
-      // email_send_date, email_segment — until the email/subscriber system was
-      // extracted out of this repo in 2026-08. Restore these fields here, and
-      // the matching CSV_COLUMNS entries, if it is ever reconnected.)
+      // (Two distribution blocks lived here until they were extracted out of
+      // this repo in 2026-08. Restore the fields here AND the matching
+      // CSV_COLUMNS entries together if either is ever reconnected:
+      //   • Pinterest — pin_quote, pin_prayer, pin_practical_text,
+      //     pin_curiosity_text, pin_title, pin_description, pin_alt_text,
+      //     pinterest_board, pinterest_status, pinterest_publish_date
+      //   • Email — email_subject, email_preview_text, email_opening,
+      //     email_body, email_cta_text, email_status, email_send_date,
+      //     email_segment
 
       // --- Relationships -------------------------------------------------
       related_entry_ids: z.array(z.string()).default([]),

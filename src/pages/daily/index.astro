@@ -2,10 +2,9 @@
 // /daily/ — the daily landing page.
 // Shows the currently-resolved entry via the fallback chain. Its canonical URL
 // points at the entry's PERMANENT page so the rotating daily page never
-// competes with the permanent page in search or splits Pin equity.
+// competes with the permanent page in search or splits link equity.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EntryArticle from '../../components/EntryArticle.astro';
-import PinSaveGallery from '../../components/PinSaveGallery.astro';
 import RelatedContent from '../../components/RelatedContent.astro';
 import EntryCard from '../../components/EntryCard.astro';
 import { resolveDailyEntry } from '../../lib/daily';
@@ -43,9 +42,6 @@ const today = formatDisplayDate(now);
               Open this encouragement's own page
             </a>
           </div>
-
-          <hr class="divider" />
-          <PinSaveGallery data={entry.data} pageUrl={permalink} />
 
           <hr class="divider" />
           <RelatedContent

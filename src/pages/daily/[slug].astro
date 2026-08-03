@@ -1,12 +1,11 @@
 ---
 // /daily/[slug]/ — the PERMANENT, indexable entry page.
 // Built only for visible entries, so draft/unapproved URLs 404 rather than leak.
-// This URL never changes content once published — it is the stable destination
-// for every Pin.
+// This URL never changes content once published — it is the stable, permanent
+// destination for every inbound link.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import EntryArticle from '../../components/EntryArticle.astro';
-import PinSaveGallery from '../../components/PinSaveGallery.astro';
 import RelatedContent from '../../components/RelatedContent.astro';
 import EntryCard from '../../components/EntryCard.astro';
 import { getVisibleEntries, getRelatedEntries, getPreviousEntry, buildNow } from '../../lib/entries';
@@ -55,9 +54,6 @@ const description = d.meta_description || `${d.short_title} — ${d.scripture_re
     <div style="margin-top: var(--space-md);">
       <EntryArticle data={d} />
     </div>
-
-    <hr class="divider" />
-    <PinSaveGallery data={d} pageUrl={permalink} />
 
     <hr class="divider" />
     <RelatedContent

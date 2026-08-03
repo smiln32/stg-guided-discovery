@@ -12,8 +12,7 @@
     "astro": "astro",
     "validate": "node scripts/validate.mjs",
     "import:csv": "node scripts/import-csv.mjs",
-    "export:csv": "node scripts/export-csv.mjs",
-    "pins:export": "node scripts/export-pins.mjs"
+    "export:csv": "node scripts/export-csv.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.3.0",
@@ -23,7 +22,6 @@
     "astro": "^5.6.1"
   },
   "devDependencies": {
-    "@resvg/resvg-js": "^2.6.2",
     "papaparse": "^5.4.1",
     "yaml": "^2.4.5"
   }

@@ -1,5 +1,13 @@
 # App Audit Log — stg-website-interactives
 
+> **Note (2026-08-03):** this log is a historical record and is left as it was
+> written. On 2026-08-03 the entire email/subscriber system was extracted out of
+> this repo, so the files, findings, and test suite referenced below that concern
+> email (`src/lib/email/`, `netlify/functions/`, `SubscribeForm`, the journey
+> pages, `tests/email-flow.test.mjs`) no longer exist here. Everything else —
+> the entry schema and publish gate, the Pin engine, the CSV scripts, the URL
+> builders — is unchanged and still accurate.
+
 _Last audited: 2026-07-13 (fixes applied same day) · Files reviewed: 32 of ~55 source files (all lib/, all scripts/, all netlify/functions/, config/, key pages) · Not covered: most .astro components (EntryArticle, ScriptureBlock, PinSaveGallery, SubscribeForm internals, Analytics, BaseLayout), global.css, preview/journeys/search page internals, docs/_
 
 ## Health

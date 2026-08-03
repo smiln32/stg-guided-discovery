@@ -1,63 +1,31 @@
 ---
-// /daily/preview/ — owner index of email + welcome previews.
+// /daily/preview/ — owner index of the Pin previews for every visible entry.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getVisibleEntries } from '../../../lib/entries';
-import { WELCOME_SERIES } from '../../../config/email.mjs';
-import { renderWelcomeEmail } from '../../../lib/email/render.mjs';
-import { getVisibleEntryBySlug } from '../../../lib/entries';
-import { paths, absolute } from '../../../lib/urls';
+import { paths } from '../../../lib/urls';
 import { BASE_PATH } from '../../../config/site.mjs';
 
 const entries = await getVisibleEntries();
-
-// Pre-render the welcome series (some steps pull Scripture from an entry).
-const welcome = [];
-for (const step of WELCOME_SERIES.emails) {
-  const entry = step.entrySlug ? await getVisibleEntryBySlug(step.entrySlug) : undefined;
-  welcome.push({ step, ...renderWelcomeEmail(step, entry?.data) });
-}
 ---
 
 <BaseLayout
-  title="Email & Pin previews"
-  description="Preview the emails and Pins each entry produces."
+  title="Pin previews"
+  description="Preview the Pins each entry produces."
   path={`${BASE_PATH}/preview/`}
   noindex={true}
 >
   <div class="container section">
     <p class="eyebrow">Owner preview</p>
     <h1>Preview outputs</h1>
-    <p>Every approved entry produces a website page, Pins, and email content. Preview them here before publishing.</p>
+    <p>Every approved entry produces a website page and a set of Pins. Preview them here before publishing.</p>
 
-    <h2>Daily / ongoing emails</h2>
+    <h2>Pins by entry</h2>
     <ul>
       {entries.map((e) => (
         <li>
-          <a href={`${BASE_PATH}/preview/email/${e.data.slug}/`}>{e.data.short_title}</a>
-          {' · '}
-          <a href={paths.pins(e.data.slug)}>Pins</a>
+          <a href={paths.pins(e.data.slug)}>{e.data.short_title}</a>
         </li>
       ))}
     </ul>
-
-    <h2>Welcome series</h2>
-    <div class="welcome-grid">
-      {welcome.map(({ step, subject, preview, html }) => (
-        <figure class="welcome">
-          <figcaption>
-            <strong>Day {step.day} · {subject}</strong>
-            <span class="hint">{preview}</span>
-          </figcaption>
-          <iframe class="mini" title={`Welcome email: ${subject}`} srcdoc={html}></iframe>
-        </figure>
-      ))}
-    </div>
   </div>
 </BaseLayout>
-
-<style>
-  .welcome-grid { display: grid; gap: var(--space-lg); }
-  @media (min-width: 48rem) { .welcome-grid { grid-template-columns: 1fr 1fr; } }
-  .welcome figcaption { display: grid; gap: 2px; margin-bottom: var(--space-xs); }
-  .mini { width: 100%; height: 460px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: #fff; }
-</style>

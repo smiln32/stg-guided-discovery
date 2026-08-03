@@ -74,16 +74,6 @@ pin_alt_text: >-
 pinterest_board: Faith and Hope
 pinterest_status: ready
 
-email_subject: Welcome — a gentle place to begin
-email_preview_text: You do not have to arrive with anything figured out.
-email_opening: Welcome. Whatever brought you here, you can simply be still for a moment.
-email_body: >-
-  Here you will find one Scripture, one gentle word, one prayer, and one small
-  step at a time — never more than you can hold. Take just today.
-email_cta_text: Read today's encouragement
-email_status: ready
-email_segment: general
-
 related_entry_ids:
   - when-you-dont-know-what-to-pray
   - when-the-waiting-feels-too-long

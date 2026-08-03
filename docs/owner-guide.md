@@ -11,10 +11,8 @@ You write **one entry**. From that single approved entry, the system produces:
 
 - a **permanent website page** that never changes address,
 - the **daily feature** on `/daily/`,
-- up to **five Pinterest Pins**,
-- **email** content (daily note, welcome series, journeys),
-- a place in the **topic library**, and
-- a day inside a **seven-day journey**.
+- up to **five Pinterest Pins**, and
+- a place in the **topic library**.
 
 The system will **format, schedule, and distribute** approved content — but it
 will never write theology, invent Scripture, change a verse, or publish anything
@@ -89,7 +87,6 @@ npm run dev             # opens a local site; visit the pages below
 
 - Website page: `http://localhost:4321/daily/your-slug/`
 - Pins (preview + metadata + overflow warnings): `.../daily/pins/your-slug/`
-- Email: `.../daily/preview/email/your-slug/`
 - All previews at once: `.../daily/preview/`
 
 ### 5. Schedule or publish
@@ -122,37 +119,7 @@ Then rebuild and deploy (commit + push; Netlify builds automatically).
 > exactly, drop the brand `.ttf` font files into `src/assets/fonts/` and re-run the
 > export.
 
-### 7. Add an entry to an email sequence
-
-- **Daily / ongoing note:** any live entry can be sent as a daily note; the content
-  is generated automatically (preview it at `/preview/email/your-slug/`).
-- **Welcome series:** edit `src/config/email.mjs` → `WELCOME_SERIES`. A step can
-  point at an approved entry with `entrySlug` so its Scripture is included.
-
-### 8. Create a seven-day journey
-
-Edit `src/config/email.mjs` → `JOURNEYS`. Add an object like:
-
-```js
-{
-  slug: 'seven-days-for-grief',
-  title: 'Seven Days for Grief',
-  topic: 'grief',
-  description: 'A gentle week for sorrow.',
-  days: [
-    'when-the-grief-comes-in-waves',
-    'a-gentle-place-to-begin',
-    // ...seven approved entry slugs
-  ],
-}
-```
-
-Each day must be an **approved** entry's slug, so no unreviewed Scripture is ever
-sent. A missing/unapproved slug is skipped with a warning rather than shown broken.
-The journey page and enrollment form appear automatically at
-`/daily/journeys/seven-days-for-grief/`.
-
-### 9. Map related articles and products
+### 7. Map related articles and products
 
 In the entry file:
 
@@ -169,7 +136,7 @@ related_product_ids:
 Products are defined in `src/config/products.mjs` (title, URL, kind, blurb, topics).
 Free content and downloads are always offered before paid products.
 
-### 10. Pause or archive an entry
+### 8. Pause or archive an entry
 
 - **Pause:** set `status: paused`. It drops out of the daily feature and rotation,
   and its page stops being built. (Because Pins may already point at it, prefer
@@ -201,54 +168,6 @@ Back up everything to a spreadsheet anytime with `npm run export:csv`.
 
 ---
 
-## Email setup (going live)
-
-Out of the box, email is in **mock mode**: forms work, validation works, and the
-site logs what it *would* send — but nothing is actually emailed. This is safe for
-development. To send real email, set these in the Netlify UI (Site settings →
-Environment variables), never in the code:
-
-**Option A — Zoho Campaigns** (recommended for lists, segments, automations):
-```
-EMAIL_PROVIDER=zoho_campaigns
-ZOHO_REGION=com
-ZOHO_CLIENT_ID=...                  # from a Zoho OAuth self-client
-ZOHO_CLIENT_SECRET=...
-ZOHO_REFRESH_TOKEN=...              # access tokens are refreshed automatically
-ZOHO_CAMPAIGNS_LIST_KEY=...
-```
-
-**Option B — ZeptoMail** (Zoho transactional send, self-managed list):
-```
-EMAIL_PROVIDER=zeptomail
-ZOHO_REGION=com
-ZEPTOMAIL_TOKEN=...
-EMAIL_FROM_ADDRESS=hello@simplifytoglorify.com
-EMAIL_FROM_NAME=Simplify to Glorify
-EMAIL_CONFIRM_SECRET=...            # signs double opt-in links; 16+ chars
-```
-
-On the ZeptoMail path the system runs its own **double opt-in**: the signup email
-contains a signed confirmation link, and nothing is ever sent to an address until
-its owner clicks it (`netlify/functions/confirm.mjs` flips the subscriber to
-`confirmed`). On the Zoho Campaigns path, Zoho runs its own confirmation flow.
-
-> **Note on "Zoho Mail":** plain Zoho *Mail* (mailboxes) cannot manage a subscriber
-> list or run drip sequences by itself. Use **Zoho Campaigns** for lists/automation,
-> or **ZeptoMail** for sending with the built-in subscriber store.
-
-**Automated journeys/drips** are driven by the scheduled function
-`netlify/functions/journey-tick.mjs` (runs daily). Subscriber and enrollment data
-is stored durably in **Netlify Blobs** automatically when the site runs on Netlify
-(locally it falls back to a JSON file in `.data/`) — nothing to configure. Real
-delivery needs `EMAIL_PROVIDER=zeptomail` with credentials; alternatively, let
-Zoho Campaigns own the list and run the sequences as Zoho automations (then the
-scheduled function is optional). Journey emails only go to **confirmed**
-subscribers. Until a real provider is configured, no automated emails are sent —
-the system never pretends an integration works when it does not.
-
----
-
 ## Troubleshooting
 
 | Symptom | Likely cause / fix |
@@ -259,7 +178,6 @@ the system never pretends an integration works when it does not.
 | A topic has no page | It has fewer than the minimum entries. Add entries or lower `MIN_TOPIC_ENTRIES` in `src/config/topics.mjs`. |
 | The daily page shows the "welcome" fallback | Nothing is featured for today and nothing is rotation-eligible. Set a `featured_date` or mark entries `rotation_eligible: true`. |
 | Pin text looks cut off | The Pin page shows an overflow warning — shorten `pin_quote`/`pin_prayer`/etc. |
-| Signup says "development mode" | `EMAIL_PROVIDER` is still `mock`. Set a real provider + credentials in Netlify. |
 | CSV import rejected a row | Read the row-specific message it prints — usually a missing field, bad date, duplicate slug, or a "live" row with unverified Scripture. |
 
 ---
@@ -279,7 +197,6 @@ the system never pretends an integration works when it does not.
 | `scripture_reference`, `scripture_text`, `scripture_translation`, `scripture_verified`, `scripture_verification_notes` | The verse — never altered by the system. |
 | `gentle_word`, `prayer`, `journal_question`, `small_step`, `carry_phrase` | The four gifts. |
 | `pin_*`, `pinterest_board`, `pinterest_status` | Pinterest copy + metadata. |
-| `email_*` | Email copy + status + segment. |
 | `related_entry_ids`, `related_articles`, `related_product_ids`, `related_resources` | Recommendations. |
 | `seo_title`, `meta_description`, `canonical_url`, `social_*` | SEO/social. |
 | `author`, `reviewed_by`, `content_review_status`, `scripture_review_status`, `last_reviewed_date`, `version`, `created_at`, `updated_at` | Governance. |

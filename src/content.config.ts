@@ -98,17 +98,11 @@ const entryFields = z
         .default('not_started'),
       pinterest_publish_date: z.coerce.date().optional(),
 
-      // --- Email ---------------------------------------------------------
-      email_subject: z.string().optional(),
-      email_preview_text: z.string().optional(),
-      email_opening: z.string().optional(),
-      email_body: z.string().optional(),
-      email_cta_text: z.string().optional(),
-      email_status: z
-        .enum(['not_started', 'ready', 'scheduled', 'sent'])
-        .default('not_started'),
-      email_send_date: z.coerce.date().optional(),
-      email_segment: z.string().optional(),
+      // (An email block lived here — email_subject, email_preview_text,
+      // email_opening, email_body, email_cta_text, email_status,
+      // email_send_date, email_segment — until the email/subscriber system was
+      // extracted out of this repo in 2026-08. Restore these fields here, and
+      // the matching CSV_COLUMNS entries, if it is ever reconnected.)
 
       // --- Relationships -------------------------------------------------
       related_entry_ids: z.array(z.string()).default([]),

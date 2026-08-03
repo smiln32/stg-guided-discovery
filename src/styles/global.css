@@ -377,7 +377,6 @@ a:hover {
   margin-bottom: var(--space-2xs);
 }
 input[type='text'],
-input[type='email'],
 select,
 textarea {
   width: 100%;

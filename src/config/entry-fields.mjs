@@ -41,9 +41,12 @@ export const CSV_COLUMNS = [
   'gentle_word', 'prayer', 'journal_question', 'small_step', 'carry_phrase',
   'pin_quote', 'pin_prayer', 'pin_practical_text', 'pin_curiosity_text',
   'pin_title', 'pin_description', 'pin_alt_text', 'pinterest_board',
-  'pinterest_status', 'pinterest_publish_date', 'email_subject',
-  'email_preview_text', 'email_opening', 'email_body', 'email_cta_text',
-  'email_status', 'email_send_date', 'email_segment', 'related_entry_ids',
+  'pinterest_status', 'pinterest_publish_date',
+  // (The email_* columns sat here — email_subject, email_preview_text,
+  // email_opening, email_body, email_cta_text, email_status, email_send_date,
+  // email_segment — until the email system was extracted in 2026-08. Restore
+  // them here and in the Zod schema together if it is ever reconnected.)
+  'related_entry_ids',
   'related_articles', 'related_product_ids', 'related_resources', 'seo_title',
   'meta_description', 'canonical_url', 'social_title', 'social_description',
   'social_image', 'author', 'reviewed_by', 'content_review_status',

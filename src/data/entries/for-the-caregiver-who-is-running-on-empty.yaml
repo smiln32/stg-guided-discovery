@@ -73,16 +73,6 @@ pin_alt_text: >-
 pinterest_board: Caregiving
 pinterest_status: ready
 
-email_subject: For the caregiver who is running on empty
-email_preview_text: You are allowed to be tired. You are allowed to need care too.
-email_opening: You have been carrying so much, and most of it quietly.
-email_body: >-
-  This invitation is not for the rested and capable — it is for the ones who
-  labor and are heavily burdened. You come as you are, and He meets you there.
-email_cta_text: Read the full encouragement
-email_status: ready
-email_segment: caregiving
-
 related_entry_ids:
   - when-you-are-worried-about-what-comes-next
   - when-you-dont-know-what-to-pray

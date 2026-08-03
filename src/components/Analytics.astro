@@ -34,8 +34,6 @@
       track(el.dataset.track!, { label: el.dataset.trackLabel || el.textContent?.trim()?.slice(0, 80) });
     });
 
-    // Bridge the subscribe form's own event.
-    window.addEventListener('htt:signup', (e: any) => track('email_signup_completed', e.detail || {}));
     // Search events (dispatched by the search page).
     window.addEventListener('htt:search', (e: any) => track('search_performed', e.detail || {}));
     window.addEventListener('htt:search-empty', (e: any) => track('no_search_results', e.detail || {}));

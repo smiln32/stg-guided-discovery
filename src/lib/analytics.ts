@@ -11,14 +11,10 @@ export const EVENTS = {
   TOPIC_SELECTED: 'topic_selected',
   PIN_SAVE_CLICKED: 'pin_save_clicked',
   PIN_IMAGE_OPENED: 'pin_image_opened',
-  EMAIL_SIGNUP_STARTED: 'email_signup_started',
-  EMAIL_SIGNUP_COMPLETED: 'email_signup_completed',
-  JOURNEY_SELECTED: 'journey_selected',
   RELATED_ARTICLE_CLICKED: 'related_article_clicked',
   RELATED_PRODUCT_CLICKED: 'related_product_clicked',
   SEARCH_PERFORMED: 'search_performed',
   NO_SEARCH_RESULTS: 'no_search_results',
-  PREFERENCE_UPDATED: 'preference_updated',
 } as const;
 
 export type AnalyticsEvent = (typeof EVENTS)[keyof typeof EVENTS];

@@ -11,7 +11,6 @@ export const GET: APIRoute = () => {
     `Disallow: ${BASE_PATH}/pins/`,
     `Disallow: ${BASE_PATH}/preview/`,
     `Disallow: ${BASE_PATH}/search`,
-    `Disallow: ${BASE_PATH}/emails.json`,
     `Disallow: ${BASE_PATH}/search-index.json`,
     '',
     `Sitemap: ${absolute('/sitemap-index.xml')}`,

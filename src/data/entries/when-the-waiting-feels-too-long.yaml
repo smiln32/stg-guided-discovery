@@ -76,16 +76,6 @@ pin_alt_text: >-
 pinterest_board: Waiting and Uncertainty
 pinterest_status: ready
 
-email_subject: When the waiting feels too long
-email_preview_text: Waiting is not wasted time, and it is not proof you were forgotten.
-email_opening: Waiting is its own kind of hard — the slow ache of the in-between.
-email_body: >-
-  The psalm says it twice, as if you would need to hear it again: wait for the
-  Lord. Waiting is where courage is quietly built. You have not been forgotten.
-email_cta_text: Read the full encouragement
-email_status: ready
-email_segment: waiting-uncertainty
-
 related_entry_ids:
   - when-you-are-worried-about-what-comes-next
   - a-gentle-place-to-begin

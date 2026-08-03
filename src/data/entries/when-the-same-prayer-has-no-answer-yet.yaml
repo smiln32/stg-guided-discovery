@@ -81,19 +81,6 @@ pin_alt_text: >-
 pinterest_board: Learning to Pray
 pinterest_status: ready
 
-email_subject: For the prayer you have prayed the longest
-email_preview_text: Prayed again is not unheard. He hears every time.
-email_opening: >-
-  There is a particular ache in praying the same prayer again — words worn so
-  smooth you wonder if they are landing anywhere at all.
-email_body: >-
-  Psalm 40 was written on the other side of a long wait: "I waited patiently
-  for Yahweh. He turned to me, and heard my cry." The silence was never
-  absence. You do not have to make the words new today — only bring them again.
-email_cta_text: Read today's encouragement
-email_status: ready
-email_segment: general
-
 related_entry_ids:
   - when-you-dont-know-what-to-pray
   - strength-for-the-long-wait

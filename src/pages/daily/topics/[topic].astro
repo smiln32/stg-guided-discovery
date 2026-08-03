@@ -4,13 +4,11 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import EntryCard from '../../../components/EntryCard.astro';
-import SubscribeForm from '../../../components/SubscribeForm.astro';
 import RelatedContent from '../../../components/RelatedContent.astro';
 import { publishedTopics } from '../../../lib/topics';
 import { getEntriesByTopic, buildNow } from '../../../lib/entries';
 import { paths } from '../../../lib/urls';
 import { PRODUCTS } from '../../../config/products.mjs';
-import { emailTopicForContentTopic } from '../../../config/email.mjs';
 import { itemListJsonLd, breadcrumbJsonLd } from '../../../lib/jsonld';
 
 export async function getStaticPaths() {
@@ -81,13 +79,5 @@ const jsonLd = [
     }
 
     <RelatedContent productIds={relatedProducts} />
-
-    <div class="section">
-      <SubscribeForm
-        source={`topic:${topic.slug}`}
-        defaultTopic={emailTopicForContentTopic(topic.slug)}
-        heading={`A gentle note for ${topic.title.toLowerCase()}`}
-      />
-    </div>
   </div>
 </BaseLayout>

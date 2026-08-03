@@ -78,18 +78,6 @@ pin_alt_text: >-
 pinterest_board: Anxiety and Overwhelm
 pinterest_status: ready
 
-email_subject: For the day your mind keeps running ahead
-email_preview_text: One verse, one prayer, one small step for anxious days.
-email_opening: >-
-  If your thoughts have been sprinting toward tomorrow, here is a place to slow
-  down for a moment.
-email_body: >-
-  Tomorrow can carry its own weight. You do not have to pick it up today. There
-  is only this hour, and grace enough for this hour.
-email_cta_text: Read the full encouragement
-email_status: ready
-email_segment: anxiety-overwhelm
-
 related_entry_ids:
   - when-the-waiting-feels-too-long
   - when-you-dont-know-what-to-pray

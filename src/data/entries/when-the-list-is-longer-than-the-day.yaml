@@ -82,19 +82,6 @@ pin_alt_text: >-
 pinterest_board: Rest for the Weary
 pinterest_status: ready
 
-email_subject: When the list is longer than the day
-email_preview_text: The Shepherd sets the pace. Not the list.
-email_opening: >-
-  Some days the list is simply longer than the day, and you can feel it before
-  your feet touch the floor.
-email_body: >-
-  In Psalm 23, the resting is not earned after the work is finished — the
-  Shepherd insists on it. You are allowed to be led somewhere quiet for a few
-  minutes, right in the middle of the undone things.
-email_cta_text: Read today's encouragement
-email_status: ready
-email_segment: general
-
 related_entry_ids:
   - for-the-caregiver-who-is-running-on-empty
   - when-the-worry-will-not-quiet

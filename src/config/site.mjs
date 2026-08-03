@@ -7,15 +7,15 @@
 // -----------------------------------------------------------------------------
 
 // The public base URL of the site. Canonical URLs, the sitemap, Pinterest
-// destination URLs, Open Graph tags, and email links all derive from this.
-// Set this to the real domain before the first production deploy. On Netlify
-// you can also set SITE_URL as an environment variable; that wins if present.
+// destination URLs, and Open Graph tags all derive from this. Set this to the
+// real domain before the first production deploy. On Netlify you can also set
+// SITE_URL as an environment variable; that wins if present.
 export const SITE_URL =
   (typeof process !== 'undefined' && process.env && process.env.SITE_URL) ||
   'https://simplifytoglorify.com';
 
 // Base path where the whole feature lives. Every internal link, canonical URL,
-// Pin destination, and email link derives from this via src/lib/urls.ts.
+// and Pin destination derives from this via src/lib/urls.ts.
 export const BASE_PATH = '/daily';
 
 // The site's operating timezone. Daily scheduling and rotation resolve "today"
@@ -31,12 +31,6 @@ export const BRAND = {
   name: 'Simplify to Glorify',
   tagline:
     'One Scripture, one gentle encouragement, one prayer, and one small step for today.',
-  emailProgramName: 'A Gentle Note',
-  emailProgramDescription:
-    'Receive one Scripture, one gentle encouragement, one prayer, and one small step for the day ahead.',
-  // Used as the sending identity label in email templates. The actual sending
-  // address comes from environment variables (see .env.example).
-  fromName: 'Simplify to Glorify',
 };
 
 // Established Simplify to Glorify palette. Mirrored in CSS custom properties in

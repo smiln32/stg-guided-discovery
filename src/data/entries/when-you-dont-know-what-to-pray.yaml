@@ -77,17 +77,6 @@ pin_alt_text: >-
 pinterest_board: Learning to Pray
 pinterest_status: ready
 
-email_subject: When you don't know what to pray
-email_preview_text: A held-out hand is a prayer. A tired sigh is a prayer.
-email_opening: Maybe you have sat down to pray and found nothing there. This is for that.
-email_body: >-
-  You are not required to pray well, or even to have words. The Spirit Himself
-  carries what you cannot put into language. When you do not know how to pray,
-  you are not praying alone.
-email_cta_text: Read the full encouragement
-email_status: ready
-email_segment: learning-to-pray
-
 related_entry_ids:
   - a-gentle-place-to-begin
   - when-you-are-worried-about-what-comes-next

@@ -12,10 +12,6 @@ dist/
 pin-exports/
 content/entries-export.csv
 
-# Local dev subscriber store (mock; never commit subscriber data)
-.data/
-.data-test/
-
 # Env / secrets
 .env
 .env.*

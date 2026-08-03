@@ -1,14 +1,23 @@
-# stg-website-interactives — Handoff (2026-07-14)
+# stg-website-interactives — Handoff (updated 2026-08-03)
 
 Current state of the project and the exact remaining steps to launch.
-For *how to operate* the system (add/approve/publish content, Pins, email),
+For *how to operate* the system (add/approve/publish content, Pins),
 see [owner-guide.md](owner-guide.md).
 
 ## Where things stand
 
 **The system is engineering-complete.** All 12 audit findings fixed
-(AUDIT-LOG.md, score 18/20), 21/21 tests pass, `npm run validate` and
-`npm run build` are clean (68 pages).
+(AUDIT-LOG.md, score 18/20); `npm run validate` and `npm run build` are clean.
+
+**Scope (2026-08-03):** the email/subscriber system was removed from this repo —
+signup forms, the provider integrations, double opt-in, the subscriber store,
+the seven-day journey pages and sender, the email previews, the `email_*` entry
+fields, and the Netlify Functions that backed them. The repo is now a purely
+static content site: permanent pages, the daily feature, topic archives, search,
+and Pins. The extracted code is kept offline outside this repo; the entry schema
+(`src/content.config.ts`) and `CSV_COLUMNS` (`src/config/entry-fields.mjs`) each
+carry a comment marking where the `email_*` fields used to live if it is ever
+reconnected.
 
 **Content:** 15 published entries + 1 draft. 10 topic archive pages build
 (anxiety, overwhelm, exhaustion, caregiving, waiting, uncertainty,
@@ -67,19 +76,12 @@ entry; set `reviewed_by` to the real reviewer; set `is_sample: false`.
 The draft additionally needs `status: published` and approvals
 (see the checklist at the top of its file).
 
-### 3. Go live with email
-Email currently runs in `mock` mode (logs only, sends nothing).
-In Netlify set: `EMAIL_PROVIDER` (`zoho_campaigns` or `zeptomail`),
-provider credentials, and `EMAIL_CONFIRM_SECRET` (any long random string —
-double opt-in confirm links are signed with it). Details: `.env.example`
-and the system guide §email.
+### 3. Deploy (if this repo is the vehicle)
+Connect the GitHub repo to Netlify — `netlify.toml` already configures the
+build command and publish directory. Set `SITE_URL` in the Netlify UI. There
+is nothing else to configure; the site is fully static.
 
-### 4. Deploy (if this repo is the vehicle)
-Connect the GitHub repo to Netlify — `netlify.toml` already configures
-build, publish dir, functions, and the journey-tick cron. Set `SITE_URL`
-and the email vars in the Netlify UI.
-
-### 5. Nice-to-haves (not blockers)
+### 4. Nice-to-haves (not blockers)
 - One more entry each for **grief**, **feeling-far-from-god**, and
   **patience** publishes those three archives.
 - `npm run pins:export` renders Pin PNGs to `pin-exports/` for upload;

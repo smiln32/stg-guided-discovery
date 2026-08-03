@@ -1,19 +1,13 @@
 # Netlify configuration for stg-website-interactives.
-# The site is fully static (Astro output: 'static'); subscriber operations run
-# as standalone Functions in netlify/functions.
+# The site is fully static (Astro output: 'static') — no functions, no runtime.
 
 [build]
   command = "npm run build"
   publish = "dist"
-  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "20"
-  # Set SITE_URL (and EMAIL_PROVIDER + provider credentials) in the Netlify UI,
-  # not here, so secrets never live in the repo. See .env.example.
-
-[functions]
-  node_bundler = "esbuild"
+  # Set SITE_URL in the Netlify UI, not here. See .env.example.
 
 # Security headers (calm defaults; adjust CSP if you add third-party scripts).
 [[headers]]

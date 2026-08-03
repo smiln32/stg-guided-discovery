@@ -20,7 +20,9 @@ real, live simplifytoglorify.com content — all 42 URLs verified returning
 HTTP 200 on 2026-07-14. The product catalog (`src/config/products.mjs`)
 mirrors the real shop: 12 topic collections + 7 free PDF resources.
 
-**Repo:** private GitHub repo `smiln32/stg-website-interactives`, main branch.
+**Repo:** public GitHub repo `smiln32/stg-website-interactives`, main branch
+(made public 2026-08-02). No credentials have ever been committed — `.env` and
+`.env.*` are gitignored and only `.env.example` is tracked.
 
 ## Remaining launch steps (in order)
 

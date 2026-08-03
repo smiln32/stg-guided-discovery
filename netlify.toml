@@ -34,5 +34,5 @@
 # standalone deploy and you removed src/pages/index.astro.
 # [[redirects]]
 #   from = "/"
-#   to = "/hold-this-today/"
+#   to = "/daily/"
 #   status = 301

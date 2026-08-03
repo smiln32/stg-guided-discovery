@@ -40,7 +40,7 @@ const {
 const canonical = canonicalOverride ?? absolute(path);
 const fullTitle = title.includes(BRAND.name)
   ? title
-  : `${title} · ${BRAND.featureName}`;
+  : `${title} · ${BRAND.name}`;
 const socialImage = ogImage ? absolute(ogImage) : undefined;
 const year = new Date().getFullYear();
 ---
@@ -85,8 +85,7 @@ const year = new Date().getFullYear();
     <header class="site-header">
       <div class="container container-wide site-header__inner">
         <a class="site-header__brand" href={paths.home}>
-          {BRAND.featureName}
-          <span>{BRAND.name}</span>
+          {BRAND.name}
         </a>
         <nav class="site-nav" aria-label="Primary">
           <a href={paths.home}>Today</a>

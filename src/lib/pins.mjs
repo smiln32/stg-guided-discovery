@@ -81,7 +81,7 @@ function firstSentences(text, max = 220) {
  * the rotating daily landing page) and carries UTM + Pin-type tracking so a Pin
  * pinned today still resolves correctly years from now.
  */
-export function pinDestination(slug, pinType, campaign = 'hold-this-today') {
+export function pinDestination(slug, pinType, campaign = 'daily-encouragement') {
   const base = `${SITE_URL.replace(/\/$/, '')}${BASE_PATH}/${slug}/`;
   const q = new URLSearchParams({
     utm_source: 'pinterest',
@@ -106,11 +106,11 @@ export function buildPins(data) {
   const destination = (pinType) => pinDestination(data.slug, pinType);
 
   const filename = (pinType) =>
-    `hold-this-today-${data.slug}-${pinType}-pin.png`.toLowerCase();
+    `stg-${data.slug}-${pinType}-pin.png`.toLowerCase();
 
   const meta = (pinType, altFallback) => ({
     type: pinType,
-    pin_title: data.pin_title || `${data.short_title} · ${BRAND.featureName}`,
+    pin_title: data.pin_title || `${data.short_title} · ${BRAND.name}`,
     pin_description:
       data.pin_description ||
       `${firstSentences(data.gentle_word, 180)} — a gentle, Scripture-centered encouragement from ${BRAND.name}.`,
@@ -173,7 +173,7 @@ export function buildPins(data) {
   if (data.pin_curiosity_text) {
     pins.push({
       ...meta('curiosity', data.pin_curiosity_text),
-      eyebrow: BRAND.featureName,
+      eyebrow: BRAND.name,
       body: data.pin_curiosity_text,
       caption: '',
       style: 'heading',

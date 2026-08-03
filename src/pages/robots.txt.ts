@@ -2,16 +2,17 @@
 // working/preview surfaces out of the crawl.
 import type { APIRoute } from 'astro';
 import { absolute } from '../lib/urls';
+import { BASE_PATH } from '../config/site.mjs';
 
 export const GET: APIRoute = () => {
   const body = [
     'User-agent: *',
     'Allow: /',
-    'Disallow: /hold-this-today/pins/',
-    'Disallow: /hold-this-today/preview/',
-    'Disallow: /hold-this-today/search',
-    'Disallow: /hold-this-today/emails.json',
-    'Disallow: /hold-this-today/search-index.json',
+    `Disallow: ${BASE_PATH}/pins/`,
+    `Disallow: ${BASE_PATH}/preview/`,
+    `Disallow: ${BASE_PATH}/search`,
+    `Disallow: ${BASE_PATH}/emails.json`,
+    `Disallow: ${BASE_PATH}/search-index.json`,
     '',
     `Sitemap: ${absolute('/sitemap-index.xml')}`,
     '',

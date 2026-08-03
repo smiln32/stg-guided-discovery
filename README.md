@@ -23,7 +23,7 @@ npm run preview    # serve the built site locally
 npm test           # subscriber/email flow test suite (no network needed)
 ```
 
-Open **/hold-this-today/**.
+Open **/daily/**.
 
 ## Content workflow
 
@@ -44,7 +44,7 @@ A blank template is in [`content/sample-import-template.csv`](content/sample-imp
 - **Nothing publishes unless it is approved.** An entry cannot be `published` or
   `scheduled` unless both content review and Scripture review are `approved` and
   `scripture_verified` is true — otherwise the build fails with a clear message.
-- **Permanent URLs.** Every entry has a stable `/hold-this-today/[slug]/` page.
+- **Permanent URLs.** Every entry has a stable `/daily/[slug]/` page.
   Pins and emails always link there, never to the rotating daily page.
 - **Drafts stay private.** Unapproved entries are not built and never appear in
   the sitemap.

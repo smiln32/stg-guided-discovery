@@ -72,18 +72,18 @@ export const WELCOME_SERIES = {
       purpose:
         'Explain what arrives, set a gentle expectation, link to today’s encouragement, invite a topic choice.',
       cta_text: 'Read today’s encouragement',
-      cta_path: '/hold-this-today/',
+      cta_path: '/daily/',
       entrySlug: 'a-gentle-place-to-begin',
     },
     {
       day: 2,
       key: 'welcome-2',
-      subject: 'How to use Hold This Today',
+      subject: 'How to use your daily encouragement',
       preview: 'Read one. Save one. Carry one question.',
       purpose:
         'Read one entry, save one Pin, carry one question, explore by need.',
       cta_text: 'Browse by need',
-      cta_path: '/hold-this-today/topics/',
+      cta_path: '/daily/topics/',
     },
     {
       day: 4,
@@ -92,7 +92,7 @@ export const WELCOME_SERIES = {
       preview: 'A gentle entry chosen for where you are.',
       purpose: 'Send a topic-relevant entry and one related resource.',
       cta_text: 'Read this encouragement',
-      cta_path: '/hold-this-today/',
+      cta_path: '/daily/',
       topicRelevant: true,
     },
     {
@@ -103,7 +103,7 @@ export const WELCOME_SERIES = {
       purpose:
         'Present delivery options, invite a seven-day journey, mention products only if appropriate.',
       cta_text: 'Choose your rhythm',
-      cta_path: '/hold-this-today/preferences/',
+      cta_path: '/daily/preferences/',
     },
   ],
 };
@@ -177,7 +177,7 @@ export const SEGMENTS = [
   { key: 'product_interest', label: 'Product interest', example: 'Clicked a caregiving journal.' },
   { key: 'last_engagement', label: 'Last engagement', example: 'Last opened 12 days ago.' },
   { key: 'date_subscribed', label: 'Date subscribed', example: 'Joined 2026-07-01.' },
-  { key: 'source_campaign', label: 'Source campaign', example: 'utm_campaign=hold-this-today.' },
+  { key: 'source_campaign', label: 'Source campaign', example: 'utm_campaign=daily-encouragement.' },
   { key: 'source_pin', label: 'Pinterest source Pin', example: 'utm_content=prayer.' },
   { key: 'completed_journey', label: 'Completed journey', example: 'Finished the caregiver journey.' },
 ];

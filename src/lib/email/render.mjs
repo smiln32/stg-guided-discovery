@@ -40,7 +40,7 @@ function shell(previewText, innerHtml) {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #e7e0d8;border-radius:14px;">
     <tr><td style="padding:28px 28px 8px;font-family:Georgia,serif;color:${INK};font-size:20px;">
       ${esc(BRAND.name)}
-      <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;color:${SOFT};text-transform:uppercase;">${esc(BRAND.featureName)}</div>
+      <div style="font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px;color:${SOFT};text-transform:uppercase;">${esc(BRAND.emailProgramName)}</div>
     </td></tr>
     ${innerHtml}
     <tr><td style="padding:20px 28px 28px;font-family:Arial,sans-serif;font-size:12px;color:${SOFT};line-height:1.6;border-top:1px solid #e7e0d8;">
@@ -60,7 +60,7 @@ export function renderEntryEmail(d, { greetingName } = {}) {
   const greeting = greetingName ? `Hello ${greetingName},` : 'Hello friend,';
   const opening = d.email_opening || '';
   const body = d.email_body || firstParagraph(d.gentle_word);
-  const entryUrl = abs(`${BASE_PATH}/${d.slug}/`) + '?utm_source=email&utm_medium=gentle-note&utm_campaign=hold-this-today';
+  const entryUrl = abs(`${BASE_PATH}/${d.slug}/`) + '?utm_source=email&utm_medium=gentle-note&utm_campaign=daily-encouragement';
   const cta = d.email_cta_text || 'Read the full encouragement';
   const oneThing = d.small_step || d.journal_question || '';
 

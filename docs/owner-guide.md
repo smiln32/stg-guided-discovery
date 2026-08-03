@@ -10,7 +10,7 @@ Most tasks are: edit a text file (or a spreadsheet), run one command, and deploy
 You write **one entry**. From that single approved entry, the system produces:
 
 - a **permanent website page** that never changes address,
-- the **daily feature** on `/hold-this-today/`,
+- the **daily feature** on `/daily/`,
 - up to **five Pinterest Pins**,
 - **email** content (daily note, welcome series, journeys),
 - a place in the **topic library**, and
@@ -87,10 +87,10 @@ npm run validate        # fast check: lists anything missing or blocking
 npm run dev             # opens a local site; visit the pages below
 ```
 
-- Website page: `http://localhost:4321/hold-this-today/your-slug/`
-- Pins (preview + metadata + overflow warnings): `.../hold-this-today/pins/your-slug/`
-- Email: `.../hold-this-today/preview/email/your-slug/`
-- All previews at once: `.../hold-this-today/preview/`
+- Website page: `http://localhost:4321/daily/your-slug/`
+- Pins (preview + metadata + overflow warnings): `.../daily/pins/your-slug/`
+- Email: `.../daily/preview/email/your-slug/`
+- All previews at once: `.../daily/preview/`
 
 ### 5. Schedule or publish
 
@@ -106,7 +106,7 @@ Then rebuild and deploy (commit + push; Netlify builds automatically).
 
 ### 6. Preview and export the Pins
 
-- Preview: the `/hold-this-today/pins/your-slug/` page shows every Pin at full size
+- Preview: the `/daily/pins/your-slug/` page shows every Pin at full size
   with its title, description, alt text, board, destination URL, filename, and an
   **overflow check** (warns if the text is too long).
 - Export PNGs:
@@ -150,7 +150,7 @@ Edit `src/config/email.mjs` → `JOURNEYS`. Add an object like:
 Each day must be an **approved** entry's slug, so no unreviewed Scripture is ever
 sent. A missing/unapproved slug is skipped with a warning rather than shown broken.
 The journey page and enrollment form appear automatically at
-`/hold-this-today/journeys/seven-days-for-grief/`.
+`/daily/journeys/seven-days-for-grief/`.
 
 ### 9. Map related articles and products
 

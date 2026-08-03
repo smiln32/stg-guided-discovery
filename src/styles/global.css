@@ -174,14 +174,6 @@ a:hover {
   text-decoration: none;
   margin-right: auto;
 }
-.site-header__brand span {
-  display: block;
-  font-family: var(--font-body);
-  font-size: var(--step--1);
-  font-weight: 400;
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
-}
 .site-nav {
   display: flex;
   flex-wrap: wrap;

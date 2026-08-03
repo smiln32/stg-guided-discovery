@@ -1,5 +1,5 @@
 ---
-// /hold-this-today/ — the daily landing page.
+// /daily/ — the daily landing page.
 // Shows the currently-resolved entry via the fallback chain. Its canonical URL
 // points at the entry's PERMANENT page so the rotating daily page never
 // competes with the permanent page in search or splits Pin equity.
@@ -27,7 +27,7 @@ const today = formatDisplayDate(now);
 ---
 
 <BaseLayout
-  title={`${BRAND.featureName} — Today`}
+  title="Today"
   description={BRAND.tagline}
   path={paths.home}
   canonicalOverride={permalink}
@@ -61,7 +61,7 @@ const today = formatDisplayDate(now);
           <p class="eyebrow">Welcome</p>
           <h1>You do not have to solve everything today.</h1>
           <p>
-            {BRAND.featureName} offers one truth from Scripture, one gentle
+            Each day brings one truth from Scripture, one gentle
             encouragement, one prayer, and one small step — a quiet place to
             begin again. New encouragement is on the way. In the meantime, you
             are welcome to browse by what you are carrying.

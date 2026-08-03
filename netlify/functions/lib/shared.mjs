@@ -65,7 +65,7 @@ export function escapeHtml(s) {
 
 /** A calm, self-contained confirmation/error page for no-JS submissions. */
 export function htmlResponse(statusCode, { heading: rawHeading, message: rawMessage, ok }) {
-  const back = '/hold-this-today/';
+  const back = '/daily/';
   const color = ok ? '#33613a' : '#7a3030';
   const bg = ok ? '#eef5ee' : '#fbeeee';
   // All current messages are server-authored, but escape anyway so a future
@@ -91,7 +91,7 @@ export function htmlResponse(statusCode, { heading: rawHeading, message: rawMess
   <div class="box">
     <h1>${heading}</h1>
     <p class="status">${message}</p>
-    <a href="${back}">← Return to Hold This Today</a>
+    <a href="${back}">← Return to today’s encouragement</a>
   </div>
 </body></html>`,
   };

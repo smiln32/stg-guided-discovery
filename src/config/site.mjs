@@ -14,8 +14,9 @@ export const SITE_URL =
   (typeof process !== 'undefined' && process.env && process.env.SITE_URL) ||
   'https://simplifytoglorify.com';
 
-// Base path where the whole feature lives, e.g. "/hold-this-today".
-export const BASE_PATH = '/hold-this-today';
+// Base path where the whole feature lives. Every internal link, canonical URL,
+// Pin destination, and email link derives from this via src/lib/urls.ts.
+export const BASE_PATH = '/daily';
 
 // The site's operating timezone. Daily scheduling and rotation resolve "today"
 // against this zone so an entry flips at local midnight, not UTC midnight.
@@ -28,7 +29,6 @@ export const DEFAULT_TRANSLATION = 'NASB 2020';
 
 export const BRAND = {
   name: 'Simplify to Glorify',
-  featureName: 'Hold This Today',
   tagline:
     'One Scripture, one gentle encouragement, one prayer, and one small step for today.',
   emailProgramName: 'A Gentle Note',

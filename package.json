@@ -1,9 +1,9 @@
 {
-  "name": "stg-hold-this-today",
+  "name": "stg-website-interactives",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Hold This Today — Scripture content and distribution system for Simplify to Glorify",
+  "description": "Scripture content and distribution system for Simplify to Glorify",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

@@ -1,4 +1,4 @@
-# Hold This Today
+# stg-website-interactives
 
 A calm, Scripture-centered content and distribution system for **Simplify to Glorify**.
 One approved content entry becomes a permanent website page, a daily feature, a set
@@ -9,7 +9,7 @@ Built with **Astro** (static output) + **Netlify Functions**. No database requir
 content lives in version-controlled YAML files and is edited directly or via a
 validated CSV importer.
 
-> **New to running this?** Read [`docs/hold-this-today-system.md`](docs/hold-this-today-system.md)
+> **New to running this?** Read [`docs/owner-guide.md`](docs/owner-guide.md)
 > — a plain-language guide to adding, verifying, approving, scheduling, and
 > publishing content, plus Pins, email, and journeys.
 

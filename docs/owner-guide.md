@@ -1,4 +1,4 @@
-# Hold This Today — Owner's Guide
+# Owner's Guide
 
 A plain-language guide to running the system. You do not need to be a programmer.
 Most tasks are: edit a text file (or a spreadsheet), run one command, and deploy.

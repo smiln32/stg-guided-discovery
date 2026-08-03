@@ -1,8 +1,8 @@
-# Hold This Today — Handoff (2026-07-14)
+# stg-website-interactives — Handoff (2026-07-14)
 
 Current state of the project and the exact remaining steps to launch.
 For *how to operate* the system (add/approve/publish content, Pins, email),
-see [hold-this-today-system.md](hold-this-today-system.md).
+see [owner-guide.md](owner-guide.md).
 
 ## Where things stand
 
@@ -24,15 +24,15 @@ mirrors the real shop: 12 topic collections + 7 free PDF resources.
 
 ## Remaining launch steps (in order)
 
-### 1. Decide the deployment vehicle (strategic — decide first)
-Two versions of Hold This Today exist:
-- **This repo** — standalone Astro site, deployable to Netlify on its own
-  (e.g. a subdomain like `today.simplifytoglorify.com`).
-- **React port inside the real simplifytoglorify.com repo** — delivered
-  2026-07 as a git patch/bundle (in Downloads), never merged.
+### 1. Decide how this connects to simplifytoglorify.com (strategic — decide first)
+This repo is the one codebase for the feature — standalone Astro site,
+deployable to Netlify on its own. Remaining choice is how it connects to the
+main site: a plain link, a subdomain (e.g. `today.simplifytoglorify.com`), or
+folding it into the main site's repo later.
 
-The content work below transfers either way, but wiring/deploy effort should
-only be spent on the chosen one.
+(Note: an earlier, separate attempt ported this into the main
+simplifytoglorify.com repo as a React branch. That branch was never merged
+and is tracked separately — it does not affect this repo or this decision.)
 
 ### 2. Replace sample Scripture with NASB 2020 (content owner must supply)
 All 15 published entries use public-domain WEB text and are flagged

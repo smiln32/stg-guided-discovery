@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Content schema + publish gating for "Hold This Today".
+// Content schema + publish gating.
 //
 // This is the source of truth for what a valid master content entry looks like.
 // Astro validates every entry file against this schema at build time, so a

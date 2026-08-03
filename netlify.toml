@@ -1,4 +1,4 @@
-# Netlify configuration for Hold This Today.
+# Netlify configuration for stg-website-interactives.
 # The site is fully static (Astro output: 'static'); subscriber operations run
 # as standalone Functions in netlify/functions.
 

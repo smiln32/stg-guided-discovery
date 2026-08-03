@@ -1,4 +1,4 @@
-# App Audit Log — Hold This Today (stg-website-interactives)
+# App Audit Log — stg-website-interactives
 
 _Last audited: 2026-07-13 (fixes applied same day) · Files reviewed: 32 of ~55 source files (all lib/, all scripts/, all netlify/functions/, config/, key pages) · Not covered: most .astro components (EntryArticle, ScriptureBlock, PinSaveGallery, SubscribeForm internals, Analytics, BaseLayout), global.css, preview/journeys/search page internals, docs/_
 

@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // Daily entry resolver.
 //
-// Decides which entry the /hold-this-today/ landing page shows for a given day,
+// Decides which entry the landing page (BASE_PATH) shows for a given day,
 // with a defined, never-blank fallback chain:
 //   1. An entry explicitly featured for today's date.
 //   2. The next eligible evergreen entry in a deterministic rotation.

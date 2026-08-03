@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Site-wide configuration for "Hold This Today".
+// Site-wide configuration.
 //
 // This is the single place to change the domain, timezone, and default
 // translation. It is imported by astro.config.mjs (build) and by pages/scripts

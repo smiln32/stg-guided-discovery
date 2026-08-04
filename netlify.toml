@@ -1,4 +1,4 @@
-# Netlify configuration for stg-website-interactives.
+# Netlify configuration for stg-guided-discovery.
 # The site is fully static (Astro output: 'static') — no functions, no runtime.
 
 [build]

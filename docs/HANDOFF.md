@@ -1,4 +1,4 @@
-# stg-website-interactives — Handoff (updated 2026-08-03)
+# stg-guided-discovery — Handoff (updated 2026-08-03)
 
 Current state of the project and the exact remaining steps to launch.
 For *how to operate* the system (add/approve/publish content), see

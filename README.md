@@ -1,4 +1,4 @@
-# stg-website-interactives
+# stg-guided-discovery
 
 A calm, Scripture-centered content system for **Simplify to Glorify**.
 One approved content entry becomes a permanent website page, a daily feature,

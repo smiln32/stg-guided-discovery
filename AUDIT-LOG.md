@@ -1,4 +1,4 @@
-# App Audit Log — stg-website-interactives
+# App Audit Log — stg-guided-discovery
 
 > **Note (2026-08-03):** this log is a historical record and is left as it was
 > written. On 2026-08-03 both the email/subscriber system and the Pinterest pin

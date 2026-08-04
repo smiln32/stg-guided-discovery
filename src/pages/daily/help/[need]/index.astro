@@ -1,0 +1,165 @@
+---
+// /daily/help/[need]/ — the two gentle questions.
+//
+// First an open one ("What feels hardest right now?"), which is received and
+// never interpreted: the box below has no form, no action and no script, so
+// what a visitor writes stays in the browser and disappears when they move on.
+// Nothing is sent, nothing is stored, and nothing is read back to them as a
+// conclusion about who they are.
+//
+// Then the one question this page actually acts on: how much capacity they
+// have. That choice, and only that choice, selects the tier.
+//
+// noindex: this is a step inside a tool, not a page anyone should land on from
+// search. The encouragement it leads to has its own permanent, indexable page.
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import { needs, tiers, candidatesFor, type Need, type Tier } from '../../../../lib/guided';
+import { getVisibleEntries, buildNow } from '../../../../lib/entries';
+import { paths } from '../../../../lib/urls';
+
+export async function getStaticPaths() {
+  const now = buildNow();
+  const visible = await getVisibleEntries(now);
+  const out = [];
+  for (const need of needs) {
+    // Only offer a tier that can actually deliver what it promises.
+    const available: Tier[] = [];
+    for (const tier of tiers) {
+      const candidates = await candidatesFor(need, tier, now, visible);
+      if (candidates.length > 0) available.push(tier);
+    }
+    out.push({ params: { need: need.slug }, props: { need, available } });
+  }
+  return out;
+}
+
+const { need, available } = Astro.props as { need: Need; available: Tier[] };
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Find help today', href: paths.help },
+  { label: need.short, href: paths.helpNeed(need.slug) },
+];
+---
+
+<BaseLayout
+  title={need.short}
+  description="A gentle question, and then as much or as little time as you have."
+  path={paths.helpNeed(need.slug)}
+  noindex={true}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+
+    <header class="stack" style="margin-top: var(--space-md);">
+      <p class="eyebrow">{need.short}</p>
+      <h1>{need.question}</h1>
+    </header>
+
+    <div class="share">
+      <label class="share__label" for="share-text">
+        Write as much or as little as you like. This is optional.
+      </label>
+      <textarea id="share-text" rows="5"></textarea>
+      <p class="share__note">
+        This box is for you, not for us. There is nothing to submit — what you
+        write is never sent anywhere, never saved, and never read back to you as
+        a conclusion about how you are doing. You are welcome to skip it
+        entirely.
+      </p>
+    </div>
+
+    <section class="capacity" aria-labelledby="capacity-heading">
+      <h2 id="capacity-heading">How much do you have in you right now?</h2>
+      <p class="capacity__hint">
+        There is no better answer. A minute is a real answer.
+      </p>
+      {
+        available.length === 0 ? (
+          <p class="card">
+            There is nothing prepared here yet. You are welcome to
+            <a href={paths.topics}> browse by what you are carrying</a> instead.
+          </p>
+        ) : (
+          <ul>
+            {available.map((tier) => (
+              <li>
+                <a
+                  href={paths.helpJourney(need.slug, tier.slug)}
+                  data-track="guided_tier_selected"
+                  data-track-label={`${need.slug}/${tier.slug}`}
+                >
+                  <span class="capacity__label">{tier.label}</span>
+                  <span class="capacity__blurb">{tier.blurb}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    <p class="back">
+      <a href={paths.help}>← Something else would help more</a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .share {
+    margin-top: var(--space-lg);
+  }
+  .share__label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--space-2xs);
+  }
+  .share__note {
+    margin-top: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .capacity {
+    margin-top: var(--space-lg);
+  }
+  .capacity__hint {
+    color: var(--text-muted);
+  }
+  .capacity ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+  .capacity a {
+    display: block;
+    min-height: 56px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-decoration: none;
+  }
+  .capacity a:hover {
+    border-color: var(--accent);
+  }
+  .capacity__label {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    color: var(--text);
+  }
+  .capacity__blurb {
+    display: block;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .back {
+    margin-top: var(--space-lg);
+  }
+  .back a {
+    color: var(--text-soft);
+  }
+</style>

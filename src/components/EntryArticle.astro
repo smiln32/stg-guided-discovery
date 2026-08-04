@@ -1,23 +1,32 @@
 ---
 // Full rendering of one entry's "four gifts": Scripture, gentle word, prayer,
-// question, and small step. Used on both the daily landing page and the
-// permanent entry page so the two never drift apart.
+// question, and small step. Used on the daily landing page, the permanent entry
+// page, and inside a guided journey, so none of the three can drift apart.
+//
+// `show` lets a caller render a shorter form of the SAME entry — a guided
+// journey at the one-minute tier omits the gentle word and the journal
+// question. It never changes what a section says, only whether it appears, so
+// there is still one renderer for entry content.
 import ScriptureBlock from './ScriptureBlock.astro';
 import { paths } from '../lib/urls';
 import { topicTitle, topicAccent, isTopicPublished } from '../lib/topics';
 import { paragraphs } from '../lib/text';
 import type { EntryData } from '../lib/entries';
 
-const { data, eyebrow } = Astro.props as {
+const { data, eyebrow, show = {} } = Astro.props as {
   data: EntryData;
   eyebrow?: string;
+  show?: { gentleWord?: boolean; journalQuestion?: boolean };
 };
+const showGentleWord = show.gentleWord ?? true;
+const showJournalQuestion = show.journalQuestion ?? true;
 const accent = topicAccent(data.topic);
 // Below the archive threshold a topic has no page yet — show a plain chip.
 const topicLinked = await isTopicPublished(data.topic);
 ---
 
 <article class="entry stack" style={`--topic-accent:${accent}`}>
+  <slot name="before-header" />
   {
     data.is_sample && (
       <p class="sample-banner" role="note">
@@ -51,10 +60,14 @@ const topicLinked = await isTopicPublished(data.topic);
     verified={data.scripture_verified}
   />
 
-  <section class="gift" aria-labelledby="gentle-word">
-    <h2 class="gift__label" id="gentle-word">A Gentle Word for Today</h2>
-    <div set:html={paragraphs(data.gentle_word)} />
-  </section>
+  {
+    showGentleWord && (
+      <section class="gift" aria-labelledby="gentle-word">
+        <h2 class="gift__label" id="gentle-word">A Gentle Word for Today</h2>
+        <div set:html={paragraphs(data.gentle_word)} />
+      </section>
+    )
+  }
 
   <section class="gift" aria-labelledby="prayer">
     <h2 class="gift__label" id="prayer">A Prayer to Borrow</h2>
@@ -62,7 +75,7 @@ const topicLinked = await isTopicPublished(data.topic);
   </section>
 
   {
-    data.journal_question && (
+    showJournalQuestion && data.journal_question && (
       <section class="gift" aria-labelledby="question">
         <h2 class="gift__label" id="question">One Question to Carry</h2>
         <p>{data.journal_question}</p>

@@ -2,7 +2,8 @@
 
 A calm, Scripture-centered content system for **Simplify to Glorify**.
 One approved content entry becomes a permanent website page, a daily feature,
-and a topic-library entry — all from a single reviewed source of truth.
+a topic-library entry, and a guided journey — all from a single reviewed source
+of truth.
 
 Built with **Astro** (static output). No server and no database required; content
 lives in version-controlled YAML files and is edited directly or via a validated
@@ -21,12 +22,28 @@ npm run build      # production build to dist/
 npm run preview    # serve the built site locally
 ```
 
-Open **/daily/**.
+Open **/daily/** for today's encouragement, or **/daily/help/** for
+"Where do you need help today?".
+
+## Two ways in
+
+- **/daily/** — today's encouragement, plus topic archives and search. For the
+  visitor who came to read.
+- **/daily/help/** — **guided discovery.** One gentle question, then as much or
+  as little time as she has, and she is met with Scripture, a prayer, one small
+  step, and a free resource where one exists. For the visitor who is not sure
+  what she needs.
+
+Guided discovery adds no content of its own. It is a matching layer over the
+same approved entries, topics, and products the rest of the site uses, so
+nothing is written twice and nothing can drift. See
+[`src/config/guided.mjs`](src/config/guided.mjs).
 
 ## Content workflow
 
 ```bash
 npm run validate                                   # check all entries + publish gate
+npm test                                           # safeguards + journey coverage
 npm run import:csv -- content/my-file.csv          # dry-run import preview
 npm run import:csv -- content/my-file.csv --commit # write YAML entries
 npm run export:csv                                 # back up all entries to CSV
@@ -45,18 +62,27 @@ A blank template is in [`content/sample-import-template.csv`](content/sample-imp
   links always point there, never to the rotating daily page.
 - **Drafts stay private.** Unapproved entries are not built and never appear in
   the sitemap.
+- **No diagnosis language.** Nothing tells a visitor what she is or has. The
+  check runs over every entry, and over the guided-discovery copy itself.
+- **Prayers keep the approved voice.** Addressed to God, and finished.
+- **A journey never opens onto a blank section.** A tier that promises a
+  reflection will not open an entry that has none, and a need with nothing to
+  offer fails validation rather than shipping a dead end.
+- **Support is offered, never pushed.** Free resources come before paid ones
+  everywhere, and no path requires a purchase to reach the end.
 
 ## Project structure
 
-```
+```text
 src/
-  config/          site, topics, products, entry field lists
+  config/          site, topics, products, entry field lists, guided discovery
   content.config.ts  the entry schema + publish gate (Zod)
   data/entries/    one YAML file per entry (the source of truth)
   layouts/ components/  UI
-  lib/             queries, daily resolver, search
-  pages/           routes (daily, permanent, topics, search)
+  lib/             queries, daily resolver, search, guided matching + safeguards
+  pages/           routes (daily, permanent, topics, search, help)
 scripts/           validate, import-csv, export-csv
+tests/             guided safeguards + journey coverage (node --test)
 docs/              owner guide + handoff
 ```
 

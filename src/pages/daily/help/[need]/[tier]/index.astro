@@ -1,0 +1,55 @@
+---
+// /daily/help/[need]/[tier]/ — the journey this need + capacity opens with.
+//
+// This page IS the best-matched entry's journey, so that entry gets no second
+// URL under [slug]; only the alternates do. One built page per journey.
+//
+// noindex: a journey recombines content that already has a permanent, canonical
+// home at /daily/[slug]/. Search should find that page, not this one.
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../../components/Breadcrumbs.astro';
+import GuidedJourney from '../../../../../components/GuidedJourney.astro';
+import {
+  needs, tiers, candidatesFor, buildJourney, journeyCrumbs, journeyDescription,
+  type Journey,
+} from '../../../../../lib/guided';
+import { getVisibleEntries, buildNow } from '../../../../../lib/entries';
+
+export async function getStaticPaths() {
+  const now = buildNow();
+  const visible = await getVisibleEntries(now);
+  const out = [];
+  for (const need of needs) {
+    for (const tier of tiers) {
+      const candidates = await candidatesFor(need, tier, now, visible);
+      // A need + tier with nothing to offer builds no page. `npm run validate`
+      // fails first if that ever happens, so this is a belt-and-braces guard.
+      if (candidates.length === 0) continue;
+      out.push({
+        params: { need: need.slug, tier: tier.slug },
+        props: {
+          journey: await buildJourney(need, tier, candidates[0], candidates, now, visible),
+        },
+      });
+    }
+  }
+  return out;
+}
+
+const { journey } = Astro.props as { journey: Journey };
+const crumbs = journeyCrumbs(journey);
+---
+
+<BaseLayout
+  title={journey.entry.data.page_title}
+  description={journeyDescription(journey)}
+  path={journey.url}
+  noindex={true}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <div style="margin-top: var(--space-md);">
+      <GuidedJourney journey={journey} />
+    </div>
+  </div>
+</BaseLayout>

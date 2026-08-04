@@ -41,6 +41,9 @@ const today = formatDisplayDate(now);
             <a class="btn btn--primary" href={paths.entry(entry.data.slug)}>
               Open this encouragement's own page
             </a>
+            <a class="btn btn--soft" href={paths.help}>
+              Or tell me where you need help today
+            </a>
           </div>
 
           <hr class="divider" />
@@ -59,13 +62,31 @@ const today = formatDisplayDate(now);
             Each day brings one truth from Scripture, one gentle
             encouragement, one prayer, and one small step — a quiet place to
             begin again. New encouragement is on the way. In the meantime, you
-            are welcome to browse by what you are carrying.
+            are welcome to say where you need help today.
           </p>
-          <a class="btn btn--primary" href={paths.topics}>Browse by need</a>
+          <a class="btn btn--primary" href={paths.help}>
+            Where do you need help today?
+          </a>
+          <a class="btn btn--soft" href={paths.topics}>Browse by need</a>
         </article>
       )
     }
   </div>
+
+  {/* Guided discovery — for the visitor who did not come for today's entry. */}
+  <section class="container section" aria-labelledby="guided-heading">
+    <div class="card stack guided-cta">
+      <h2 id="guided-heading" style="margin:0;">Not sure this is what you needed?</h2>
+      <p style="margin:0;">
+        Answer one gentle question and you will be met with Scripture, a prayer,
+        and one small step for whatever you are actually carrying — in about a
+        minute, five minutes, or fifteen, whichever you have.
+      </p>
+      <a class="btn btn--primary" href={paths.help} style="align-self:flex-start;">
+        Where do you need help today?
+      </a>
+    </div>
+  </section>
 
   {/* Browse by need */}
   {
@@ -104,6 +125,15 @@ const today = formatDisplayDate(now);
 <style>
   .entry-links {
     margin-top: var(--space-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+  .guided-cta {
+    gap: var(--space-sm);
+  }
+  .guided-cta > * + * {
+    margin-top: var(--space-sm);
   }
   .need-nav {
     list-style: none;

@@ -1,0 +1,101 @@
+---
+// /daily/help/ — "Where do you need help today?"
+//
+// The visitor-facing front door of guided discovery. One question, nine plain
+// answers, and a way out to browsing if none of them fit. Nothing is measured
+// here and nothing is stored; choosing an answer is only choosing a link.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { needs } from '../../../lib/guided';
+import { paths } from '../../../lib/urls';
+import { breadcrumbJsonLd } from '../../../lib/jsonld';
+
+const crumbs = [
+  { label: 'Home', href: paths.home },
+  { label: 'Find help today', href: paths.help },
+];
+---
+
+<BaseLayout
+  title="Where do you need help today?"
+  description="Answer one gentle question and receive Scripture, a prayer, and one small step for whatever you are carrying today."
+  path={paths.help}
+  jsonLd={[breadcrumbJsonLd(crumbs)]}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+
+    <header class="stack" style="margin-top: var(--space-md);">
+      <p class="eyebrow">A place to begin</p>
+      <h1>Where do you need help today?</h1>
+      <p>
+        You do not have to know exactly what you need, and you do not have to
+        explain yourself. Choose whichever is closest to today. You can change
+        your mind at any point.
+      </p>
+    </header>
+
+    <ul class="needs" aria-label="What would help most today">
+      {
+        needs.map((need) => (
+          <li>
+            <a
+              href={paths.helpNeed(need.slug)}
+              data-track="guided_need_selected"
+              data-track-label={need.slug}
+            >
+              {need.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="alt-route">
+      Or <a href={paths.topics}>browse by what you are carrying</a>, or
+      <a href={paths.search}>search for a word, verse, or feeling</a>.
+    </p>
+
+    <p class="promise">
+      Nothing on these pages asks you to sign up, and nothing you type is sent
+      anywhere. Every verse shown has been checked against its translation
+      before it was published here.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .needs {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-lg) 0 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+  .needs a {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    padding: var(--space-xs) var(--space-md);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    color: var(--text);
+    text-decoration: none;
+  }
+  .needs a:hover {
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .alt-route {
+    margin-top: var(--space-lg);
+    color: var(--text-soft);
+  }
+  .promise {
+    margin-top: var(--space-md);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+</style>

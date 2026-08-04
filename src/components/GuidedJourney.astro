@@ -1,0 +1,207 @@
+---
+// One guided journey, rendered at the tier the visitor chose.
+//
+// The journey follows the shape brought over from "Meet Me Where I Am":
+//
+//   1. acknowledge what the visitor may be carrying
+//   2. offer verified Scripture
+//   3. a gentle reflection      (five- and fifteen-minute tiers)
+//   4. a prayer to borrow
+//   5. one question to carry    (fifteen-minute tier)
+//   6. one small step
+//   7. related resources or products, offered and never pushed
+//   8. somewhere to go from here
+//
+// Steps 2-6 are rendered by <EntryArticle> — the same component the daily page
+// and the permanent entry page use — so a journey can never show a different
+// version of an entry than its own page shows. What varies by tier is only
+// which sections appear. Step 7 is <RelatedContent>, the one place in the site
+// where product links are rendered.
+import EntryArticle from './EntryArticle.astro';
+import RelatedContent from './RelatedContent.astro';
+import { paths } from '../lib/urls';
+import { topicTitle, topicAccent, isTopicPublished } from '../lib/topics';
+import { PRODUCT_BY_ID } from '../config/products.mjs';
+import { entrySectionsForTier } from '../config/guided.mjs';
+import type { Journey, Product } from '../lib/guided';
+
+const { journey } = Astro.props as { journey: Journey };
+const {
+  need, tier, entry, alternates, acknowledgment, free, productIds, deeperUrl, deeperTier,
+} = journey;
+// The small step, the reflection, the prayer and the question all come from the
+// entry itself, rendered below by <EntryArticle>.
+const d = entry.data;
+
+const topicPublished = await isTopicPublished(d.topic);
+
+// One thing to explore, free before paid — relatedProductIds() already applied
+// the catalog's free-first ordering.
+const explore: Product | undefined =
+  free ?? (productIds[0] ? (PRODUCT_BY_ID[productIds[0]] as Product) : undefined);
+
+// Journey words -> entry-field words. See entrySectionsForTier for why this is
+// a named translation and not a spread.
+const show = entrySectionsForTier(tier);
+---
+
+<div class="journey" style={`--topic-accent:${topicAccent(d.topic)}`}>
+  <EntryArticle data={d} show={show}>
+    <div slot="before-header" class="journey__opening stack">
+      <p class="eyebrow">{need.short} · {tier.label}</p>
+      <p class="journey__ack">{acknowledgment}</p>
+    </div>
+  </EntryArticle>
+
+  {
+    alternates.length > 0 && (
+      <section class="journey__alternates" aria-labelledby="alternates-heading">
+        <h2 id="alternates-heading">Is one of these closer to what you are carrying?</h2>
+        <p class="journey__hint">
+          Nothing is lost by changing your mind. Each one is the same length as
+          this page.
+        </p>
+        <ul>
+          {alternates.map((alt) => (
+            <li style={`--topic-accent:${topicAccent(alt.entry.data.topic)}`}>
+              <a
+                href={alt.url}
+                data-track="guided_entry_switched"
+                data-track-label={`${need.slug}/${tier.slug}/${alt.entry.data.slug}`}
+              >
+                <span class="topic-chip">{topicTitle(alt.entry.data.topic)}</span>
+                <span class="journey__alt-title">{alt.entry.data.short_title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <hr class="divider" />
+
+  <section class="journey__support" aria-labelledby="support-heading">
+    <h2 id="support-heading" class="visually-hidden">Support you are welcome to</h2>
+    <p class="journey__hint">
+      {
+        free
+          ? 'If it would help to keep something in your hands, there is a free printable below. Nothing here is required, and nothing is expected of you.'
+          : 'If it would help to keep something in your hands, these are here. Nothing is required, and nothing is expected of you.'
+      }
+    </p>
+    <RelatedContent
+      articles={d.related_articles}
+      resources={d.related_resources}
+      productIds={productIds}
+    />
+  </section>
+
+  <section class="journey__onward" aria-labelledby="onward-heading">
+    <h2 id="onward-heading">Where would you like to go from here?</h2>
+    <div class="journey__nav">
+      {
+        deeperUrl && deeperTier && (
+          <a
+            class="btn btn--soft"
+            href={deeperUrl}
+            data-track="guided_went_deeper"
+            data-track-label={`${need.slug}/${deeperTier.slug}`}
+          >
+            Stay a little longer ({deeperTier.label.toLowerCase()})
+          </a>
+        )
+      }
+      <a class="btn btn--soft" href={paths.entry(d.slug)}>
+        {tier.shows.goDeeper
+          ? 'Go deeper on its own page'
+          : 'Read this on its own page'}
+      </a>
+      {
+        topicPublished ? (
+          <a class="btn btn--soft" href={paths.topic(d.topic)}>
+            More on {topicTitle(d.topic).toLowerCase()}
+          </a>
+        ) : (
+          <a class="btn btn--soft" href={paths.topics}>
+            Browse by what you are carrying
+          </a>
+        )
+      }
+      {
+        explore && (
+          <a
+            class="btn btn--soft"
+            href={explore.url}
+            data-track="related_product_clicked"
+            data-track-label={explore.id}
+          >
+            {explore.kind === 'free' || explore.kind === 'download'
+              ? 'Take the free printable'
+              : 'Look at the printable set'}
+          </a>
+        )
+      }
+      <a class="btn btn--soft" href={paths.help}>Start somewhere else</a>
+    </div>
+  </section>
+</div>
+
+<style>
+  .journey__opening {
+    margin-bottom: var(--space-sm);
+  }
+  /* Deliberately unbordered. The Scripture block a few lines below carries the
+     one accent bar on this page (.scripture in global.css); giving the
+     acknowledgment a second one stacks two rules immediately above it and
+     weakens the one that should draw the eye. This line is meant to be heard,
+     not framed — serif, softened, and a step larger is enough. */
+  .journey__ack {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    line-height: 1.6;
+    color: var(--text-soft);
+    margin: 0;
+  }
+  .journey__hint {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+  .journey__alternates {
+    margin-top: var(--space-lg);
+  }
+  .journey__alternates ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+  .journey__alternates a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-xs);
+    min-height: 48px;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+  .journey__alternates a:hover {
+    border-color: var(--topic-accent);
+  }
+  .journey__alt-title {
+    font-family: var(--font-serif);
+    color: var(--text);
+  }
+  .journey__onward {
+    margin-top: var(--space-lg);
+  }
+  .journey__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>

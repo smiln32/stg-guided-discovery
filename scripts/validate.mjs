@@ -6,7 +6,13 @@
 // with friendlier messages, especially after a CSV import.
 import {
   loadAllEntries, TOPIC_SLUGS, PLACEHOLDER, LIVE_STATUSES, isValidUrl, isValidDate,
+  passesPublishGate,
 } from './lib/entries.mjs';
+import { NEEDS, TIERS, RESERVED_SLUGS, MAX_JOURNEY_CHOICES } from '../src/config/guided.mjs';
+import {
+  findDiagnosisLanguage, checkPrayerVoice, journeyVisibleText, checkGuidedCopy,
+  checkJourneyCoverage, selectCandidates,
+} from '../src/lib/guided-guards.mjs';
 
 const REQUIRED = [
   'slug', 'page_title', 'short_title', 'topic', 'scripture_reference',
@@ -76,9 +82,66 @@ for (const { file, data } of entries) {
   } else if (hasPlaceholder) {
     warn('Scripture is a placeholder (fine while in review; must be replaced before publishing)');
   }
+
+  // --- Guided-discovery content safeguards ---------------------------------
+  // These apply to every entry, not only the ones a journey happens to open:
+  // any entry can be matched once the library grows or a need's lanes change.
+
+  // A slug may never collide with a route the guided feature owns, or the
+  // entry's own permanent page would be shadowed by it.
+  if (RESERVED_SLUGS.includes(data.slug)) {
+    err(`slug "${data.slug}" is a reserved route segment (${RESERVED_SLUGS.join(', ')})`);
+  }
+
+  // No diagnosis language: nothing tells a visitor what she is or has.
+  for (const block of journeyVisibleText(data)) {
+    for (const hit of findDiagnosisLanguage(block)) {
+      err(`diagnosis language "${hit}" — say what is true about God or the moment, not about the reader`);
+    }
+  }
+
+  // Prayers follow the approved voice: addressed to God, and finished.
+  if (data.prayer) {
+    for (const problem of checkPrayerVoice(data.prayer)) err(problem);
+  }
 }
 
-console.log(`\nChecked ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}.`);
+// --- Guided discovery: configuration and coverage ----------------------------
+// A journey must never open onto a blank section. These two checks catch the
+// failure a per-entry pass cannot see: every entry is individually fine, but a
+// visitor still reaches a dead end because a need's lanes and a tier's promises
+// disagree.
+for (const problem of checkGuidedCopy()) {
+  errors.push(`✗ guided config: ${problem}`);
+}
+
+// Approximates the site's visible set: the full publish gate, ordered
+// newest-effective-date first, exactly as getVisibleEntries() does. Entries
+// scheduled for a future date are counted — they will be visible by then — so
+// this can report coverage the site does not have *yet*, never coverage it will
+// never have.
+const effectiveDate = (d) =>
+  new Date(d.featured_date ?? d.publish_date ?? d.updated_at ?? d.created_at ?? 0).getTime();
+
+const liveEntries = entries
+  .map(({ data }) => data)
+  .filter((d) => passesPublishGate(d))
+  .sort((a, b) => effectiveDate(b) - effectiveDate(a));
+
+if (liveEntries.length === 0) {
+  warnings.push('• guided discovery: no published entries yet, so no journey can be built');
+} else {
+  for (const problem of checkJourneyCoverage((need, tier) =>
+    selectCandidates(liveEntries, need, tier, MAX_JOURNEY_CHOICES),
+  )) {
+    errors.push(`✗ guided discovery: ${problem}`);
+  }
+}
+
+console.log(
+  `\nChecked ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}, ` +
+    `and ${NEEDS.length} need${NEEDS.length === 1 ? '' : 's'} × ${TIERS.length} tiers of guided discovery.`,
+);
 if (warnings.length) {
   console.log(`\n${warnings.length} warning(s):`);
   warnings.forEach((w) => console.log('  ' + w));

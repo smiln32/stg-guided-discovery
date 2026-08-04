@@ -11,8 +11,10 @@ You write **one entry**. From that single approved entry, the system produces:
 
 - a **permanent website page** that never changes address,
 - the **daily feature** on `/daily/`,
-- a place in the **topic library**, and
-- an entry in the site's search index.
+- a place in the **topic library**,
+- an entry in the site's search index, and
+- a **guided journey** for the visitor who says what she needs on
+  `/daily/help/` (see *Guided discovery* below).
 
 The system will **format, schedule, and distribute** approved content — but it
 will never write theology, invent Scripture, change a verse, or publish anything
@@ -127,6 +129,93 @@ Free content and downloads are always offered before paid products.
 
 ---
 
+## Guided discovery ("Where do you need help today?")
+
+Some visitors arrive knowing what they want to read. Others arrive tired and are
+not sure. `/daily/help/` is for the second kind.
+
+### What she experiences
+
+1. **"Where do you need help today?"** — nine plain answers (*I need comfort. /
+   I need steadiness. / I need clarity. / I need encouragement. / I need to
+   pray. / I need one practical next step. / I need hope. / I want to spend time
+   with God. / I don't know where to begin.*)
+2. **One gentle question**, open-ended, with a box she may write in or skip.
+   Nothing she types is sent, saved, or analyzed — the box has no form behind
+   it and no script attached. It is there because naming something helps, not
+   because the system wants it.
+3. **"How much do you have in you right now?"** — about a minute, five minutes,
+   or fifteen.
+4. **A journey**: a line that receives what she may be carrying, then one of
+   your published entries — its Scripture, its prayer, its small step, and (at
+   the longer tiers) its gentle word and its question — followed by a free
+   resource where one exists, related printables, and somewhere to go next.
+
+### What it does *not* do
+
+It never diagnoses her, never scores her, never keeps a record, and never asks
+her to buy anything to reach the end. Every path ends with Scripture, a prayer,
+and one small step whether or not she ever clicks a product.
+
+### What you control
+
+Everything a journey shows comes from content you already manage:
+
+| The journey shows | It comes from |
+|---|---|
+| the Scripture, prayer, gentle word, question, small step, carry phrase | the entry file, unchanged |
+| which entries a need can reach | the need's **lanes** (topic slugs) in `src/config/guided.mjs` |
+| the free resource and the printables | `src/config/products.mjs`, free things always first |
+| whether an entry can appear at all | the same approval gates as every other page |
+
+**You do not write journey content.** Improving a journey means improving an
+entry, or pointing a need at a different topic.
+
+### Adding or changing a need
+
+Open `src/config/guided.mjs` and edit the `NEEDS` list. Each one has:
+
+```yaml
+slug:            comfort            # the URL segment; permanent once shared
+label:           "I need comfort."  # what she clicks
+short:           Comfort            # used in headings and breadcrumbs
+question:        "What has been on your heart lately?"
+acknowledgment:  "There is no wrong way to grieve..."
+lanes:           [grief, loneliness, chronic-pain, caregiving, depression]
+```
+
+`lanes` are topic slugs from `src/config/topics.mjs`, **most relevant first**.
+The system walks them in order, preferring an entry whose main topic is early in
+the list. Then run:
+
+```bash
+npm run validate      # confirms every need can still offer a real journey
+npm test              # confirms the safeguards still hold
+```
+
+If a need has no entry to offer at some length of time, validation **fails and
+says so** rather than shipping a dead end. The fix is usually to add a topic to
+that need's lanes, or to publish an entry in one of them.
+
+### The safeguards that run on your content
+
+These run on every entry, published or not, in `npm run validate` and `npm test`:
+
+| Check | What it protects |
+|---|---|
+| No diagnosis language | Nothing tells a visitor what she *is* or *has* — "you seem", "you appear", "you are anxious", "you're depressed" and the like are rejected. Ordinary writing like "when you have carried more than one person was meant to carry" is fine. |
+| Prayer voice | A prayer opens by addressing God (*God,* / *Father,* / *Lord,* / *Jesus,* / *Holy Spirit,* / *Father of mercies,* …) and closes *Amen.* |
+| Reflection and prayer complete | An entry missing its gentle word is never opened at a length that promises one; one missing its small step is never opened at all. |
+| Journey coverage | Every need, at every length, has something real behind it. |
+| Reserved slugs | An entry may not use the slug `help`, `topics` or `search` — those are routes. |
+
+Two things stay **human** review steps, deliberately, because no automatic check
+can do them honestly: capitalizing divine pronouns (lowercase *he* often means
+Peter or Elijah), and making sure a reflection says what the passage reveals
+about God before what it means for the reader.
+
+---
+
 ## Bulk import (spreadsheets)
 
 1. Start from `content/sample-import-template.csv` (open in Excel or Google Sheets —
@@ -160,6 +249,9 @@ Back up everything to a spreadsheet anytime with `npm run export:csv`.
 | A topic has no page | It has fewer than the minimum entries. Add entries or lower `MIN_TOPIC_ENTRIES` in `src/config/topics.mjs`. |
 | The daily page shows the "welcome" fallback | Nothing is featured for today and nothing is rotation-eligible. Set a `featured_date` or mark entries `rotation_eligible: true`. |
 | CSV import rejected a row | Read the row-specific message it prints — usually a missing field, bad date, duplicate slug, or a "live" row with unverified Scripture. |
+| Validate fails: *"has nothing to offer"* | A need in `src/config/guided.mjs` has no published entry in its lanes that is complete enough for that length of time. Add a topic to its `lanes`, or publish an entry in one of them. |
+| Validate fails: *"diagnosis language"* | An entry tells the reader what she is or has. Say what is true about God or the moment instead. |
+| Validate fails: *"prayer must open/close"* | The prayer does not address God at the start, or does not end `Amen.` |
 
 ---
 

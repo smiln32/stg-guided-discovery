@@ -1,0 +1,54 @@
+---
+// /daily/help/[need]/[tier]/[slug]/ — the same journey, opened with one of the
+// alternates instead ("is one of these closer to what you are carrying?").
+//
+// Only alternates are built here. The entry a need + tier opens by default
+// lives at /[need]/[tier]/ and is deliberately not duplicated under a slug.
+//
+// noindex, for the same reason as the default journey page.
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../../components/Breadcrumbs.astro';
+import GuidedJourney from '../../../../../components/GuidedJourney.astro';
+import {
+  needs, tiers, candidatesFor, buildJourney, journeyCrumbs, journeyDescription,
+  type Journey,
+} from '../../../../../lib/guided';
+import { getVisibleEntries, buildNow } from '../../../../../lib/entries';
+
+export async function getStaticPaths() {
+  const now = buildNow();
+  const visible = await getVisibleEntries(now);
+  const out = [];
+  for (const need of needs) {
+    for (const tier of tiers) {
+      const candidates = await candidatesFor(need, tier, now, visible);
+      for (const entry of candidates.slice(1)) {
+        out.push({
+          params: { need: need.slug, tier: tier.slug, slug: entry.data.slug },
+          props: {
+            journey: await buildJourney(need, tier, entry, candidates, now, visible),
+          },
+        });
+      }
+    }
+  }
+  return out;
+}
+
+const { journey } = Astro.props as { journey: Journey };
+const crumbs = journeyCrumbs(journey);
+---
+
+<BaseLayout
+  title={journey.entry.data.page_title}
+  description={journeyDescription(journey)}
+  path={journey.url}
+  noindex={true}
+>
+  <div class="container section">
+    <Breadcrumbs crumbs={crumbs} />
+    <div style="margin-top: var(--space-md);">
+      <GuidedJourney journey={journey} />
+    </div>
+  </div>
+</BaseLayout>

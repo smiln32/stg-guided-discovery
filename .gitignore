@@ -16,6 +16,10 @@ content/entries-export.csv
 .env.*
 !.env.example
 
+# Impeccable design-hook local state (config.json itself IS tracked)
+.impeccable/hook.cache.json
+.impeccable/config.local.json
+
 # OS / editor
 .DS_Store
 Thumbs.db

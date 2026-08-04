@@ -4,7 +4,7 @@
 // free content / downloads, then relevant paid products — never product-first,
 // never "you need this" language.
 import EntryCard from './EntryCard.astro';
-import { PRODUCT_BY_ID, KIND_PRIORITY } from '../config/products.mjs';
+import { PRODUCT_BY_ID, KIND_PRIORITY, KIND_LABEL } from '../config/products.mjs';
 import type { Entry } from '../lib/entries';
 
 const { relatedEntries = [], articles = [], resources = [], productIds = [] } =
@@ -57,10 +57,11 @@ const hasAnything =
           {products.map((p) => (
             <li>
               <span class="related__kind">
-                {p.kind === 'free' ? 'Free' : 'From the shop'}
+                {KIND_LABEL[p.kind] ?? 'From the shop'}
               </span>
               <a href={p.url} data-track="related_product_clicked" data-track-label={p.id}>{p.title}</a>
               <span class="related__blurb"> — {p.blurb}</span>
+              {p.contents && <span class="related__contents">{p.contents}</span>}
             </li>
           ))}
         </ul>
@@ -92,5 +93,13 @@ const hasAnything =
   }
   .related__blurb {
     color: var(--text-soft);
+  }
+  /* What you actually get: format, count, price. Quieter than the blurb —
+     present for the reader who is deciding, invisible to the one who is not. */
+  .related__contents {
+    display: block;
+    margin-top: 0.15em;
+    font-size: var(--step--1);
+    color: var(--text-muted);
   }
 </style>

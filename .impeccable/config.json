@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/styles/global.css"
+        ],
+        "createdAt": "2026-08-04T16:20:11.292Z",
+        "reason": "User confirmed: the left rule on .scripture is a blockquote quote marker, not a decorative card accent"
+      }
+    ]
+  }
+}

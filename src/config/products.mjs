@@ -3,16 +3,42 @@
 //
 // Entries reference these by id via `related_product_ids`. URLs point at the
 // REAL simplifytoglorify.com product collections and free PDF resources
-// (verified against the live sitemap on 2026-07-14).
+// (URLs verified against the live sitemap on 2026-07-14; contents verified
+// against the live collection pages on 2026-08-04).
 //
 // `kind` drives recommendation ordering: free content and downloads are offered
 // before paid products, and nothing is shown "just because it exists".
+// `kind` also drives the visible label via KIND_LABEL — a reader should be able
+// to tell what a thing IS (printable set, free PDF) before deciding to click.
 //
 // kind: 'free' | 'download' | 'journal' | 'devotional' | 'prayer_cards'
 //       | 'scripture_cards' | 'first_steps' | 'product'
+//
+// `contents` states plainly what you get. All twelve shop collections are the
+// same five-part printable kit differing only by topic, so they share one
+// contents line (COLLECTION_CONTENTS).
+//
+// Prices are deliberately NOT mirrored here. Nothing reads the live store, so
+// any price in this file would go stale silently; the shop page is one click
+// away and always current. State what a thing IS, not what it costs.
 // -----------------------------------------------------------------------------
 
-/** @typedef {{id:string,title:string,url:string,kind:string,blurb:string,topics:string[]}} Product */
+/**
+ * @typedef {{id:string,title:string,url:string,kind:string,blurb:string,
+ *            contents:string,topics:string[]}} Product
+ */
+
+/**
+ * Every shop collection bundles the same five printables — journal, Scripture
+ * cards, prayer cards, a seven-day First Steps guide, and a devotional —
+ * available individually or as the collection. Verified 2026-08-04.
+ */
+const COLLECTION_CONTENTS =
+  'Five printables — journal, devotional, Scripture cards, prayer cards, ' +
+  'and a 7-day First Steps guide. Sold together or separately.';
+
+/** Free resources are single downloadable PDFs. */
+const FREE_PDF_CONTENTS = 'A free printable PDF. No sign-up.';
 
 /** @type {Product[]} */
 export const PRODUCTS = [
@@ -23,6 +49,7 @@ export const PRODUCTS = [
     url: 'https://simplifytoglorify.com/resources/5-days-of-scripture-for-anxious-hearts.pdf',
     kind: 'free',
     blurb: 'Five days of verses to hold when worry runs ahead of you.',
+    contents: FREE_PDF_CONTENTS,
     topics: ['anxiety', 'overwhelm'],
   },
   {
@@ -31,6 +58,7 @@ export const PRODUCTS = [
     url: 'https://simplifytoglorify.com/resources/how-to-grieve-without-a-timeline.pdf',
     kind: 'free',
     blurb: 'A gentle companion for sorrow that keeps its own time.',
+    contents: FREE_PDF_CONTENTS,
     topics: ['grief'],
   },
   {
@@ -39,6 +67,7 @@ export const PRODUCTS = [
     url: 'https://simplifytoglorify.com/resources/when-youre-too-tired-to-pray.pdf',
     kind: 'free',
     blurb: 'Short, borrowable prayers for the days you have nothing left.',
+    contents: FREE_PDF_CONTENTS,
     topics: ['exhaustion', 'caregiving', 'learning-to-pray'],
   },
   {
@@ -47,6 +76,7 @@ export const PRODUCTS = [
     url: 'https://simplifytoglorify.com/resources/learning-to-pray.pdf',
     kind: 'free',
     blurb: 'A simple starting place for prayer when you do not know what to say.',
+    contents: FREE_PDF_CONTENTS,
     topics: ['learning-to-pray', 'feeling-far-from-god'],
   },
   {
@@ -55,6 +85,7 @@ export const PRODUCTS = [
     url: 'https://simplifytoglorify.com/resources/when-you-cannot-fix-it.pdf',
     kind: 'free',
     blurb: 'Gentle help for the things that are not yours to mend.',
+    contents: FREE_PDF_CONTENTS,
     topics: ['regret', 'caregiving'],
   },
   {
@@ -63,6 +94,7 @@ export const PRODUCTS = [
     url: 'https://simplifytoglorify.com/resources/names-of-God-for-hard-days.pdf',
     kind: 'free',
     blurb: 'Who God says He is, for the days you need reminding.',
+    contents: FREE_PDF_CONTENTS,
     topics: ['faith', 'trusting-god'],
   },
   {
@@ -71,16 +103,19 @@ export const PRODUCTS = [
     url: 'https://simplifytoglorify.com/resources/finding-jesus-in-the-middle-of-the-storm.pdf',
     kind: 'free',
     blurb: 'Steadying Scripture for seasons that feel out of control.',
+    contents: FREE_PDF_CONTENTS,
     topics: ['uncertainty', 'trusting-god', 'waiting'],
   },
 
   // --- Product collections (the real shop categories) -----------------------
+  // Blurbs name who the collection is for. What you get is in `contents`.
   {
     id: 'anxiety-collection',
     title: 'Anxiety Collection',
     url: 'https://simplifytoglorify.com/products/anxiety/',
     kind: 'product',
-    blurb: 'Gentle encouragement for calm, trust, and steady faith.',
+    blurb: 'For the worry that runs ahead of you and will not sit down.',
+    contents: COLLECTION_CONTENTS,
     topics: ['anxiety', 'overwhelm'],
   },
   {
@@ -88,7 +123,8 @@ export const PRODUCTS = [
     title: 'Caregiving Collection',
     url: 'https://simplifytoglorify.com/products/caregiving/',
     kind: 'product',
-    blurb: 'Encouragement for the daily work of faithful care.',
+    blurb: 'For the daily, largely unseen work of caring for someone else.',
+    contents: COLLECTION_CONTENTS,
     topics: ['caregiving', 'exhaustion'],
   },
   {
@@ -96,7 +132,8 @@ export const PRODUCTS = [
     title: 'Grief Collection',
     url: 'https://simplifytoglorify.com/products/grief/',
     kind: 'product',
-    blurb: 'Gentle faith-filled support for the grieving heart.',
+    blurb: 'For loss that is still close, and for the long days after it.',
+    contents: COLLECTION_CONTENTS,
     topics: ['grief', 'loneliness'],
   },
   {
@@ -104,7 +141,8 @@ export const PRODUCTS = [
     title: 'Prayer Collection',
     url: 'https://simplifytoglorify.com/products/prayer/',
     kind: 'product',
-    blurb: 'Simple help for building an authentic prayer life.',
+    blurb: 'For prayer that has gone quiet, or never quite got started.',
+    contents: COLLECTION_CONTENTS,
     topics: ['learning-to-pray', 'feeling-far-from-god'],
   },
   {
@@ -112,7 +150,8 @@ export const PRODUCTS = [
     title: 'Regret Collection',
     url: 'https://simplifytoglorify.com/products/regret/',
     kind: 'product',
-    blurb: 'Gentle encouragement for a heart learning to receive grace.',
+    blurb: 'For the thing you would undo if undoing were yours to do.',
+    contents: COLLECTION_CONTENTS,
     topics: ['regret', 'forgiveness'],
   },
   {
@@ -120,7 +159,8 @@ export const PRODUCTS = [
     title: 'Faith Collection',
     url: 'https://simplifytoglorify.com/products/faith/',
     kind: 'product',
-    blurb: 'Companions for your quiet time with God.',
+    blurb: 'For faith that feels smaller than you would like it to be.',
+    contents: COLLECTION_CONTENTS,
     topics: ['faith', 'hope', 'feeling-far-from-god'],
   },
   {
@@ -128,7 +168,8 @@ export const PRODUCTS = [
     title: 'Trusting God Collection',
     url: 'https://simplifytoglorify.com/products/trusting-god/',
     kind: 'product',
-    blurb: 'Faith-filled encouragement when the way ahead is unclear.',
+    blurb: 'For the stretch of road whose end you cannot see from here.',
+    contents: COLLECTION_CONTENTS,
     topics: ['trusting-god', 'uncertainty', 'waiting'],
   },
   {
@@ -136,7 +177,8 @@ export const PRODUCTS = [
     title: 'Patience Collection',
     url: 'https://simplifytoglorify.com/products/patience/',
     kind: 'product',
-    blurb: "Quiet encouragement for learning to trust God's timing.",
+    blurb: 'For waiting that is taking longer than you planned for.',
+    contents: COLLECTION_CONTENTS,
     topics: ['patience', 'waiting'],
   },
   {
@@ -144,7 +186,8 @@ export const PRODUCTS = [
     title: 'Depression Collection',
     url: 'https://simplifytoglorify.com/products/depression/',
     kind: 'product',
-    blurb: 'Gentle encouragement when your heart feels heavy.',
+    blurb: 'For heaviness that does not lift on schedule.',
+    contents: COLLECTION_CONTENTS,
     topics: ['depression'],
   },
   {
@@ -152,7 +195,8 @@ export const PRODUCTS = [
     title: 'Chronic Pain Collection',
     url: 'https://simplifytoglorify.com/products/chronic-pain/',
     kind: 'product',
-    blurb: 'Gentle faith-filled support for weary bodies and hearts.',
+    blurb: 'For a body that hurts and a faith grown tired of asking.',
+    contents: COLLECTION_CONTENTS,
     topics: ['chronic-pain'],
   },
   {
@@ -160,7 +204,8 @@ export const PRODUCTS = [
     title: 'Gratitude Collection',
     url: 'https://simplifytoglorify.com/products/gratitude/',
     kind: 'product',
-    blurb: "Gentle encouragement for noticing God's goodness.",
+    blurb: 'For learning to notice what is good, on purpose.',
+    contents: COLLECTION_CONTENTS,
     topics: ['gratitude'],
   },
   {
@@ -168,7 +213,8 @@ export const PRODUCTS = [
     title: 'ADHD Collection',
     url: 'https://simplifytoglorify.com/products/adhd/',
     kind: 'product',
-    blurb: 'Gentle encouragement for grace, focus, and faith.',
+    blurb: 'For a mind that moves fast and a heart that wants to be still.',
+    contents: COLLECTION_CONTENTS,
     topics: ['adhd'],
   },
 ];
@@ -185,4 +231,17 @@ export const KIND_PRIORITY = {
   journal: 3,
   first_steps: 4,
   product: 5,
+};
+
+// The label shown above each link. Says what the thing is, not where it lives —
+// "Printable set" tells a reader something; "From the shop" does not.
+export const KIND_LABEL = {
+  free: 'Free',
+  download: 'Free download',
+  scripture_cards: 'Printable cards',
+  prayer_cards: 'Printable cards',
+  devotional: 'Printable devotional',
+  journal: 'Printable journal',
+  first_steps: 'Printable guide',
+  product: 'Printable set',
 };

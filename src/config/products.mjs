@@ -18,6 +18,15 @@
 // same five-part printable kit differing only by topic, so they share one
 // contents line (COLLECTION_CONTENTS).
 //
+// Titles name the RESOURCE only, never its format — the format is the label's
+// job (KIND_LABEL), and saying it twice reads as a stutter. This matters
+// because two free PDFs share a title with a blog post of the same name
+// ("How to Grieve Without a Timeline", "When You're Too Tired to Pray"). They
+// are genuinely different things — a ~1,300-word essay and an 11-13 page
+// printable — and neither blog post links to its PDF, so this is the only
+// place a reader meets both. The pair is told apart by its label ("Article" vs
+// "Free PDF") and by the blurb and contents line only the PDF carries.
+//
 // Prices are deliberately NOT mirrored here. Nothing reads the live store, so
 // any price in this file would go stale silently; the shop page is one click
 // away and always current. State what a thing IS, not what it costs.
@@ -45,7 +54,7 @@ export const PRODUCTS = [
   // --- Free PDF resources (offered first) -----------------------------------
   {
     id: 'free-scripture-for-anxious-hearts',
-    title: '5 Days of Scripture for Anxious Hearts (free PDF)',
+    title: '5 Days of Scripture for Anxious Hearts',
     url: 'https://simplifytoglorify.com/resources/5-days-of-scripture-for-anxious-hearts.pdf',
     kind: 'free',
     blurb: 'Five days of verses to hold when worry runs ahead of you.',
@@ -54,7 +63,7 @@ export const PRODUCTS = [
   },
   {
     id: 'free-grieve-without-a-timeline',
-    title: 'How to Grieve Without a Timeline (free PDF)',
+    title: 'How to Grieve Without a Timeline',
     url: 'https://simplifytoglorify.com/resources/how-to-grieve-without-a-timeline.pdf',
     kind: 'free',
     blurb: 'A gentle companion for sorrow that keeps its own time.',
@@ -63,7 +72,7 @@ export const PRODUCTS = [
   },
   {
     id: 'free-too-tired-to-pray',
-    title: "When You're Too Tired to Pray (free PDF)",
+    title: "When You're Too Tired to Pray",
     url: 'https://simplifytoglorify.com/resources/when-youre-too-tired-to-pray.pdf',
     kind: 'free',
     blurb: 'Short, borrowable prayers for the days you have nothing left.',
@@ -72,7 +81,7 @@ export const PRODUCTS = [
   },
   {
     id: 'free-learning-to-pray',
-    title: 'Learning to Pray (free PDF)',
+    title: 'Learning to Pray',
     url: 'https://simplifytoglorify.com/resources/learning-to-pray.pdf',
     kind: 'free',
     blurb: 'A simple starting place for prayer when you do not know what to say.',
@@ -81,7 +90,7 @@ export const PRODUCTS = [
   },
   {
     id: 'free-when-you-cannot-fix-it',
-    title: 'When You Cannot Fix It (free PDF)',
+    title: 'When You Cannot Fix It',
     url: 'https://simplifytoglorify.com/resources/when-you-cannot-fix-it.pdf',
     kind: 'free',
     blurb: 'Gentle help for the things that are not yours to mend.',
@@ -90,7 +99,7 @@ export const PRODUCTS = [
   },
   {
     id: 'free-names-of-god',
-    title: 'Names of God for Hard Days (free PDF)',
+    title: 'Names of God for Hard Days',
     url: 'https://simplifytoglorify.com/resources/names-of-God-for-hard-days.pdf',
     kind: 'free',
     blurb: 'Who God says He is, for the days you need reminding.',
@@ -99,7 +108,7 @@ export const PRODUCTS = [
   },
   {
     id: 'free-jesus-in-the-storm',
-    title: 'Finding Jesus in the Middle of the Storm (free PDF)',
+    title: 'Finding Jesus in the Middle of the Storm',
     url: 'https://simplifytoglorify.com/resources/finding-jesus-in-the-middle-of-the-storm.pdf',
     kind: 'free',
     blurb: 'Steadying Scripture for seasons that feel out of control.',
@@ -234,9 +243,11 @@ export const KIND_PRIORITY = {
 };
 
 // The label shown above each link. Says what the thing is, not where it lives —
-// "Printable set" tells a reader something; "From the shop" does not.
+// "Printable set" tells a reader something; "From the shop" does not. It also
+// names the FORMAT, which is what separates a free PDF from an article of the
+// same title (see the note at the top of this file).
 export const KIND_LABEL = {
-  free: 'Free',
+  free: 'Free PDF',
   download: 'Free download',
   scripture_cards: 'Printable cards',
   prayer_cards: 'Printable cards',

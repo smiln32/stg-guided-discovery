@@ -1,4 +1,4 @@
-# stg-guided-discovery — Handoff (updated 2026-08-03)
+# stg-guided-discovery — Handoff (updated 2026-08-04)
 
 Current state of the project and the exact remaining steps to launch.
 For *how to operate* the system (add/approve/publish content), see
@@ -35,9 +35,54 @@ real, live simplifytoglorify.com content — all 42 URLs verified returning
 HTTP 200 on 2026-07-14. The product catalog (`src/config/products.mjs`)
 mirrors the real shop: 12 topic collections + 7 free PDF resources.
 
+**Shop mapping (verified 2026-08-04):** all twelve collections are the *same*
+five-part printable kit — journal, devotional, Scripture cards, prayer cards,
+and a seven-day First Steps guide — differing only by topic. Each product link
+now carries a `contents` line saying so, and a `kind`-driven label ("Printable
+set") in place of the old generic "From the shop". Prices are deliberately not
+mirrored into this repo: nothing reads the live store, so any price here would
+go stale silently.
+
+**Naming (2026-08-04):** the project was renamed `stg-website-interactives` →
+`stg-guided-discovery` (package name, README, docs, config header comments).
+Cosmetic only — no route, import, or config value depends on it.
+
 **Repo:** public GitHub repo `smiln32/stg-website-interactives`, main branch
 (made public 2026-08-02). No credentials have ever been committed — `.env` and
-`.env.*` are gitignored and only `.env.example` is tracked.
+`.env.*` are gitignored and only `.env.example` is tracked. **The GitHub repo
+has not been renamed** to match the project — do that, then update this line
+and the local remote.
+
+## Open right now: unmerged branch with one decision pending
+
+Branch **`product-clarity`** holds three commits, not yet merged to `main`:
+
+| Commit | What |
+| --- | --- |
+| `ba9f12a` | Rename to `stg-guided-discovery` |
+| `0aeba27` | Product `contents` + `KIND_LABEL`; rewritten collection blurbs |
+| `c86f58c` | **Removed two related-article links — should be reverted** |
+
+`c86f58c` was a mistake. Two entries showed the same *title* twice in "You may
+also find this helpful" — once as an Article, once as the free PDF — and the
+duplicate-looking title was treated as redundancy. It was not. Verified
+2026-08-04 by fetching all four URLs:
+
+| Title | `/blog/` post | `/resources/` PDF |
+| --- | --- | --- |
+| How to Grieve Without a Timeline | ~1,200–1,400 word essay | 13-page printable guide |
+| When You're Too Tired to Pray | ~1,200–1,500 word article | 11-page printable devotional |
+
+They are different resources, and **neither blog page links to its own PDF** —
+so this app was the only place a reader would discover both. Deleting the
+article links removed that.
+
+**Recommended fix:** `git revert c86f58c`, then relabel by action rather than
+category in `src/components/RelatedContent.astro` — "Read the post" /
+"Download (free PDF)" — so the repeated title reads as one topic in two
+formats instead of a mistake.
+
+Then merge: `git checkout main && git merge --ff-only product-clarity`.
 
 ## Remaining launch steps (in order)
 

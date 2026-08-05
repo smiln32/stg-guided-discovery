@@ -41,7 +41,7 @@ mirrors the real shop: 12 topic collections + 7 free PDF resources.
 
 **Shop mapping (verified 2026-08-04):** all twelve collections are the *same*
 five-part printable kit — journal, devotional, Scripture cards, prayer cards,
-and a seven-day First Steps guide — differing only by topic. Each product link
+and a seven-day First Steps Guide — differing only by topic. Each product link
 now carries a `contents` line saying so, and a `kind`-driven label ("Printable
 set") in place of the old generic "From the shop". Prices are deliberately not
 mirrored into this repo: nothing reads the live store, so any price here would

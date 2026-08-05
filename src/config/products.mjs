@@ -66,12 +66,12 @@
 
 /**
  * Every shop collection bundles the same five printables — journal, Scripture
- * cards, prayer cards, a seven-day First Steps guide, and a devotional —
+ * cards, prayer cards, a seven-day First Steps Guide, and a devotional —
  * available individually or as the collection. Verified 2026-08-04.
  */
 const COLLECTION_CONTENTS =
   'Five printables — journal, devotional, Scripture cards, prayer cards, ' +
-  'and a 7-day First Steps guide. Sold together or separately.';
+  'and a 7-day First Steps Guide. Sold together or separately.';
 
 /** Free resources are single downloadable PDFs. */
 const FREE_PDF_CONTENTS = 'A free printable PDF. No sign-up.';
@@ -409,6 +409,6 @@ export const KIND_LABEL = {
   prayer_cards: 'Printable cards',
   devotional: 'Printable devotional',
   journal: 'Printable journal',
-  first_steps: 'Printable guide',
+  first_steps: 'Printable First Steps Guide',
   product: 'Printable set',
 };

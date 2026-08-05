@@ -107,11 +107,15 @@ const FREE_RESOURCES = [
     topics: ['exhaustion', 'caregiving', 'learning-to-pray'],
   },
   {
+    // Titled apart from the paid "Learning to Pray" series on purpose — the two
+    // are different things, and offered side by side on the prayer journeys. The
+    // id and the URL still say learning-to-pray: the id keeps its analytics
+    // history, and the URL is the file's real name.
     id: 'free-learning-to-pray',
-    title: 'Learning to Pray',
+    title: "When You Don't Know What to Say",
     url: 'https://simplifytoglorify.com/resources/learning-to-pray.pdf',
     kind: 'free',
-    blurb: 'A simple starting place for prayer when you do not know what to say.',
+    blurb: 'A simple starting place for prayer, for anyone who was never taught how.',
     contents: FREE_PDF_CONTENTS,
     topics: ['learning-to-pray', 'feeling-far-from-god'],
   },

@@ -92,6 +92,27 @@ lanes — will be cut from the comfort journey entirely. It still opens
 `encouragement`, so the collection stays reachable, but comfort will not be the
 route.
 
+### What is already in flight
+
+**`gratitude` — drafted, not live.**
+[`looking-for-the-light-in-the-middle-of-it`](../src/data/entries/looking-for-the-light-in-the-middle-of-it.yaml),
+on 1 Thessalonians 5:18. It is held at `needs_scripture_verification` with the
+placeholder still in `scripture_text`, so the publish gate keeps it out of
+discovery and the Gratitude Collection stays unreachable until the verified
+NASB 2020 text is pasted in and both reviews are approved.
+
+**`gratitude`, second entry — Colossians 3:15.** A different angle on the same
+topic, kept deliberately separate rather than swapped in. 1 Thessalonians leads
+with the instruction to give thanks in everything, which is why the drafted
+entry spends a paragraph making clear that is not a demand to pretend. Colossians
+leads with peace and arrives at thankfulness as what follows from it — the answer
+to *"I want peace and I do not know where to start"* rather than to *"I have been
+told to be thankful and it feels like pretending."*
+
+One entry will not carry a five-printable collection for long, and these are two
+genuinely different women. Neither verse's text is recorded here: Scripture is
+never stored anywhere but an entry, and never until it is verified.
+
 ---
 
 ## Every topic

@@ -84,7 +84,7 @@ within what the tier already permits.
 | Tier | Requires the entry to have | Offers |
 | --- | --- | --- |
 | About a minute | scripture, prayer, small step | Scripture cards, prayer cards |
-| About five minutes | + gentle word | 7-day First Steps guide |
+| About five minutes | + gentle word | 7-day First Steps Guide |
 | About fifteen minutes | + journal question | Journal, then devotional |
 
 ---
@@ -108,7 +108,7 @@ Offered ahead of anything paid. All seven are reachable.
 ### Collections — 12
 
 Each is one series sold six ways: the whole set, plus five printables — Scripture
-cards, prayer cards, a 7-day First Steps guide, a 30-day devotional, and a 30-day
+cards, prayer cards, a 7-day First Steps Guide, a 30-day devotional, and a 30-day
 journal. All six share the collection's URL until individual product pages exist.
 
 | Collection | Series title | Topics | Reachable? |
@@ -120,17 +120,18 @@ journal. All six share the collection's URL until individual product pages exist
 | Faith | When You Feel Far From God | faith, hope, feeling-far-from-god | yes |
 | Trusting God | When You Cannot Control the Outcome | trusting-god, uncertainty, waiting | yes |
 | Regret | Grace for What You Cannot Change | regret, forgiveness | **no — no lane** |
-| Patience | Patience for the Process | patience, waiting | **no — no lane** |
+| Patience | Patience for the Process | patience, waiting | **no — loses `waiting`** |
 | Depression | When Hope Feels Far Away | depression | **no — no entry** |
 | Chronic Pain | Still Held on Hard Days | chronic-pain | **no — no entry** |
 | Gratitude | Grace in the Small Things | gratitude | **no — no entry** |
 | ADHD | Grace for the Busy Mind | adhd | **no — no entry** |
 
-**Six of the twelve cannot be reached from guided discovery**, for two different
+**Six of the twelve cannot be reached from guided discovery**, for three different
 reasons. Four have no entry carrying their topic, so the lane falls through.
-Two — Regret and Patience — are in no need's lanes at all, so nothing points at
-them; Regret has both a series and an entry written for it and still cannot be
-arrived at.
+Regret is in no need's lanes at all — it has both a series and an entry written
+for it and still cannot be arrived at. Patience loses every match on `waiting`
+to the Trusting God series, which claims the same topic and comes first in
+`SERIES`. See [destinations](destinations.md) for the full breakdown.
 
 ---
 

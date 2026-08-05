@@ -173,7 +173,7 @@ none, because no live entry carries `depression`.
 
 ### Gratitude — *Grace in the Small Things* — 0 of 6
 
-An entry is drafted (`grace-in-the-small-things`) but is not live yet — it is
+An entry is drafted (`looking-for-the-light-in-the-middle-of-it`) but is not live yet — it is
 awaiting verified Scripture, so it does not count here.
 
 | Item | Reachable | Why not |

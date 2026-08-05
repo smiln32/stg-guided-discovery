@@ -30,11 +30,38 @@
 // Prices are deliberately NOT mirrored here. Nothing reads the live store, so
 // any price in this file would go stale silently; the shop page is one click
 // away and always current. State what a thing IS, not what it costs.
+//
+// ---- Where the five formats came from ---------------------------------------
+//
+// The twelve collections used to be all this file held, which meant a visitor
+// with one minute and a visitor with fifteen were handed the identical link to
+// the identical five-part kit. The Website Visitor Resource Guide package's
+// catalog (data/stg_product_catalog.csv, 60 rows) describes what is actually
+// inside each kit — five products per topic, each with its own writing load and
+// energy fit — so the tiers can now offer the one piece that fits the capacity
+// a visitor just named. That is what FORMATS below encodes.
+//
+// Three things about that import are worth knowing:
+//
+//   • Every row's ProductURL column is empty, so a format links to its
+//     collection page, the same URL the collection entry uses. Two links to one
+//     URL is the deliberate trade: the format says "this is the part for you",
+//     the collection says "here is everything". When individual product pages
+//     are published, only `url` here needs to change.
+//   • The CSV titles carry their format ("… Journal", "… Prayer Cards"). They
+//     are stored here without it, per the titles rule above — under a label
+//     already reading "Printable journal", the suffix is the stutter that rule
+//     exists to prevent. Nothing else about the titles is changed.
+//   • Topics come from the COLLECTION, not from the CSV's single Topic column.
+//     The collections' topic lists were curated against this site's taxonomy and
+//     are wider than the CSV's (the anxiety kit also answers `overwhelm`; the
+//     caregiving kit also answers `exhaustion`). Taking the CSV's narrower
+//     column would have quietly dropped eight topics. See docs/topic-coverage.md.
 // -----------------------------------------------------------------------------
 
 /**
  * @typedef {{id:string,title:string,url:string,kind:string,blurb:string,
- *            contents:string,topics:string[]}} Product
+ *            contents:string,topics:string[],series?:string}} Product
  */
 
 /**
@@ -50,7 +77,7 @@ const COLLECTION_CONTENTS =
 const FREE_PDF_CONTENTS = 'A free printable PDF. No sign-up.';
 
 /** @type {Product[]} */
-export const PRODUCTS = [
+const FREE_RESOURCES = [
   // --- Free PDF resources (offered first) -----------------------------------
   {
     id: 'free-scripture-for-anxious-hearts',
@@ -116,116 +143,241 @@ export const PRODUCTS = [
     topics: ['uncertainty', 'trusting-god', 'waiting'],
   },
 
-  // --- Product collections (the real shop categories) -----------------------
-  // Blurbs name who the collection is for. What you get is in `contents`.
+];
+
+// --- The twelve shop series --------------------------------------------------
+// One row per collection. `topics` is this site's taxonomy, curated — it is
+// wider than the source CSV's single Topic column, and it is what every product
+// in the series inherits. `collection.blurb` names who the collection is for;
+// what you get is in `contents`.
+//
+// `name` is the series title, carried by all five formats (the format itself is
+// KIND_LABEL's job). Series ids match the source catalog's ProductID prefixes,
+// so a future import of real per-product URLs lines up row for row.
+
+/**
+ * @typedef {{id:string,name:string,url:string,topics:string[],
+ *            collection:{id:string,title:string,blurb:string}}} Series
+ */
+
+/** @type {Series[]} */
+const SERIES = [
   {
-    id: 'anxiety-collection',
-    title: 'Anxiety Collection',
+    id: 'anxiety',
+    name: 'Peace for an Anxious Heart',
     url: 'https://simplifytoglorify.com/products/anxiety/',
-    kind: 'product',
-    blurb: 'For the worry that runs ahead of you and will not sit down.',
-    contents: COLLECTION_CONTENTS,
     topics: ['anxiety', 'overwhelm'],
+    collection: {
+      id: 'anxiety-collection',
+      title: 'Anxiety Collection',
+      blurb: 'For the worry that runs ahead of you and will not sit down.',
+    },
   },
   {
-    id: 'caregiving-collection',
-    title: 'Caregiving Collection',
+    id: 'caregiving',
+    name: 'Strength for the Caregiver',
     url: 'https://simplifytoglorify.com/products/caregiving/',
-    kind: 'product',
-    blurb: 'For the daily, largely unseen work of caring for someone else.',
-    contents: COLLECTION_CONTENTS,
     topics: ['caregiving', 'exhaustion'],
+    collection: {
+      id: 'caregiving-collection',
+      title: 'Caregiving Collection',
+      blurb: 'For the daily, largely unseen work of caring for someone else.',
+    },
   },
   {
-    id: 'grief-collection',
-    title: 'Grief Collection',
+    id: 'grief',
+    name: 'When Someone You Love Is Gone',
     url: 'https://simplifytoglorify.com/products/grief/',
-    kind: 'product',
-    blurb: 'For loss that is still close, and for the long days after it.',
-    contents: COLLECTION_CONTENTS,
     topics: ['grief', 'loneliness'],
+    collection: {
+      id: 'grief-collection',
+      title: 'Grief Collection',
+      blurb: 'For loss that is still close, and for the long days after it.',
+    },
   },
   {
-    id: 'prayer-collection',
-    title: 'Prayer Collection',
+    id: 'prayer',
+    name: 'Learning to Pray',
     url: 'https://simplifytoglorify.com/products/prayer/',
-    kind: 'product',
-    blurb: 'For prayer that has gone quiet, or never quite got started.',
-    contents: COLLECTION_CONTENTS,
     topics: ['learning-to-pray', 'feeling-far-from-god'],
+    collection: {
+      id: 'prayer-collection',
+      title: 'Prayer Collection',
+      blurb: 'For prayer that has gone quiet, or never quite got started.',
+    },
   },
   {
-    id: 'regret-collection',
-    title: 'Regret Collection',
+    id: 'regret',
+    name: 'Grace for What You Cannot Change',
     url: 'https://simplifytoglorify.com/products/regret/',
-    kind: 'product',
-    blurb: 'For the thing you would undo if undoing were yours to do.',
-    contents: COLLECTION_CONTENTS,
     topics: ['regret', 'forgiveness'],
+    collection: {
+      id: 'regret-collection',
+      title: 'Regret Collection',
+      blurb: 'For the thing you would undo if undoing were yours to do.',
+    },
   },
   {
-    id: 'faith-collection',
-    title: 'Faith Collection',
+    id: 'faith',
+    name: 'When You Feel Far From God',
     url: 'https://simplifytoglorify.com/products/faith/',
-    kind: 'product',
-    blurb: 'For faith that feels smaller than you would like it to be.',
-    contents: COLLECTION_CONTENTS,
     topics: ['faith', 'hope', 'feeling-far-from-god'],
+    collection: {
+      id: 'faith-collection',
+      title: 'Faith Collection',
+      blurb: 'For faith that feels smaller than you would like it to be.',
+    },
   },
   {
-    id: 'trusting-god-collection',
-    title: 'Trusting God Collection',
+    id: 'trusting-god',
+    name: 'When You Cannot Control the Outcome',
     url: 'https://simplifytoglorify.com/products/trusting-god/',
-    kind: 'product',
-    blurb: 'For the stretch of road whose end you cannot see from here.',
-    contents: COLLECTION_CONTENTS,
     topics: ['trusting-god', 'uncertainty', 'waiting'],
+    collection: {
+      id: 'trusting-god-collection',
+      title: 'Trusting God Collection',
+      blurb: 'For the stretch of road whose end you cannot see from here.',
+    },
   },
   {
-    id: 'patience-collection',
-    title: 'Patience Collection',
+    id: 'patience',
+    name: 'Patience for the Process',
     url: 'https://simplifytoglorify.com/products/patience/',
-    kind: 'product',
-    blurb: 'For waiting that is taking longer than you planned for.',
-    contents: COLLECTION_CONTENTS,
     topics: ['patience', 'waiting'],
+    collection: {
+      id: 'patience-collection',
+      title: 'Patience Collection',
+      blurb: 'For waiting that is taking longer than you planned for.',
+    },
   },
   {
-    id: 'depression-collection',
-    title: 'Depression Collection',
+    id: 'depression',
+    name: 'When Hope Feels Far Away',
     url: 'https://simplifytoglorify.com/products/depression/',
-    kind: 'product',
-    blurb: 'For heaviness that does not lift on schedule.',
-    contents: COLLECTION_CONTENTS,
     topics: ['depression'],
+    collection: {
+      id: 'depression-collection',
+      title: 'Depression Collection',
+      blurb: 'For heaviness that does not lift on schedule.',
+    },
   },
   {
-    id: 'chronic-pain-collection',
-    title: 'Chronic Pain Collection',
+    id: 'chronic-pain',
+    name: 'Still Held on Hard Days',
     url: 'https://simplifytoglorify.com/products/chronic-pain/',
-    kind: 'product',
-    blurb: 'For a body that hurts and a faith grown tired of asking.',
-    contents: COLLECTION_CONTENTS,
     topics: ['chronic-pain'],
+    collection: {
+      id: 'chronic-pain-collection',
+      title: 'Chronic Pain Collection',
+      blurb: 'For a body that hurts and a faith grown tired of asking.',
+    },
   },
   {
-    id: 'gratitude-collection',
-    title: 'Gratitude Collection',
+    id: 'gratitude',
+    name: 'Grace in the Small Things',
     url: 'https://simplifytoglorify.com/products/gratitude/',
-    kind: 'product',
-    blurb: 'For learning to notice what is good, on purpose.',
-    contents: COLLECTION_CONTENTS,
     topics: ['gratitude'],
+    collection: {
+      id: 'gratitude-collection',
+      title: 'Gratitude Collection',
+      blurb: 'For learning to notice what is good, on purpose.',
+    },
   },
   {
-    id: 'adhd-collection',
-    title: 'ADHD Collection',
+    id: 'adhd',
+    name: 'Grace for the Busy Mind',
     url: 'https://simplifytoglorify.com/products/adhd/',
-    kind: 'product',
-    blurb: 'For a mind that moves fast and a heart that wants to be still.',
-    contents: COLLECTION_CONTENTS,
     topics: ['adhd'],
+    collection: {
+      id: 'adhd-collection',
+      title: 'ADHD Collection',
+      blurb: 'For a mind that moves fast and a heart that wants to be still.',
+    },
   },
+];
+
+// --- The five formats every series is sold in --------------------------------
+// Identical across all twelve topics in the source catalog — only the title and
+// topic ever varied — so they are stated once here rather than sixty times.
+//
+// `blurb` is the catalog's BestFor: who this format is for. `contents` is its
+// Included, and where the catalog's NotIncluded warns of a real mismatch (a
+// 7-day guide is not a 30-day study; cards are not a study), that warning is
+// folded in rather than stored in a field nothing renders.
+
+/** @type {{kind:string,suffix:string,blurb:string,contents:string}[]} */
+const FORMATS = [
+  {
+    kind: 'scripture_cards',
+    suffix: 'scripture-cards',
+    blurb: 'For keeping Scripture nearby without a reading or writing commitment.',
+    contents:
+      '30 printable cards — a verse with a brief truth or reflection. ' +
+      'No teaching or journaling space.',
+  },
+  {
+    kind: 'prayer_cards',
+    suffix: 'prayer-cards',
+    blurb: 'For borrowing simple prayers on the days words are hard to find.',
+    contents:
+      '30 printable cards — Scripture-rooted prayers written for this topic. ' +
+      'No study or journaling space.',
+  },
+  {
+    kind: 'first_steps',
+    suffix: 'first-steps',
+    blurb: 'A gentle starting place for low-energy, busy, or overwhelmed seasons.',
+    contents:
+      '7 days — a verse to hold, a prayer to borrow, a check-in, and one small ' +
+      'next step. Intentionally brief; not a full 30-day study.',
+  },
+  {
+    kind: 'devotional',
+    suffix: 'devotional',
+    blurb: 'For daily Scripture teaching and encouragement, with little writing asked of you.',
+    contents:
+      '30 days — Scripture readings, devotional reflections, application, and ' +
+      'prayer. Limited writing space; not a guided journal.',
+  },
+  {
+    kind: 'journal',
+    suffix: 'journal',
+    blurb: 'For deeper daily reflection, when there is time and energy to write.',
+    contents:
+      '30 days — Scripture readings, brief reflections, two guided prompts, ' +
+      'prayer, and space to write. Asks for regular writing.',
+  },
+];
+
+/** The kinds that are one piece OF a series rather than the whole set. */
+export const FORMAT_KINDS = FORMATS.map((f) => f.kind);
+
+/** @type {Product[]} */
+export const PRODUCTS = [
+  ...FREE_RESOURCES,
+  ...SERIES.flatMap((s) => [
+    {
+      id: s.collection.id,
+      title: s.collection.title,
+      url: s.url,
+      kind: 'product',
+      blurb: s.collection.blurb,
+      contents: COLLECTION_CONTENTS,
+      topics: s.topics,
+      series: s.id,
+    },
+    // Ids match the source catalog's ProductID exactly (`anxiety-journal`, …).
+    ...FORMATS.map((f) => ({
+      id: `${s.id}-${f.suffix}`,
+      title: s.name,
+      url: s.url,
+      kind: f.kind,
+      blurb: f.blurb,
+      contents: f.contents,
+      topics: s.topics,
+      series: s.id,
+    })),
+  ]),
 ];
 
 export const PRODUCT_BY_ID = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));

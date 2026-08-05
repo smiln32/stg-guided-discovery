@@ -33,6 +33,12 @@
  *                              summarizes the visitor, and never diagnoses.
  * @property {string[]} lanes   Topic slugs, most relevant first. The matcher
  *                              walks these in order to find entries.
+ * @property {string} [prefer_format]
+ *                              Optional. A product kind to hoist ahead of the
+ *                              tier's usual order when this need is what brought
+ *                              her here — only ever a reordering WITHIN what the
+ *                              tier already allows, never a way to offer
+ *                              something the capacity does not suit.
  */
 
 /**
@@ -102,6 +108,10 @@ export const NEEDS = [
     acknowledgment:
       'Your heart is exactly what belongs here. You do not need the right words to begin.',
     lanes: ['learning-to-pray', 'feeling-far-from-god'],
+    // Someone who came here to pray and has a minute should be offered prayers
+    // to borrow, not verses to read. Both are one-minute formats; this only
+    // settles which of the two comes first.
+    prefer_format: 'prayer_cards',
   },
   {
     slug: 'next-step',
@@ -153,6 +163,10 @@ export const NEED_BY_SLUG = Object.fromEntries(NEEDS.map((n) => [n.slug, n]));
  *                                for an entry to be offered at this tier. This
  *                                is the "every journey path has the content its
  *                                tier promises" gate.
+ * @property {string[]} formats   Product KINDS (src/config/products.mjs) whose
+ *                                writing load and energy fit suit this much
+ *                                capacity, best first. Referenced, never owned —
+ *                                the same arrangement as `lanes` and topics.
  * @property {{reflection:boolean, journalQuestion:boolean, goDeeper:boolean}} shows
  */
 
@@ -165,6 +179,21 @@ export const NEED_BY_SLUG = Object.fromEntries(NEEDS.map((n) => [n.slug, n]));
  * it, and `npm run validate` fails the build if a tier cannot be satisfied at
  * all. Nothing renders a blank section.
  *
+ * `formats` answers the other half of the same question. A visitor who has just
+ * said she has one minute should not be handed a 30-day journal that asks her to
+ * write every day; the shop sells a set of cards for exactly that moment. The
+ * mapping follows the source catalog's own WritingLevel and EnergyFit columns:
+ *
+ *   tier          format          writing   energy
+ *   one-minute    cards           None      Low
+ *   five-minutes  first steps     Low       Low
+ *   fifteen       journal         High      High
+ *                 devotional      Low       Medium   (fallback)
+ *
+ * The devotional sits behind the journal at the deepest tier rather than at its
+ * own: it is a reading commitment of thirty days, which is not what five minutes
+ * today means.
+ *
  * @type {Tier[]}
  */
 export const TIERS = [
@@ -174,6 +203,7 @@ export const TIERS = [
     label: 'About a minute',
     blurb: 'One verse, a short prayer to borrow, and one small step.',
     requires: ['scripture_text', 'prayer', 'small_step'],
+    formats: ['scripture_cards', 'prayer_cards'],
     shows: { reflection: false, journalQuestion: false, goDeeper: false },
   },
   {
@@ -182,6 +212,7 @@ export const TIERS = [
     label: 'About five minutes',
     blurb: 'A verse, a gentle word about it, a prayer, and one small step.',
     requires: ['scripture_text', 'gentle_word', 'prayer', 'small_step'],
+    formats: ['first_steps'],
     shows: { reflection: true, journalQuestion: false, goDeeper: false },
   },
   {
@@ -196,6 +227,7 @@ export const TIERS = [
       'small_step',
       'journal_question',
     ],
+    formats: ['journal', 'devotional'],
     shows: { reflection: true, journalQuestion: true, goDeeper: true },
   },
 ];

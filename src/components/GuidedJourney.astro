@@ -21,7 +21,7 @@ import EntryArticle from './EntryArticle.astro';
 import RelatedContent from './RelatedContent.astro';
 import { paths } from '../lib/urls';
 import { topicTitle, topicAccent, isTopicPublished } from '../lib/topics';
-import { PRODUCT_BY_ID } from '../config/products.mjs';
+import { PRODUCT_BY_ID, KIND_LABEL } from '../config/products.mjs';
 import { entrySectionsForTier } from '../config/guided.mjs';
 import type { Journey, Product } from '../lib/guided';
 
@@ -35,10 +35,19 @@ const d = entry.data;
 
 const topicPublished = await isTopicPublished(d.topic);
 
-// One thing to explore, free before paid — relatedProductIds() already applied
-// the catalog's free-first ordering.
+// One thing to explore, free before paid — journeyProductIds() already applied
+// the catalog's free-first ordering, so the paid fallback is the single format
+// chosen for this tier rather than the whole collection.
 const explore: Product | undefined =
   free ?? (productIds[0] ? (PRODUCT_BY_ID[productIds[0]] as Product) : undefined);
+
+// "Look at the printable journal" / "… cards" / "… set". Naming the format keeps
+// the button honest about what is on the other side of it, and matches the label
+// <RelatedContent> gives the same item a few lines above.
+const exploreLabel =
+  explore && (explore.kind === 'free' || explore.kind === 'download')
+    ? 'Take the free printable'
+    : `Look at the ${(KIND_LABEL[explore?.kind ?? ''] ?? 'printable set').toLowerCase()}`;
 
 // Journey words -> entry-field words. See entrySectionsForTier for why this is
 // a named translation and not a spread.
@@ -136,9 +145,7 @@ const show = entrySectionsForTier(tier);
             data-track="related_product_clicked"
             data-track-label={explore.id}
           >
-            {explore.kind === 'free' || explore.kind === 'download'
-              ? 'Take the free printable'
-              : 'Look at the printable set'}
+            {exploreLabel}
           </a>
         )
       }

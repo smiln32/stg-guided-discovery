@@ -21,7 +21,12 @@ import {
 } from '../src/lib/guided-guards.mjs';
 import { loadAllEntries, passesPublishGate } from '../scripts/lib/entries.mjs';
 import { TOPICS } from '../src/config/topics.mjs';
-import { PRODUCT_BY_ID } from '../src/config/products.mjs';
+import {
+  PRODUCTS, PRODUCT_BY_ID, FORMAT_KINDS, KIND_LABEL, KIND_PRIORITY,
+} from '../src/config/products.mjs';
+import {
+  relatedProductIds, formatForTier, journeyProductIds,
+} from '../src/lib/product-match.mjs';
 
 const need = (over = {}) => ({
   slug: 'test', label: 'l', short: 's', question: 'q', acknowledgment: 'a',
@@ -178,6 +183,139 @@ test('matching skips entries that cannot carry the tier, and caps the choice', (
     ['b', 'c', 'd'],
   );
   assert.equal(selectCandidates(pool, n, tier('one-minute'), 2).length, 2);
+});
+
+// --- Which product a tier offers ---------------------------------------------
+
+test('every tier names formats that exist in the catalog', () => {
+  for (const t of TIERS) {
+    assert.ok(t.formats?.length, `${t.slug} offers no format`);
+    for (const kind of t.formats) {
+      assert.ok(FORMAT_KINDS.includes(kind), `${t.slug} names unknown format "${kind}"`);
+      assert.ok(
+        PRODUCTS.some((p) => p.kind === kind),
+        `${t.slug} names format "${kind}", which no product has`,
+      );
+    }
+  }
+});
+
+test('a need may only reorder the formats its tier already allows', () => {
+  for (const n of NEEDS) {
+    if (!n.prefer_format) continue;
+    assert.ok(FORMAT_KINDS.includes(n.prefer_format), n.slug);
+    assert.ok(
+      TIERS.some((t) => t.formats.includes(n.prefer_format)),
+      `need "${n.slug}" prefers "${n.prefer_format}", which no tier allows`,
+    );
+  }
+});
+
+test('capacity decides the format: cards at a minute, a journal at fifteen', () => {
+  const d = { topic: 'anxiety', secondary_topics: [], related_product_ids: [] };
+  const n = need({ lanes: ['anxiety'] });
+
+  assert.equal(formatForTier(d, tier('one-minute'), n).kind, 'scripture_cards');
+  assert.equal(formatForTier(d, tier('five-minutes'), n).kind, 'first_steps');
+  assert.equal(formatForTier(d, tier('fifteen-minutes'), n).kind, 'journal');
+
+  // …and it comes from the series that matches the topic.
+  assert.equal(formatForTier(d, tier('one-minute'), n).id, 'anxiety-scripture-cards');
+});
+
+test('a need can reorder within a tier but cannot escape it', () => {
+  const d = { topic: 'learning-to-pray', secondary_topics: [], related_product_ids: [] };
+  const praying = need({ lanes: ['learning-to-pray'], prefer_format: 'prayer_cards' });
+  const other = need({ lanes: ['learning-to-pray'] });
+
+  // Someone who came to pray is offered prayers to borrow, not verses to read.
+  assert.equal(formatForTier(d, tier('one-minute'), praying).kind, 'prayer_cards');
+  assert.equal(formatForTier(d, tier('one-minute'), other).kind, 'scripture_cards');
+
+  // The preference is ignored at a tier that does not allow that format — a
+  // need must never talk a visitor past the capacity she just named.
+  assert.equal(formatForTier(d, tier('fifteen-minutes'), praying).kind, 'journal');
+});
+
+test("an entry's own topic outranks a secondary one when picking the series", () => {
+  // Both the grief and caregiving kits answer this entry; its own topic wins.
+  const d = { topic: 'grief', secondary_topics: ['caregiving'], related_product_ids: [] };
+  const chosen = formatForTier(d, tier('five-minutes'), need({ lanes: ['grief'] }));
+  assert.equal(chosen.series, 'grief');
+});
+
+test('a journey offers a free resource, one format, and its collection', () => {
+  const d = {
+    topic: 'anxiety',
+    secondary_topics: [],
+    related_product_ids: ['free-scripture-for-anxious-hearts'],
+  };
+  const ids = journeyProductIds(d, tier('one-minute'), need({ lanes: ['anxiety'] }));
+
+  assert.deepEqual(ids, [
+    'free-scripture-for-anxious-hearts',
+    'anxiety-scripture-cards',
+    'anxiety-collection',
+  ]);
+  // The format and its collection must be the same series, or the page offers
+  // one topic's cards next to another topic's set.
+  assert.equal(PRODUCT_BY_ID['anxiety-scripture-cards'].series, 'anxiety-collection'
+    .replace('-collection', ''));
+});
+
+test('an entry page is never offered the five formats it cannot choose between', () => {
+  // They all link to the same collection page, so listing them would be five
+  // identical links. Only a journey, which knows the capacity, picks one.
+  const d = { topic: 'anxiety', secondary_topics: [], related_product_ids: [] };
+  for (const id of relatedProductIds(d, 99)) {
+    assert.ok(!FORMAT_KINDS.includes(PRODUCT_BY_ID[id].kind), id);
+  }
+});
+
+test('a reviewer who names a format outright still gets it', () => {
+  const d = {
+    topic: 'anxiety',
+    secondary_topics: [],
+    related_product_ids: ['anxiety-prayer-cards'],
+  };
+  // Present even though it is a format — but still behind the free resource,
+  // because free-before-paid outranks a reviewer's ordering.
+  assert.ok(relatedProductIds(d, 99).includes('anxiety-prayer-cards'));
+  assert.equal(relatedProductIds(d, 99)[0], 'free-scripture-for-anxious-hearts');
+  assert.equal(
+    formatForTier(d, tier('one-minute'), need({ lanes: ['anxiety'] })).id,
+    'anxiety-prayer-cards',
+  );
+});
+
+test('every product in the catalog has a title, a real URL and known topics', () => {
+  const topicSlugs = new Set(TOPICS.map((t) => t.slug));
+  const ids = new Set();
+  for (const p of PRODUCTS) {
+    assert.ok(!ids.has(p.id), `duplicate product id ${p.id}`);
+    ids.add(p.id);
+    assert.ok(p.title?.trim(), p.id);
+    assert.ok(p.blurb?.trim() && p.contents?.trim(), p.id);
+    assert.match(p.url, /^https:\/\/simplifytoglorify\.com\//, p.id);
+    assert.ok(p.topics.length > 0, p.id);
+    for (const t of p.topics) {
+      assert.ok(topicSlugs.has(t), `product ${p.id} references unknown topic "${t}"`);
+    }
+    assert.ok(KIND_LABEL[p.kind], `product ${p.id} has unlabelled kind "${p.kind}"`);
+    assert.ok(KIND_PRIORITY[p.kind] !== undefined, `${p.id}: kind has no priority`);
+  }
+});
+
+test('titles do not repeat the format their label already states', () => {
+  // "Printable journal — Peace for an Anxious Heart Journal" is the stutter this
+  // prevents. See the note at the top of src/config/products.mjs.
+  for (const p of PRODUCTS.filter((x) => FORMAT_KINDS.includes(x.kind))) {
+    assert.doesNotMatch(
+      p.title,
+      /\b(journal|devotional|cards|first steps|guide)\b$/i,
+      `${p.id}: title ends with its own format`,
+    );
+  }
 });
 
 test('coverage reports a need that has nothing to offer', () => {

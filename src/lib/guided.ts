@@ -11,15 +11,20 @@
 //   topic            <- src/config/topics.mjs, via the need's lanes
 //   Scripture entry  <- src/data/entries, via getVisibleEntries() (approval gate)
 //   free resource    <- src/config/products.mjs (kind: free/download)
-//   products         <- src/config/products.mjs
+//   products         <- src/config/products.mjs, chosen by ./product-match.mjs
 //   next step        <- the entry's own small_step
 //
 // Selection is deterministic — the same answers always open the same journey.
 // Nothing here is random and nothing is scored against the visitor.
 // -----------------------------------------------------------------------------
 import { NEEDS, TIERS, MAX_JOURNEY_CHOICES } from '../config/guided.mjs';
-import { PRODUCTS, PRODUCT_BY_ID, KIND_PRIORITY } from '../config/products.mjs';
 import { entryMeetsTier, selectCandidates } from './guided-guards.mjs';
+import {
+  relatedProductIds as matchRelatedProductIds,
+  freeResource as matchFreeResource,
+  formatForTier as matchFormatForTier,
+  journeyProductIds as matchJourneyProductIds,
+} from './product-match.mjs';
 import { getVisibleEntries, buildNow, type Entry, type EntryData } from './entries';
 import { paths } from './urls';
 
@@ -30,6 +35,7 @@ export interface Need {
   question: string;
   acknowledgment: string;
   lanes: string[];
+  prefer_format?: string;
 }
 
 export interface Tier {
@@ -38,6 +44,7 @@ export interface Tier {
   label: string;
   blurb: string;
   requires: string[];
+  formats: string[];
   shows: { reflection: boolean; journalQuestion: boolean; goDeeper: boolean };
 }
 
@@ -49,6 +56,8 @@ export interface Product {
   blurb: string;
   contents: string;
   topics: string[];
+  /** Which shop series this belongs to; absent on the free PDFs. */
+  series?: string;
 }
 
 export const needs = NEEDS as Need[];
@@ -101,34 +110,34 @@ export function journeyUrl(need: Need, tier: Tier, slug: string, candidates: Ent
 // ---- What belongs around the entry -------------------------------------------
 
 /**
- * Products and free resources relevant to this entry, free things first.
+ * Which resources an entry is offered alongside.
  *
- * The entry's own `related_product_ids` are trusted first (a reviewer chose
- * them); topic matches from the shared catalog fill in behind them. Ids are
- * returned rather than objects so the page hands them straight to
- * <RelatedContent>, which stays the one place product links are rendered.
+ * The selection itself lives in product-match.mjs, for the same reason the entry
+ * matching lives in guided-guards.mjs: plain .mjs is importable by the Astro
+ * build, the tests and `npm run validate` alike, so what a visitor is offered
+ * cannot be decided one way here and another way there. These are the typed
+ * doorways onto it — see that file for what each one does.
  */
-export function relatedProductIds(data: EntryData, limit = 4): string[] {
-  const topics = new Set([data.topic, ...data.secondary_topics]);
+export const relatedProductIds = matchRelatedProductIds as (
+  data: EntryData,
+  limit?: number,
+) => string[];
 
-  const chosen = data.related_product_ids.filter((id) => PRODUCT_BY_ID[id]);
-  const byTopic = (PRODUCTS as Product[])
-    .filter((p) => !chosen.includes(p.id) && p.topics.some((t) => topics.has(t)))
-    .map((p) => p.id);
+export const freeResource = matchFreeResource as (
+  data: EntryData,
+) => Product | undefined;
 
-  return [...chosen, ...byTopic]
-    .map((id) => PRODUCT_BY_ID[id] as Product)
-    .sort((a, b) => (KIND_PRIORITY[a.kind] ?? 9) - (KIND_PRIORITY[b.kind] ?? 9))
-    .slice(0, limit)
-    .map((p) => p.id);
-}
+export const formatForTier = matchFormatForTier as (
+  data: EntryData,
+  tier: Tier,
+  need: Need,
+) => Product | undefined;
 
-/** The free resource to offer when one exists for this entry. */
-export function freeResource(data: EntryData): Product | undefined {
-  return relatedProductIds(data, 99)
-    .map((id) => PRODUCT_BY_ID[id] as Product)
-    .find((p) => p.kind === 'free' || p.kind === 'download');
-}
+export const journeyProductIds = matchJourneyProductIds as (
+  data: EntryData,
+  tier: Tier,
+  need: Need,
+) => string[];
 
 export interface JourneyAlternate {
   entry: Entry;
@@ -151,6 +160,11 @@ export interface Journey {
    * the one on the entry's permanent page.
    */
   free?: Product;
+  /**
+   * The free resource, the one format that fits this tier, and its collection —
+   * see journeyProductIds. Tier-aware, which is what separates a journey's
+   * offering from the whole-collection link an entry page shows.
+   */
   productIds: string[];
   /**
    * The same entry at the next tier up, when there is one. At the deepest tier
@@ -205,7 +219,7 @@ export async function buildJourney(
       .filter((c) => c.id !== entry.id)
       .map((c) => ({ entry: c, url: journeyUrl(need, tier, c.data.slug, candidates) })),
     free: freeResource(entry.data),
-    productIds: relatedProductIds(entry.data),
+    productIds: journeyProductIds(entry.data, tier, need),
     deeperUrl,
     deeperTier: deeperUrl ? nextTier : undefined,
   };

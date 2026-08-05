@@ -70,6 +70,12 @@ A blank template is in [`content/sample-import-template.csv`](content/sample-imp
   offer fails validation rather than shipping a dead end.
 - **Support is offered, never pushed.** Free resources come before paid ones
   everywhere, and no path requires a purchase to reach the end.
+- **What is offered fits the capacity she named.** A visitor with a minute is
+  shown printable cards, not a thirty-day journal that asks her to write daily.
+  Each tier names the formats whose writing load suits it.
+- **A way to reach a person is on every guided page.** The crisis note is
+  checked for the same no-diagnosis rule as the rest of the copy, and validation
+  fails if it ever loses its phone number.
 
 ## Project structure
 
@@ -83,8 +89,16 @@ src/
   pages/           routes (daily, permanent, topics, search, help)
 scripts/           validate, import-csv, export-csv
 tests/             guided safeguards + journey coverage (node --test)
-docs/              owner guide + handoff
+docs/              owner guide, topic coverage, handoff
 ```
+
+## Deciding what to write next
+
+[`docs/topic-coverage.md`](docs/topic-coverage.md) lines the twenty topics up
+against the entries and the shop series and shows where they do not meet — the
+topics answered by a collection named for something else, the series with nothing
+written for them, and the topics no guided answer can reach. It is a reference,
+not a gate: nothing fails because of it.
 
 ## Configuration
 

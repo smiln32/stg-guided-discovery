@@ -12,11 +12,12 @@ import assert from 'node:assert/strict';
 
 import {
   NEEDS, TIERS, RESERVED_SLUGS, MAX_JOURNEY_CHOICES, PRAYER_CLOSING,
-  entrySectionsForTier,
+  entrySectionsForTier, SAFETY_NOTE,
 } from '../src/config/guided.mjs';
 import {
   findDiagnosisLanguage, checkPrayerVoice, entryMeetsTier, journeyVisibleText,
   checkGuidedCopy, checkJourneyCoverage, selectCandidates, laneRank, OUT_OF_LANE,
+  checkSafetyNote,
 } from '../src/lib/guided-guards.mjs';
 import { loadAllEntries, passesPublishGate } from '../scripts/lib/entries.mjs';
 import { TOPICS } from '../src/config/topics.mjs';
@@ -194,6 +195,37 @@ test('coverage reports an entry that cannot carry the tier it was offered at', (
 
 test('the guided configuration passes its own checks', () => {
   assert.deepEqual(checkGuidedCopy(), []);
+});
+
+test('the crisis note names real help, diagnoses nobody, and sells nothing', () => {
+  // The whole point of the note is the phone number. A rewrite that loses it
+  // leaves a paragraph of sympathy and no way to reach a person.
+  assert.match(SAFETY_NOTE.body, /\b988\b/);
+  assert.match(SAFETY_NOTE.body, /emergency number/i);
+
+  // It is the most-read copy the feature owns, so it is held to the same rule
+  // as everything else a visitor reads.
+  assert.deepEqual(findDiagnosisLanguage(SAFETY_NOTE.body), []);
+  assert.deepEqual(findDiagnosisLanguage(SAFETY_NOTE.heading), []);
+
+  // No product, and no promise about how things will turn out.
+  assert.doesNotMatch(SAFETY_NOTE.body, /journal|devotional|printable|shop|collection/i);
+  assert.doesNotMatch(SAFETY_NOTE.body, /will (get|be) better|heal|cure/i);
+});
+
+test('a crisis note that loses its number, or diagnoses, is reported', () => {
+  assert.deepEqual(checkSafetyNote(), [], 'the shipped note passes');
+
+  const softened = {
+    heading: SAFETY_NOTE.heading,
+    body: 'If today is hard, please reach out to someone you trust.',
+  };
+  assert.deepEqual(checkSafetyNote(softened), [
+    'safety note body: must name a way to reach a person (988)',
+  ]);
+
+  const diagnosing = { heading: 'Help', body: 'You seem depressed. Call 988.' };
+  assert.ok(checkSafetyNote(diagnosing).some((p) => /diagnosis language/.test(p)));
 });
 
 test('every need points at real topics and has a unique slug', () => {

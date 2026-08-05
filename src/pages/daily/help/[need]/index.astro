@@ -14,6 +14,7 @@
 // search. The encouragement it leads to has its own permanent, indexable page.
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import SafetyNote from '../../../../components/SafetyNote.astro';
 import { needs, tiers, candidatesFor, type Need, type Tier } from '../../../../lib/guided';
 import { getVisibleEntries, buildNow } from '../../../../lib/entries';
 import { paths } from '../../../../lib/urls';
@@ -103,6 +104,8 @@ const crumbs = [
     <p class="back">
       <a href={paths.help}>← Something else would help more</a>
     </p>
+
+    <SafetyNote />
   </div>
 </BaseLayout>
 

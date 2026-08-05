@@ -6,6 +6,7 @@
 // here and nothing is stored; choosing an answer is only choosing a link.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import SafetyNote from '../../../components/SafetyNote.astro';
 import { needs } from '../../../lib/guided';
 import { paths } from '../../../lib/urls';
 import { breadcrumbJsonLd } from '../../../lib/jsonld';
@@ -61,6 +62,8 @@ const crumbs = [
       anywhere. Every verse shown has been checked against its translation
       before it was published here.
     </p>
+
+    <SafetyNote />
   </div>
 </BaseLayout>
 

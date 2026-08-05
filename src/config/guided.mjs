@@ -281,3 +281,36 @@ export const PRAYER_CLOSING = 'Amen.';
  * never collide with one, or the entry's permanent page would be shadowed.
  */
 export const RESERVED_SLUGS = ['help', 'topics', 'search'];
+
+// ---- The one thing this site is not -----------------------------------------
+
+/**
+ * The crisis note shown on every guided page.
+ *
+ * Brought over from the Website Visitor Resource Guide package, whose safety
+ * precheck (R01) ran before everything else and overrode every other rule. That
+ * precheck read what a visitor typed; there is nothing to read here — the box on
+ * the need page is never sent anywhere and is never examined, and that promise is
+ * worth more than a keyword scan would be. So the same duty is discharged the
+ * only way a static site honestly can: the help is simply always on the page,
+ * for everyone, whether or not anything was typed.
+ *
+ * The imported wording opened "It sounds like you may be going through something
+ * very serious" — written as a reply to a message. As a standing line that both
+ * reads wrong and interprets a visitor who has said nothing, which is exactly
+ * what DIAGNOSIS_PATTERNS exists to prevent. What is kept is the substance: the
+ * real numbers, no diagnosis, no promise about outcomes, and no product.
+ *
+ * `checkGuidedCopy()` sweeps this text for diagnosis language along with every
+ * need and tier, so it cannot drift out of voice unnoticed.
+ */
+export const SAFETY_NOTE = {
+  /** Deliberately not a question, and not addressed to a "you" in crisis. */
+  heading: 'If you need help right now',
+  body:
+    'If you are in danger, or thinking of harming yourself, please reach a person ' +
+    'who can help before you read anything else here. In the United States, call ' +
+    'or text 988 for the Suicide and Crisis Lifeline — any hour of any day. ' +
+    'Elsewhere, call your local emergency number. Nothing on this page can stand in ' +
+    'for that, and there is no shame in needing it.',
+};

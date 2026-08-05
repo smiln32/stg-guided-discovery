@@ -39,6 +39,7 @@ import {
   DIAGNOSIS_PATTERNS,
   PRAYER_OPENINGS,
   PRAYER_CLOSING,
+  SAFETY_NOTE,
 } from '../config/guided.mjs';
 
 const text = (v) => (typeof v === 'string' ? v : v == null ? '' : String(v));
@@ -211,6 +212,30 @@ export function checkGuidedCopy() {
         problems.push(`tier "${tier.slug}" ${field}: diagnosis language "${hit}"`);
       }
     }
+  }
+  problems.push(...checkSafetyNote());
+  return problems;
+}
+
+/**
+ * The crisis note is on every guided page, so it is the most-read copy the
+ * feature owns — and the only copy whose failure mode is someone not reaching
+ * help. It is held to the same no-diagnosis rule as everything else, and to one
+ * rule of its own: it must still contain a way to reach a person. A well-meant
+ * rewrite that softens the paragraph into sympathy and drops the number is the
+ * exact failure this catches.
+ *
+ * @returns {string[]} problems; empty means it passes
+ */
+export function checkSafetyNote(note = SAFETY_NOTE) {
+  const problems = [];
+  for (const [field, value] of Object.entries(note ?? {})) {
+    for (const hit of findDiagnosisLanguage(value)) {
+      problems.push(`safety note ${field}: diagnosis language "${hit}"`);
+    }
+  }
+  if (!/\b988\b/.test(text(note?.body))) {
+    problems.push('safety note body: must name a way to reach a person (988)');
   }
   return problems;
 }

@@ -1,0 +1,44 @@
+---
+// The crisis note, shown on every page of guided discovery.
+//
+// Quiet on purpose. It sits at the foot of the page, below the content, in the
+// muted voice the rest of the site uses for its promises — a visitor who does
+// not need it should be able to read past it, and a visitor who does should find
+// it in the same place every time.
+//
+// The copy itself lives in src/config/guided.mjs, where checkGuidedCopy() sweeps
+// it for diagnosis language along with every need and tier. See SAFETY_NOTE
+// there for why it is a standing line rather than something triggered by what a
+// visitor typed.
+import { SAFETY_NOTE } from '../config/guided.mjs';
+---
+
+<aside class="safety" aria-labelledby="safety-heading">
+  <h2 id="safety-heading">{SAFETY_NOTE.heading}</h2>
+  <p>{SAFETY_NOTE.body}</p>
+</aside>
+
+<style>
+  .safety {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+  .safety h2 {
+    /* Not a section heading competing with the content above it — the same
+       weight and colour as the paragraph, kept as an <h2> only so the landmark
+       has an accessible name. */
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-soft);
+    margin: 0 0 var(--space-2xs);
+  }
+  .safety p {
+    margin: 0;
+    max-width: 60ch;
+  }
+</style>

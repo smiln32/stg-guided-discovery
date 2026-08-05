@@ -89,16 +89,22 @@ src/
   pages/           routes (daily, permanent, topics, search, help)
 scripts/           validate, import-csv, export-csv
 tests/             guided safeguards + journey coverage (node --test)
-docs/              owner guide, topic coverage, handoff
+docs/              owner guide, discovery map, topic coverage, handoff
 ```
 
 ## Deciding what to write next
 
 [`docs/topic-coverage.md`](docs/topic-coverage.md) lines the twenty topics up
 against the entries and the shop series and shows where they do not meet — the
-topics answered by a collection named for something else, the series with nothing
-written for them, and the topics no guided answer can reach. It is a reference,
-not a gate: nothing fails because of it.
+four collections guided discovery cannot reach because nothing is written for
+them, the topics answered by a collection named for something else, and the
+topics no guided answer points at. It also records what a new entry needs in
+order to close a gap.
+
+[`docs/discovery-map.md`](docs/discovery-map.md) is the flat reference behind it:
+every topic, every entry point and every destination, and what each journey
+actually opens and offers. Both are references, not gates — nothing fails
+because of them.
 
 ## Configuration
 

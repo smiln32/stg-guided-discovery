@@ -306,6 +306,41 @@ test('every product in the catalog has a title, a real URL and known topics', ()
   }
 });
 
+test('no two products can be offered together as the same title under the same label', () => {
+  // Short titles plus a format label are enough to tell resources apart, and two
+  // items may share a title (a blog post and a free PDF of the same name) or a
+  // label. Sharing BOTH is the one case a reader cannot resolve: two identical
+  // lines. It regressed once — the topic page listed all five formats, and
+  // Scripture cards and prayer cards share both a series title and "Printable
+  // cards" — so the rule is held here rather than trusted.
+  const seen = new Map();
+  for (const p of PRODUCTS) {
+    const key = `${KIND_LABEL[p.kind]}\t${p.title}`;
+    if (seen.has(key)) seen.get(key).push(p.id);
+    else seen.set(key, [p.id]);
+  }
+  const ambiguous = [...seen.entries()].filter(([, ids]) => ids.length > 1);
+
+  // Such pairs may exist in the catalog, but nothing may ever offer both at once.
+  for (const [key, ids] of ambiguous) {
+    const offeredTogether = ids.every((id) => !FORMAT_KINDS.includes(PRODUCT_BY_ID[id].kind));
+    assert.ok(
+      !offeredTogether,
+      `${key.replace('\t', ' — ')} is ambiguous and both are offered outside a journey: ${ids}`,
+    );
+  }
+
+  // And a journey offers exactly one format, so it can never surface a pair.
+  for (const t of TIERS) {
+    const d = { topic: 'learning-to-pray', secondary_topics: [], related_product_ids: [] };
+    const offered = journeyProductIds(d, t, need({ lanes: ['learning-to-pray'] }))
+      .map((id) => PRODUCT_BY_ID[id]);
+    const labels = offered.map((p) => `${KIND_LABEL[p.kind]}\t${p.title}`);
+    assert.equal(new Set(labels).size, labels.length, `${t.slug}: ${labels.join(' | ')}`);
+    assert.equal(offered.filter((p) => FORMAT_KINDS.includes(p.kind)).length, 1, t.slug);
+  }
+});
+
 test('titles do not repeat the format their label already states', () => {
   // "Printable journal — Peace for an Anxious Heart Journal" is the stutter this
   // prevents. See the note at the top of src/config/products.mjs.

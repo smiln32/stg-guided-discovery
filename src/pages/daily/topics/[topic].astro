@@ -8,7 +8,7 @@ import RelatedContent from '../../../components/RelatedContent.astro';
 import { publishedTopics } from '../../../lib/topics';
 import { getEntriesByTopic, buildNow } from '../../../lib/entries';
 import { paths } from '../../../lib/urls';
-import { PRODUCTS } from '../../../config/products.mjs';
+import { PRODUCTS, FORMAT_KINDS } from '../../../config/products.mjs';
 import { itemListJsonLd, breadcrumbJsonLd } from '../../../lib/jsonld';
 
 export async function getStaticPaths() {
@@ -26,7 +26,15 @@ const now = buildNow();
 const featured = entries[0];
 const rest = entries.slice(1);
 
-const relatedProducts = PRODUCTS.filter((p) => p.topics.includes(topic.slug)).map((p) => p.id);
+// Whole things only — a free resource or a whole collection. Like an entry page,
+// a topic page has no answer to "how much do you have in you right now?", so it
+// cannot choose between the five formats a collection is made of. Listing all of
+// them put two identical lines on this page ("Printable cards — Learning to
+// Pray", twice: Scripture cards and prayer cards share a title and a label).
+// Only a journey, which knows the capacity, picks one. See src/lib/product-match.mjs.
+const relatedProducts = PRODUCTS.filter(
+  (p) => p.topics.includes(topic.slug) && !FORMAT_KINDS.includes(p.kind),
+).map((p) => p.id);
 
 const crumbs = [
   { label: 'Home', href: paths.home },

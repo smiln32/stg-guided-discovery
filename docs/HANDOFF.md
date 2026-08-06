@@ -1,7 +1,13 @@
-# stg-guided-discovery — Handoff (updated 2026-08-04)
+# stg-guided-discovery — Handoff (updated 2026-08-06)
 
-> **Latest change (2026-08-04):** guided discovery — the "Where do you need help
-> today?" entry point from `stg-meet-me-where-i-am` — is integrated. See
+> **Latest change (2026-08-06):** all seventeen entries now carry **NASB 2020**
+> Scripture in place of the demonstration WEB text, and everything has been
+> merged to `main` and pushed. The entries are still flagged `is_sample: true`,
+> so every page still shows a demonstration banner — see
+> [What is open](#what-is-open) for that and the rest.
+
+> **2026-08-04:** guided discovery — the "Where do you need help today?" entry
+> point from `stg-meet-me-where-i-am` — is integrated. See
 > [Guided discovery](#guided-discovery-integrated-2026-08-04) below.
 
 Current state of the project and the exact remaining steps to launch.
@@ -29,7 +35,9 @@ modules are kept offline outside this repo. The entry schema
 carry a comment listing exactly which fields belonged to each module, should
 either ever be reconnected.
 
-**Content:** 15 published entries + 1 draft. 10 topic archive pages build
+**Content:** 17 entries — 15 live, 2 drafts
+(`looking-for-the-light-in-the-middle-of-it`, `when-you-feel-far-from-god`).
+10 topic archive pages build
 (anxiety, overwhelm, exhaustion, caregiving, waiting, uncertainty,
 learning-to-pray, trusting-god, hope, faith). Grief, feeling-far-from-god,
 and patience are each **one entry away** from the 3-entry publish threshold.
@@ -121,9 +129,9 @@ with the meta tag.
   only ever open an entry that already passed `isVisible()` — live status, both
   reviews approved, `scripture_verified: true`, not expired. No separate check
   was added, because a second copy of that rule could disagree with the first.
-  Note this means guided discovery currently shows the same sample WEB text as
-  the rest of the site; replacing it with NASB 2020 (launch step 2 below) fixes
-  every surface at once, journeys included. Nothing extra to do there.
+  That inheritance is why the 2026-08-06 NASB swap needed no work here: the
+  journeys render the same entries, so they picked up the new Scripture at the
+  same moment every other surface did.
 - **Nothing runs the gates at deploy time yet.** `netlify.toml` still runs only
   `npm run build`, which enforces the publish gate but not the guided
   safeguards. Changing the build command to
@@ -131,36 +139,30 @@ with the meta tag.
   every deploy. Left alone deliberately — that is a policy decision about
   whether a failing check should block a deploy.
 
-### Verified
+### Verified (2026-08-06)
 
-`npm run validate` clean (16 entries, 9 needs × 3 tiers, 1 expected draft
-warning) · `npm test` 21/21 · `npm run build` clean, 121 pages · zero dangling
-internal links across all 121 built pages · sitemap contains 28 URLs, exactly
-one of them under `/help/`.
+`npm run validate` clean — 17 entries, 9 needs × 3 tiers, **zero warnings** now
+that both Scripture placeholders are gone · `npm test` 34/34 · `npm run build`
+clean, 121 pages · zero dangling internal links across all 121 built pages ·
+sitemap contains 28 URLs, exactly one of them under `/help/`.
 
 Unrelated environment note: this machine runs Node 25, where Astro 5.6's
 `dist/` cleanup uses a removed `fs.rmdirSync` option. A build into an existing
 `dist/` can fail with `options.recursive is no longer supported`; `rm -rf dist`
 first and it builds clean. Netlify (Node 20, per `netlify.toml`) is unaffected.
 
-**Repo:** public GitHub repo `smiln32/stg-website-interactives`, main branch
-(made public 2026-08-02). No credentials have ever been committed — `.env` and
-`.env.*` are gitignored and only `.env.example` is tracked. **The GitHub repo
-has not been renamed** to match the project — do that, then update this line
-and the local remote.
+**Repo:** public GitHub repo `smiln32/stg-guided-discovery`, `main` branch (made
+public 2026-08-02, renamed to match the project 2026-08-06). No credentials have
+ever been committed — `.env` and `.env.*` are gitignored and only `.env.example`
+is tracked.
 
-## Unmerged branch: `product-clarity`
-
-Not yet merged to `main`:
-
-| Commit | What |
-| --- | --- |
-| `ba9f12a` | Rename to `stg-guided-discovery` |
-| `0aeba27` | Product `contents` + `KIND_LABEL`; rewritten collection blurbs |
-| `c86f58c` | Removed two related-article links — **reverted, see below** |
-| `03d5567` | Revert of `c86f58c` |
-
-To merge: `git checkout main && git merge --ff-only product-clarity`.
+**One branch, one history (2026-08-06).** A `product-clarity` branch had been
+created automatically on 2026-08-04 during the project rename, and everything
+since had been landing on it rather than on `main` — 20 commits' worth. It was
+fast-forwarded into `main` and deleted, and the local remote URL was updated from
+the pre-rename `stg-website-interactives.git`, which had been working only
+through GitHub's redirect. `main` and `origin/main` are now in sync. There are no
+other branches.
 
 ### The article/PDF decision, settled 2026-08-04
 
@@ -219,11 +221,33 @@ folding it into the main site's repo later.
 simplifytoglorify.com repo as a React branch. That branch was never merged
 and is tracked separately — it does not affect this repo or this decision.)
 
-### 2. Replace sample Scripture with NASB 2020 (content owner must supply)
-All 15 published entries use public-domain WEB text and are flagged
-`is_sample: true` (which shows a "demonstration content" banner site-wide).
-Supply the exact NASB 2020 wording for these 16 references — the text must
-come from a licensed copy, not be generated or scraped:
+### 2. Scripture — done 2026-08-06; the sample flags are not
+All seventeen entries now carry NASB 2020, retrieved from Bible Gateway
+(`version=NASB`) and checked against 2020 markers rather than 1995 ones — *Stop
+striving* not *Cease striving*, *weary and burdened* not *heavy-laden*, *I will
+not be in need* not *I shall not want*. Both placeholders are gone and validate
+reports no warnings.
+
+Two things about that swap are worth carrying forward. The first retrieval
+silently flattened the small-capital divine name to "Lord" in seven verses; they
+were re-fetched with an explicit instruction and now read `LORD`. **That is the
+failure mode any summarising fetch introduces into Scripture** — assume it will
+happen again and check for it. And poetic line-initial capitals were kept as
+printed rather than lowercased to read as prose, which is why Psalm 23 currently
+renders as *"…in the paths of righteousness For the sake of His name."* Folding
+poetry into prose is this repo's existing convention; rewording the verse to suit
+it is not. The fix is rendering, not editing — see
+[What is open](#what-is-open).
+
+**Still outstanding from this step:** every entry is still `is_sample: true`, so
+[EntryArticle](../src/components/EntryArticle.astro) shows *"Demonstration
+content. This sample entry is not yet reviewed for publication."* on all 17
+pages, and 15 still name `Sample Reviewer (demonstration)` in `reviewed_by`. The
+verses are real; the governance metadata is still scaffolding from the original
+build. Per entry: review it, set `reviewed_by` to the real reviewer, set
+`is_sample: false`.
+
+The references, for the record:
 
 | Entry | Reference |
 |---|---|
@@ -243,12 +267,10 @@ come from a licensed copy, not be generated or scraped:
 | when-the-same-prayer-has-no-answer-yet | Psalm 40:1 |
 | comfort-for-the-comforter | 2 Corinthians 1:3-4 |
 | _draft-when-you-feel-far-from-god (draft) | James 4:8 |
+| looking-for-the-light-in-the-middle-of-it (draft) | 1 Thessalonians 5:18 |
 
-Per entry, once the real text is in: update `scripture_text`,
-`scripture_translation`, `scripture_verification_notes`; review the whole
-entry; set `reviewed_by` to the real reviewer; set `is_sample: false`.
-The draft additionally needs `status: published` and approvals
-(see the checklist at the top of its file).
+Both drafts additionally need `status: published` and approvals — see
+[What is open](#what-is-open).
 
 ### 3. Deploy (if this repo is the vehicle)
 Connect the GitHub repo to Netlify — `netlify.toml` already configures the
@@ -256,8 +278,90 @@ build command and publish directory. Set `SITE_URL` in the Netlify UI. There
 is nothing else to configure; the site is fully static.
 
 ### 4. Nice-to-haves (not blockers)
+
 - One more entry each for **grief**, **feeling-far-from-god**, and
   **patience** publishes those three archives.
 - Site nav on the main site — deliberately untouched so far
   ("URL only for now").
 - New brand logo/favicon (was promised, not yet received).
+
+## What is open
+
+Everything below is decided-but-undone or awaiting a decision. Nothing here is
+broken; the build is green.
+
+### Clear the demonstration flags
+
+The largest gap between what the site *is* and what it *says it is*. All 17
+entries carry `is_sample: true` and 15 name `Sample Reviewer (demonstration)`.
+The Scripture is real now; the banner still says it isn't. See launch step 2.
+
+### Publish the gratitude entry
+
+`looking-for-the-light-in-the-middle-of-it` has its NASB text but sits at
+`status: needs_scripture_verification` with both reviews pending, so it is not
+live. Publishing it makes the **Gratitude Collection** reachable — the first of
+the four unreachable collections to get there. Its `secondary_topics` is
+currently `faith`; `hope` is arguably truer, since what the entry gives is hope
+and gratitude is the door. See [topic-coverage.md](topic-coverage.md).
+
+### Two ScriptureBlock rendering fixes
+
+Both live in [ScriptureBlock.astro](../src/components/ScriptureBlock.astro) and
+want doing together, because the Psalms are where both problems appear.
+
+1. **Small-caps `LORD`.** NASB sets the divine name in small capitals. The YAML
+   should keep plain `LORD` — searchable, copy-pasteable, survives the CSV round
+   trip — and the component should wrap `\bLORD\b` in a span styled
+   `text-transform: lowercase; font-variant: small-caps`. Unicode small-cap
+   characters would look right and break search and screen readers.
+2. **Poetic line breaks.** Store the poetic verses as `|-` block scalars and add
+   `white-space: pre-line` to `.scripture__text`. This is what fixes the stray
+   mid-sentence capitals without touching a word of Scripture.
+
+### 46 of 79 destinations cannot be reached
+
+Full breakdown in [destinations.md](destinations.md); the map of topics, entry
+points and destinations is in [discovery-map.md](discovery-map.md). Three causes
+needing three different fixes:
+
+| Cause | Count | Fix |
+| --- | --- | --- |
+| No entry carries the topic | 24 | writing — depression, chronic-pain, gratitude, adhd |
+| Loses a tie-break | 16 | a sort rule; no writing at all |
+| No need points at it | 6 | one line of `lanes` — regret |
+
+**The devotional has no pathway in any of the twelve collections.** It loses to
+the journal at the fifteen-minute tier every time, in the six collections that
+are reachable, and the other six are unreachable anyway. It is the only format
+that is nowhere on the site.
+
+### The care pathway (design, not yet built)
+
+The owner's direction as of 2026-08-06, and the largest open piece. The site
+should **listen first**: she types what she is carrying into a text box, and gets
+back an acknowledgement plus *"Are you experiencing any of these?"* — between one
+and six options drawn only from real paths, always ending with "None of these".
+Fewer options means more confidence, and showing that honestly is the point. She
+picks one, and only then does the response come: understanding, faith
+encouragement, one free resource and at most one paid one.
+
+Three things this changes:
+
+- **The topics are the shop's shape, not hers.** Route on the *emotional need*.
+  Divorce, betrayal and marriage strain will never be collections and do not need
+  to be; faith, trusting God and prayer are the honest answer, and that is where
+  "None of these" leads.
+- **The confirmation step is what makes it safe.** The site proposes and she
+  confirms, so nothing is ever asserted about her without her agreement. Note
+  that the acknowledgement language does *not* trip `DIAGNOSIS_PATTERNS` — that
+  guard blocks "you seem / you appear / you are + condition", not "it makes sense
+  that you'd feel…". The constraint is narrower than it looks.
+- **The product ladder is capacity-of-appetite, not minutes-today.** First Steps
+  first because it asks the least, journal and devotional last because they ask
+  most, cards alongside as complements rather than substitutes. The current
+  `TIERS` conflate "how many minutes do you have" with "how big a commitment do
+  you want", which is how First Steps ended up offered to exactly one tier.
+
+The current text box is deliberately inert and its copy promises she is never
+read. That promise has to be revisited honestly, not quietly dropped.

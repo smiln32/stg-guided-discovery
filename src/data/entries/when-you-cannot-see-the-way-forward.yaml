@@ -24,15 +24,13 @@ search_phrases:
 
 scripture_reference: Proverbs 3:5-6
 scripture_text: >-
-  Trust in Yahweh with all your heart, and don't lean on your own
-  understanding. In all your ways acknowledge him, and he will make your paths
+  Trust in the LORD with all your heart And do not lean on your own
+  understanding. In all your ways acknowledge Him, And He will make your paths
   straight.
-scripture_translation: WEB (World English Bible, public domain)
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text verified against bible-api.com (WEB) for
-  demonstration. WEB renders the divine name as "Yahweh." Replace with
-  verified NASB 2020 for production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   You have been trying to see around the corner, and you cannot. Every option

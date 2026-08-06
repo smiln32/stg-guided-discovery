@@ -24,13 +24,11 @@ search_phrases:
 
 scripture_reference: Psalm 40:1
 scripture_text: >-
-  I waited patiently for Yahweh. He turned to me, and heard my cry.
-scripture_translation: WEB (World English Bible, public domain)
+  I waited patiently for the LORD; And He reached down to me and heard my cry.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text verified against bible-api.com (WEB) for
-  demonstration. WEB renders the divine name as "Yahweh." Replace with
-  verified NASB 2020 for production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   There is a particular ache in praying the same prayer again. You have said

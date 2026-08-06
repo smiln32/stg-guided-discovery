@@ -25,14 +25,13 @@ search_phrases:
 scripture_reference: 2 Corinthians 1:3-4
 scripture_text: >-
   Blessed be the God and Father of our Lord Jesus Christ, the Father of
-  mercies and God of all comfort; who comforts us in all our affliction, that
-  we may be able to comfort those who are in any affliction, through the
+  mercies and God of all comfort, who comforts us in all our affliction so
+  that we will be able to comfort those who are in any affliction with the
   comfort with which we ourselves are comforted by God.
-scripture_translation: WEB (World English Bible, public domain)
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text verified against bible-api.com (WEB) for
-  demonstration. Replace with verified NASB 2020 for production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   You are the one people lean on. The one who shows up with the meal, sits

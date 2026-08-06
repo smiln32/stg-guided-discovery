@@ -23,13 +23,12 @@ search_phrases:
 
 scripture_reference: Psalm 34:18
 scripture_text: >-
-  Yahweh is near to those who have a broken heart, and saves those who have a
-  crushed spirit.
-scripture_translation: WEB (World English Bible, public domain)
+  The LORD is near to the brokenhearted And saves those who are crushed in
+  spirit.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text for demonstration; the WEB renders the divine name as
-  "Yahweh." Replace with verified NASB 2020 for production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   Grief does not move in a straight line. It comes in waves — a song, a smell, an

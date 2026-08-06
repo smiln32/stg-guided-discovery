@@ -23,13 +23,11 @@ search_phrases:
 
 scripture_reference: Matthew 11:28
 scripture_text: >-
-  Come to me, all you who labor and are heavily burdened, and I will give you
-  rest.
-scripture_translation: WEB (World English Bible, public domain)
+  Come to Me, all who are weary and burdened, and I will give you rest.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text for demonstration. Replace with verified NASB 2020 for
-  production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   You have been carrying so much, and most of it quietly. The appointments, the

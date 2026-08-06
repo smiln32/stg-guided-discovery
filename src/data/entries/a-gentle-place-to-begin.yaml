@@ -24,13 +24,13 @@ search_phrases:
 
 scripture_reference: Psalm 46:10
 scripture_text: >-
-  Be still, and know that I am God. I will be exalted among the nations. I will
-  be exalted in the earth.
-scripture_translation: WEB (World English Bible, public domain)
+  Stop striving and know that I am God; I will be exalted among the nations, I
+  will be exalted on the earth.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text for demonstration. Replace with verified NASB 2020 for
-  production. Used as the default welcome entry.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
+  Used as the default welcome entry.
 
 gentle_word: |
   Welcome. Whatever brought you here — Pinterest, a search, a hard morning — you

@@ -23,14 +23,12 @@ search_phrases:
 
 scripture_reference: Lamentations 3:22-23
 scripture_text: >-
-  It is because of Yahweh's loving kindnesses that we are not consumed, because
-  his compassion doesn't fail. They are new every morning. Great is your
-  faithfulness.
-scripture_translation: WEB (World English Bible, public domain)
+  The LORD's acts of mercy indeed do not end, For His compassions do not fail.
+  They are new every morning; Great is Your faithfulness.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text for demonstration. Replace with verified NASB 2020 for
-  production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   There is a particular ache in regret — the going back, again and again, to a

@@ -23,14 +23,13 @@ search_phrases:
 
 scripture_reference: Romans 8:26
 scripture_text: >-
-  In the same way, the Spirit also helps our weaknesses, for we don't know how
-  to pray as we ought. But the Spirit himself makes intercession for us with
-  groanings which can't be uttered.
-scripture_translation: WEB (World English Bible, public domain)
+  Now in the same way the Spirit also helps our weakness; for we do not know
+  what to pray for as we should, but the Spirit Himself intercedes for us with
+  groanings too deep for words;
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text for demonstration. Replace with verified NASB 2020 for
-  production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   Maybe you have sat down to pray and found nothing there. Just tiredness, or a

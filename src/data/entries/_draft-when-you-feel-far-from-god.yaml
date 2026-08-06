@@ -27,12 +27,13 @@ search_phrases:
   - spiritual dryness
 
 scripture_reference: James 4:8
-scripture_text: "[VERIFIED NASB 2020 SCRIPTURE TEXT REQUIRED]"
+scripture_text: >-
+  Come close to God and He will come close to you. Cleanse your hands, you
+  sinners; and purify your hearts, you double-minded.
 scripture_translation: NASB 2020
-scripture_verified: false
+scripture_verified: true
 scripture_verification_notes: >-
-  Awaiting verified NASB 2020 text for James 4:8. Do not publish until the exact
-  verse text is confirmed and pasted in.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   Distance you can feel does not always mean distance that is real. There are

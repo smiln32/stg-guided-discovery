@@ -24,13 +24,12 @@ search_phrases:
 
 scripture_reference: Psalm 27:14
 scripture_text: >-
-  Wait for Yahweh. Be strong, and let your heart take courage. Yes, wait for
-  Yahweh.
-scripture_translation: WEB (World English Bible, public domain)
+  Wait for the LORD; Be strong and let your heart take courage; Yes, wait for
+  the LORD.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text for demonstration. Replace with verified NASB 2020 for
-  production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   Waiting is its own kind of hard. Not the sharp pain of a crisis, but the slow

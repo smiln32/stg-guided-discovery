@@ -24,15 +24,13 @@ search_phrases:
 
 scripture_reference: Isaiah 40:31
 scripture_text: >-
-  But those who wait for Yahweh will renew their strength. They will mount up
-  with wings like eagles. They will run, and not be weary. They will walk, and
-  not faint.
-scripture_translation: WEB (World English Bible, public domain)
+  Yet those who wait for the LORD Will gain new strength; They will mount up
+  with wings like eagles, They will run and not get tired, They will walk and
+  not become weary.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text verified against bible-api.com (WEB) for
-  demonstration. WEB renders the divine name as "Yahweh." Replace with
-  verified NASB 2020 for production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   Waiting was easier at the beginning, when it still felt temporary. But you

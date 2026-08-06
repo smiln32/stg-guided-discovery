@@ -24,13 +24,12 @@ search_phrases:
 
 scripture_reference: Mark 9:24
 scripture_text: >-
-  Immediately the father of the child cried out with tears, "I believe. Help
-  my unbelief!"
-scripture_translation: WEB (World English Bible, public domain)
+  Immediately the boy's father cried out and said, "I do believe; help my
+  unbelief!"
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text verified against bible-api.com (WEB) for
-  demonstration. Replace with verified NASB 2020 for production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   This prayer was prayed by a desperate father, through tears, to Jesus's

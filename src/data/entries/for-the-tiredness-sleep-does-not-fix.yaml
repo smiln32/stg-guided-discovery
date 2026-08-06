@@ -24,13 +24,12 @@ search_phrases:
 
 scripture_reference: Isaiah 40:29
 scripture_text: >-
-  He gives power to the weak. He increases the strength of him who has no
-  might.
-scripture_translation: WEB (World English Bible, public domain)
+  He gives strength to the weary, And to the one who lacks might He increases
+  power.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Public-domain WEB text verified against bible-api.com (WEB) for
-  demonstration. Replace with verified NASB 2020 for production.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   There is a tiredness that sleep does not fix. You have slept — maybe not

@@ -25,13 +25,12 @@ search_phrases:
 
 scripture_reference: Matthew 6:34
 scripture_text: >-
-  Therefore don't be anxious for tomorrow, for tomorrow will be anxious for
-  itself. Each day's own evil is sufficient.
-scripture_translation: WEB (World English Bible, public domain)
+  So do not worry about tomorrow; for tomorrow will worry about itself. Each
+  day has enough trouble of its own.
+scripture_translation: NASB 2020
 scripture_verified: true
 scripture_verification_notes: >-
-  Demonstration text from the public-domain World English Bible. For production,
-  replace with verified NASB 2020 text and set the translation label accordingly.
+  NASB 2020 text retrieved from Bible Gateway (version=NASB) on 2026-08-05.
 
 gentle_word: |
   Your mind is trying to keep you safe. That is what all the rehearsing is —

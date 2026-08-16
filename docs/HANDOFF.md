@@ -212,10 +212,34 @@ same list through the same `<RelatedContent>`, so they inherit this too.
 ## Remaining launch steps (in order)
 
 ### 1. Decide how this connects to simplifytoglorify.com (strategic — decide first)
-This repo is the one codebase for the feature — standalone Astro site,
-deployable to Netlify on its own. Remaining choice is how it connects to the
-main site: a plain link, a subdomain (e.g. `today.simplifytoglorify.com`), or
-folding it into the main site's repo later.
+This repo is the one codebase for the feature. It is an **add-on module, not a
+website** — everything it owns lives under `/daily`, and it builds standalone
+only so it can be previewed and reviewed before this is settled. Remaining
+choice is how it connects to the main site: a plain link, a subdomain (e.g.
+`today.simplifytoglorify.com`), a proxied subpath at `simplifytoglorify.com/daily/`,
+or folding it into the main site's repo later. The trade-offs are tabled in the
+README under *Adding it to the site*.
+
+Two things bear on that decision:
+
+**`SITE_URL` must be the origin the feature is actually served from.** Canonical
+tags, Open Graph tags, and the sitemap all derive from it
+([`src/config/site.mjs`](../src/config/site.mjs)). Point it at the main domain
+while the pages are served from a subdomain and every page advertises a
+canonical URL it does not live at — the kind of error that looks fine in a
+browser and quietly costs search visibility. Whichever route is chosen, set this
+first.
+
+**The routes are not equally expensive.** `BASE_PATH` is already `/daily`, so the
+proxied subpath is nearly free — delete the placeholder root
+([`src/pages/index.astro`](../src/pages/index.astro)), let the main site own `/`,
+and every internal link already resolves. The subdomain is almost as cheap but is
+a separate origin, so it shares no search authority with the main domain. Folding
+into the React repo is the expensive one, and not because of the pages: the
+publish gate, the no-diagnosis check, and the journey-coverage tests in
+[`scripts/`](../scripts/) and [`tests/`](../tests/) are the product here, not
+scaffolding around it. They have to come along or be rebuilt, and a port that
+drops them ships the content without the guarantees that made it safe to ship.
 
 (Note: an earlier, separate attempt ported this into the main
 simplifytoglorify.com repo as a React branch. That branch was never merged

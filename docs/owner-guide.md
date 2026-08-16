@@ -7,12 +7,17 @@ Most tasks are: edit a text file (or a spreadsheet), run one command, and deploy
 
 ## The big idea
 
+This system is one **section** of Simplify to Glorify, not the whole website.
+Everything it makes lives under `/daily/`. The rest of the site — the home page,
+the shop, the nav — is somewhere else and is not affected by anything you do
+here.
+
 You write **one entry**. From that single approved entry, the system produces:
 
-- a **permanent website page** that never changes address,
+- a **permanent page** that never changes address,
 - the **daily feature** on `/daily/`,
 - a place in the **topic library**,
-- an entry in the site's search index, and
+- an entry in the search index, and
 - a **guided journey** for the visitor who says what she needs on
   `/daily/help/` (see *Guided discovery* below).
 

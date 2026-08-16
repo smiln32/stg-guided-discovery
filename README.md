@@ -1,9 +1,21 @@
 # stg-guided-discovery
 
 A calm, Scripture-centered content system for **Simplify to Glorify**.
-One approved content entry becomes a permanent website page, a daily feature,
-a topic-library entry, and a guided journey — all from a single reviewed source
+One approved content entry becomes a permanent page, a daily feature, a
+topic-library entry, and a guided journey — all from a single reviewed source
 of truth.
+
+**This is not simplifytoglorify.com.** It is one feature module meant to be
+added to that site. Everything it publishes lives under a single base path
+(`/daily`, set by `BASE_PATH` in [`src/config/site.mjs`](src/config/site.mjs)),
+and every internal link and canonical URL derives from it. The module owns no
+other part of the site — no home page, no nav, no global styles beyond its own
+pages. The bare root, [`src/pages/index.astro`](src/pages/index.astro), is only a
+placeholder that forwards to `/daily/`; it exists so a standalone build has
+something at `/`, and it goes away when the feature sits under a real site.
+
+How it will attach to the main site is still open — see
+[Adding it to the site](#adding-it-to-the-site).
 
 Built with **Astro** (static output). No server and no database required; content
 lives in version-controlled YAML files and is edited directly or via a validated
@@ -35,7 +47,7 @@ Open **/daily/** for today's encouragement, or **/daily/help/** for
   what she needs.
 
 Guided discovery adds no content of its own. It is a matching layer over the
-same approved entries, topics, and products the rest of the site uses, so
+same approved entries, topics, and products the rest of the module uses, so
 nothing is written twice and nothing can drift. See
 [`src/config/guided.mjs`](src/config/guided.mjs).
 
@@ -108,11 +120,27 @@ because of them.
 
 ## Configuration
 
-Copy `.env.example` to `.env` (and set the same key in the Netlify UI). The only
-setting that matters for a normal deploy is `SITE_URL`.
+Copy `.env.example` to `.env` (and set the same key in the Netlify UI).
+`SITE_URL` is the only setting that matters, and it must be the origin the
+feature is actually served from — canonical tags, Open Graph tags, and the
+sitemap all derive from it. If the module ends up on a subdomain, `SITE_URL` is
+that subdomain, not the main domain.
 
-## Deploy (Netlify)
+## Adding it to the site
 
-Connect the repo; `netlify.toml` sets the build command (`npm run build`) and the
-publish directory (`dist`). Set `SITE_URL` in the Netlify UI. The site is fully
-static — there is no server-side runtime.
+**This decision has not been made yet.** The module builds and runs today as its
+own static site, which is what makes it reviewable before the choice is settled;
+that is a convenience, not the intended end state. Three routes:
+
+| Route | What it means | What changes here |
+| --- | --- | --- |
+| **Subdomain** — `today.simplifytoglorify.com` | Own Netlify deploy. The main site links to it. | `SITE_URL` becomes the subdomain. Nothing else. Cross-domain, so it shares no SEO authority with the main site. |
+| **Subpath** — `simplifytoglorify.com/daily/` | Still its own build; the main site proxies or rewrites `/daily/*` to it. | `SITE_URL` becomes the main domain. `BASE_PATH` already matches. Delete the placeholder root page — the main site owns `/`. |
+| **Fold into the main repo** | Ported into the simplifytoglorify.com React codebase as pages there. | Largest job by far. The Astro build, the YAML content pipeline, and the validation gates in `scripts/` and `tests/` have to come along or be rebuilt — those gates are the product, not scaffolding. |
+
+Until then, `netlify.toml` configures a **standalone build** (`npm run build` →
+`dist`), which is useful for previews and review. Set `SITE_URL` in the Netlify
+UI. Fully static — there is no server-side runtime.
+
+The decision, and the history behind it, is tracked in
+[`docs/HANDOFF.md`](docs/HANDOFF.md).

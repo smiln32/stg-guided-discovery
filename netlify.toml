@@ -1,5 +1,11 @@
 # Netlify configuration for stg-guided-discovery.
-# The site is fully static (Astro output: 'static') — no functions, no runtime.
+#
+# This builds the feature module as a STANDALONE site — useful for previews and
+# review while the decision of how it attaches to simplifytoglorify.com is still
+# open (see the README). If the module ends up proxied at /daily/ on the main
+# domain, or folded into the main repo, this file's role changes or ends.
+#
+# Fully static (Astro output: 'static') — no functions, no runtime.
 
 [build]
   command = "npm run build"

@@ -1,0 +1,29 @@
+---
+// The header both guided journey routes share: the need a visitor chose, and
+// the gentle question that belongs to it.
+//
+// It lives in one place so /daily/help/[need]/ and its alternates at
+// /daily/help/[need]/[slug]/ cannot drift apart — they are the same need
+// opened with a different entry, and they should not look like different
+// pages.
+import type { Need } from '../lib/guided';
+
+const { need } = Astro.props as { need: Need };
+---
+
+<header class="journey-full__header">
+  <h1 class="journey-full__title">{need.question}</h1>
+</header>
+
+<style>
+  .journey-full__header {
+    margin-top: var(--space-md);
+    max-width: 48rem;
+  }
+  .journey-full__title {
+    font-size: var(--step-2);
+    font-family: var(--font-serif);
+    line-height: 1.3;
+    color: var(--text);
+  }
+</style>

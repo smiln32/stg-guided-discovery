@@ -16,9 +16,13 @@ export const paths = {
   // These segments are reserved — see RESERVED_SLUGS in src/config/guided.mjs.
   help: `${BASE_PATH}/help/`,
   helpNeed: (need: string) => `${BASE_PATH}/help/${need}/`,
-  helpJourney: (need: string, tier: string) => `${BASE_PATH}/help/${need}/${tier}/`,
-  helpJourneyEntry: (need: string, tier: string, slug: string) =>
-    `${BASE_PATH}/help/${need}/${tier}/${slug}/`,
+  /**
+   * An alternate entry for the same need — the "is one of these closer?" links.
+   * The entry a need opens by default has no URL of its own; it IS the
+   * helpNeed() page. Only the alternates get a second segment.
+   */
+  helpNeedEntry: (need: string, slug: string) =>
+    `${BASE_PATH}/help/${need}/${slug}/`,
 };
 
 /** Absolute URL for a site-relative path (for canonical and OG tags). */

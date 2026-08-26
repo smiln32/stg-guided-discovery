@@ -7,6 +7,10 @@
 // resources. No tier selection, no "how much time do you have," no
 // step-by-step wizard. Depth is controlled by scrolling, not by choosing.
 //
+// This page opens the best match for the need. The other entries it could have
+// opened are offered at the foot of the page and live at
+// /daily/help/[need]/[slug]/ — see [slug].astro.
+//
 // Deep-linking: the main site can send a visitor directly with
 //   /daily/help/?need=comfort
 // which is equivalent to arriving at /daily/help/ and selecting "I need
@@ -18,8 +22,12 @@
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
 import SafetyNote from '../../../../components/SafetyNote.astro';
+import GuidedHeader from '../../../../components/GuidedHeader.astro';
 import FullPageJourney from '../../../../components/FullPageJourney.astro';
-import { needs, candidatesFor, buildJourney, type Need } from '../../../../lib/guided';
+import {
+  needs, candidatesFor, buildJourney, FULL_PAGE_TIER,
+  type Journey, type Need,
+} from '../../../../lib/guided';
 import { getVisibleEntries, buildNow } from '../../../../lib/entries';
 import { paths } from '../../../../lib/urls';
 
@@ -28,22 +36,22 @@ export async function getStaticPaths() {
   const visible = await getVisibleEntries(now);
   const out = [];
   for (const need of needs) {
-    // The full page uses the deepest tier (fifteen-minutes) for matching,
-    // which requires all fields — so the full page always has complete content.
-    const fifteen = needs[0]; // placeholder; we iterate all needs
-    const tier = { slug: 'fifteen-minutes', minutes: 15, label: '', blurb: '', requires: ['scripture_text','gentle_word','prayer','small_step','journal_question'], formats: [], shows: { reflection: true, journalQuestion: true, goDeeper: true } };
-    const candidates = await candidatesFor(need, tier as any, now, visible);
+    const candidates = await candidatesFor(need, FULL_PAGE_TIER, now, visible);
     if (candidates.length === 0) continue;
-    const journey = await buildJourney(need, tier as any, candidates[0], candidates, now, visible);
     out.push({
       params: { need: need.slug },
-      props: { need, journey },
+      props: {
+        need,
+        journey: await buildJourney(
+          need, FULL_PAGE_TIER, candidates[0], candidates, now, visible,
+        ),
+      },
     });
   }
   return out;
 }
 
-const { need, journey } = Astro.props as { need: Need; journey: any };
+const { need, journey } = Astro.props as { need: Need; journey: Journey };
 
 const crumbs = [
   { label: 'Home', href: paths.home },
@@ -61,10 +69,7 @@ const crumbs = [
   <div class="container container-wide section">
     <Breadcrumbs crumbs={crumbs} />
 
-    <header class="stack journey-full__header">
-      <p class="eyebrow">{need.short}</p>
-      <h1 class="journey-full__title">{need.question}</h1>
-    </header>
+    <GuidedHeader need={need} />
 
     <div class="journey-full__body">
       <FullPageJourney journey={journey} />
@@ -75,16 +80,6 @@ const crumbs = [
 </BaseLayout>
 
 <style>
-  .journey-full__header {
-    margin-top: var(--space-md);
-    max-width: 48rem;
-  }
-  .journey-full__title {
-    font-size: var(--step-2);
-    font-family: var(--font-serif);
-    line-height: 1.3;
-    color: var(--text);
-  }
   .journey-full__body {
     margin-top: var(--space-md);
   }

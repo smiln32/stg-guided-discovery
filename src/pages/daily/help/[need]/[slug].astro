@@ -1,0 +1,70 @@
+---
+// /daily/help/[need]/[slug]/ — the same need, opened with one of the
+// alternates instead ("is one of these closer to what you are carrying?").
+//
+// Only alternates are built here. The entry a need opens by default lives at
+// /daily/help/[need]/ and is deliberately not duplicated under a slug, so
+// there is exactly one page per entry a need can open.
+//
+// noindex, for the same reason as the default journey page: this recombines
+// content whose canonical home is /daily/[slug]/.
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import SafetyNote from '../../../../components/SafetyNote.astro';
+import GuidedHeader from '../../../../components/GuidedHeader.astro';
+import FullPageJourney from '../../../../components/FullPageJourney.astro';
+import {
+  needs, candidatesFor, buildJourney, journeyCrumbs, journeyDescription,
+  FULL_PAGE_TIER, type Journey,
+} from '../../../../lib/guided';
+import { getVisibleEntries, buildNow } from '../../../../lib/entries';
+
+export async function getStaticPaths() {
+  const now = buildNow();
+  const visible = await getVisibleEntries(now);
+  const out = [];
+  for (const need of needs) {
+    const candidates = await candidatesFor(need, FULL_PAGE_TIER, now, visible);
+    // slice(1): the first candidate is the need page itself.
+    for (const entry of candidates.slice(1)) {
+      out.push({
+        params: { need: need.slug, slug: entry.data.slug },
+        props: {
+          journey: await buildJourney(
+            need, FULL_PAGE_TIER, entry, candidates, now, visible,
+          ),
+        },
+      });
+    }
+  }
+  return out;
+}
+
+const { journey } = Astro.props as { journey: Journey };
+const crumbs = journeyCrumbs(journey);
+---
+
+<BaseLayout
+  title={journey.entry.data.page_title}
+  description={journeyDescription(journey)}
+  path={journey.url}
+  noindex={true}
+>
+  <div class="container container-wide section">
+    <Breadcrumbs crumbs={crumbs} />
+
+    <GuidedHeader need={journey.need} />
+
+    <div class="journey-full__body">
+      <FullPageJourney journey={journey} />
+    </div>
+
+    <SafetyNote />
+  </div>
+</BaseLayout>
+
+<style>
+  .journey-full__body {
+    margin-top: var(--space-md);
+  }
+</style>

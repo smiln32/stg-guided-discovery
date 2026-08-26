@@ -63,6 +63,20 @@ export interface Product {
 export const needs = NEEDS as Need[];
 export const tiers = TIERS as Tier[];
 
+/**
+ * The depth the full page always matches at.
+ *
+ * Tiers are no longer a visitor-facing choice — the page is one continuous
+ * scroll and she decides how far down it she goes. But matching still has to
+ * name a depth, and the full page renders every section, so it matches at the
+ * deepest tier: an entry it opens must carry Scripture, a reflection, a prayer,
+ * a small step and a journal question, or it is not offered at all.
+ *
+ * This is the one place that depth is named. Both journey routes and the
+ * component import it, so a page can never match at a depth it does not render.
+ */
+export const FULL_PAGE_TIER: Tier = tiers.find((t) => t.slug === 'fifteen-minutes')!;
+
 // ---- Choosing which entries a need + tier opens ------------------------------
 
 /**
@@ -97,16 +111,15 @@ export async function candidatesFor(
 /**
  * Where one entry's journey lives.
  *
- * In the full-page model, every journey lives at /daily/help/[need]/ — there
- * is no per-tier or per-slug URL. Alternates link to the same need page
- * (the visitor is simply offered a different entry to scroll through).
+ * The entry a need opens by default IS the /[need]/ page, so it gets no second
+ * URL of its own; only the alternates do. That keeps exactly one built page per
+ * entry a need can open, and it is what makes "is one of these closer?" a link
+ * that actually goes somewhere.
  */
-export function journeyUrl(need: Need, _tier: Tier, slug: string, candidates: Entry[]): string {
-  // In the full-page model, all journeys live at the same URL. The default
-  // entry and alternates share one page. When alternates are offered, they
-  // link to the same need page — the page renders the first candidate, and
-  // alternates are listed as "is one of these closer?" links.
-  return paths.helpNeed(need.slug);
+export function journeyUrl(need: Need, slug: string, candidates: Entry[]): string {
+  return candidates[0]?.data.slug === slug
+    ? paths.helpNeed(need.slug)
+    : paths.helpNeedEntry(need.slug, slug);
 }
 
 // ---- What belongs around the entry -------------------------------------------
@@ -204,11 +217,11 @@ export async function buildJourney(
     need,
     tier,
     entry,
-    url: journeyUrl(need, tier, entry.data.slug, candidates),
+    url: journeyUrl(need, entry.data.slug, candidates),
     acknowledgment: need.acknowledgment,
     alternates: candidates
       .filter((c) => c.id !== entry.id)
-      .map((c) => ({ entry: c, url: journeyUrl(need, tier, c.data.slug, candidates) })),
+      .map((c) => ({ entry: c, url: journeyUrl(need, c.data.slug, candidates) })),
     free: freeResource(entry.data),
     productIds: journeyProductIds(entry.data, tier, need),
   };

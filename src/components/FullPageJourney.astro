@@ -31,23 +31,23 @@ import type { Journey, Product } from '../lib/guided';
 import type { EntryData } from '../lib/entries';
 
 const { journey } = Astro.props as { journey: Journey };
-const { need, entry, acknowledgment, alternates } = journey;
+const { need, entry, acknowledgment, alternates, tier } = journey;
 const d = entry.data as EntryData;
 
 const now = buildNow();
 const related = await getRelatedEntries(entry, 4, now);
 const topicPublished = await isTopicPublished(d.topic, now);
 
-// Products: free first, then the format that fits this need + the collection.
-const productIds = journeyProductIds(d, {
-  slug: 'full-page',
-  minutes: 15,
-  label: '',
-  blurb: '',
-  requires: [],
-  formats: [],
-  shows: { reflection: true, journalQuestion: true, goDeeper: true },
-}, need);
+// Products: the free resource first, then the collection.
+//
+// `formats: []` switches off the per-format pick (journal / devotional /
+// Scripture cards / prayer cards / First Steps) that the tiers used to drive.
+// That is how the full-page rebuild left it and it is kept deliberately here
+// rather than silently changed: with no capacity question left to answer,
+// there is nothing to choose a format ON. Deciding what should replace that —
+// see the care-pathway note in docs/HANDOFF.md — is an open question, and this
+// is the one line that will change when it is settled.
+const productIds = journeyProductIds(d, { ...tier, formats: [] }, need);
 const free = freeResource(d);
 const explore: Product | undefined =
   free ?? (productIds[0] ? (PRODUCT_BY_ID[productIds[0]] as Product) : undefined);
@@ -60,7 +60,6 @@ const exploreLabel =
 <div class="journey-full" style={`--topic-accent:${topicAccent(d.topic)}`}>
   {/* 1 — Gentle acknowledgment */}
   <section class="journey-full__ack" aria-label="A gentle acknowledgment">
-    <p class="eyebrow">{need.short}</p>
     <p class="journey-full__ack-text">{acknowledgment}</p>
   </section>
 

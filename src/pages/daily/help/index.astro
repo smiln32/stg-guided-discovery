@@ -22,8 +22,11 @@ const crumbs = [
   { label: 'Find help today', href: paths.help },
 ];
 
-// Build a lookup map for client-side deep-link redirect.
-const needSlugs = needs.map((n) => n.slug);
+// Destinations for the client-side deep-link redirect below. It is a map of
+// slug -> URL rather than a list of slugs so the redirect goes through the same
+// paths.helpNeed() builder as every other link on the site, and so an unknown
+// ?need= value simply falls through to this page instead of inventing a URL.
+const needUrls = Object.fromEntries(needs.map((n) => [n.slug, paths.helpNeed(n.slug)]));
 ---
 
 <BaseLayout
@@ -36,7 +39,6 @@ const needSlugs = needs.map((n) => n.slug);
     <Breadcrumbs crumbs={crumbs} />
 
     <header class="stack" style="margin-top: var(--space-md);">
-      <p class="eyebrow">A place to begin</p>
       <h1>What are you carrying today?</h1>
       <p>
         You do not have to know exactly what you need, and you do not have to
@@ -77,18 +79,16 @@ const needSlugs = needs.map((n) => n.slug);
   </div>
 </BaseLayout>
 
-<script is:inline define:{{ needSlugs }}>
+<script define:vars={{ needUrls }}>
   // Deep-link: /daily/help/?need=comfort → /daily/help/comfort/
+  //
+  // define:vars serialises needUrls into this script and implies is:inline.
+  // replace() rather than assign() so the visitor's back button returns to
+  // wherever she came from, not to a page that immediately redirects again.
   (function () {
-    var params = new URLSearchParams(window.location.search);
-    var need = params.get('need');
-    if (need && needSlugs.indexOf(need) !== -1) {
-      var base = document.querySelector('base');
-      var dest = window.location.pathname.replace(/\/help\/?$/, '/help/' + need + '/');
-      // Ensure trailing slash
-      if (!dest.endsWith('/')) dest += '/';
-      window.location.replace(dest);
-    }
+    var need = new URLSearchParams(window.location.search).get('need');
+    var dest = need && needUrls[need];
+    if (dest) window.location.replace(dest);
   })();
 </script>
 

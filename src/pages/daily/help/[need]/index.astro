@@ -58,18 +58,34 @@ const crumbs = [
   path={paths.helpNeed(need.slug)}
   noindex={true}
 >
-  <div class="container section">
+  <div class="container container-wide section">
     <Breadcrumbs crumbs={crumbs} />
 
-    <header class="stack" style="margin-top: var(--space-md);">
+    <header class="stack journey-full__header">
       <p class="eyebrow">{need.short}</p>
-      <h1>{need.question}</h1>
+      <h1 class="journey-full__title">{need.question}</h1>
     </header>
 
-    <div style="margin-top: var(--space-md);">
+    <div class="journey-full__body">
       <FullPageJourney journey={journey} />
     </div>
 
     <SafetyNote />
   </div>
 </BaseLayout>
+
+<style>
+  .journey-full__header {
+    margin-top: var(--space-md);
+    max-width: 48rem;
+  }
+  .journey-full__title {
+    font-size: var(--step-2);
+    font-family: var(--font-serif);
+    line-height: 1.3;
+    color: var(--text);
+  }
+  .journey-full__body {
+    margin-top: var(--space-md);
+  }
+</style>

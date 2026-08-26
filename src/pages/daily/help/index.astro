@@ -32,7 +32,7 @@ const needSlugs = needs.map((n) => n.slug);
   path={paths.help}
   jsonLd={[breadcrumbJsonLd(crumbs)]}
 >
-  <div class="container section">
+  <div class="container container-wide section">
     <Breadcrumbs crumbs={crumbs} />
 
     <header class="stack" style="margin-top: var(--space-md);">
@@ -98,6 +98,7 @@ const needSlugs = needs.map((n) => n.slug);
     padding: 0;
     margin: var(--space-lg) 0 0;
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     gap: var(--space-xs);
   }
   .needs a {

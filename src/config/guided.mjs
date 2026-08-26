@@ -114,15 +114,6 @@ export const NEEDS = [
     prefer_format: 'prayer_cards',
   },
   {
-    slug: 'next-step',
-    label: 'I need one practical next step.',
-    short: 'A next step',
-    question: 'What is the one thing that most needs to move today?',
-    acknowledgment:
-      'When everything arrives at once, one next thing is enough. It does not have to be the biggest one.',
-    lanes: ['overwhelm', 'adhd', 'exhaustion', 'uncertainty'],
-  },
-  {
     slug: 'hope',
     label: 'I need hope.',
     short: 'Hope',
@@ -130,6 +121,15 @@ export const NEEDS = [
     acknowledgment:
       'Waiting is hard, and it makes sense that this keeps coming back to you.',
     lanes: ['hope', 'waiting', 'depression', 'trusting-god'],
+  },
+  {
+    slug: 'next-step',
+    label: 'I need one practical next step.',
+    short: 'A next step',
+    question: 'What is the one thing that most needs to move today?',
+    acknowledgment:
+      'When everything arrives at once, one next thing is enough. It does not have to be the biggest one.',
+    lanes: ['overwhelm', 'adhd', 'exhaustion', 'uncertainty'],
   },
   {
     slug: 'time-with-god',

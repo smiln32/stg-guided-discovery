@@ -204,7 +204,7 @@ const exploreLabel =
 
 <style>
   .journey-full {
-    max-width: var(--content-width);
+    max-width: var(--wide-width);
   }
   .journey-full__ack {
     margin-bottom: var(--space-md);
@@ -216,8 +216,25 @@ const exploreLabel =
     color: var(--text-soft);
     margin: 0;
   }
+  .journey-full :global(.scripture) {
+    padding: var(--space-md);
+    text-align: left;
+    background: color-mix(in srgb, var(--sage) 12%, var(--ivory));
+  }
+  .journey-full :global(.scripture__text) {
+    text-align: left;
+    font-size: var(--step-1);
+    line-height: 1.6;
+    font-style: italic;
+    max-width: none;
+    margin-inline: 0;
+  }
+  .journey-full :global(.scripture figcaption) {
+    text-align: left;
+  }
   .journey-full__section {
     margin-block: var(--space-lg);
+    max-width: 48rem;
   }
   .journey-full__label {
     font-family: var(--font-serif);

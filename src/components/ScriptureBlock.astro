@@ -2,6 +2,15 @@
 // Renders the Scripture exactly as supplied, always with reference + translation.
 // If the text still holds the verification placeholder, we show a calm note and
 // never present it as verified.
+//
+// Two rendering fixes (documented in docs/HANDOFF.md):
+//   1. LORD small-caps: NASB sets the divine name in small capitals. The YAML
+//      keeps plain "LORD" (searchable, copy-pasteable, survives the CSV round
+//      trip) and the component wraps \bLORD\b in a span styled
+//      text-transform: lowercase; font-variant: small-caps.
+//   2. Poetic line breaks: scripture_text stored with line breaks (|- or >-
+//      block scalar) renders with white-space: pre-line so Psalm poetry keeps
+//      its line-initial capitals without touching a word of Scripture.
 import { SCRIPTURE_PLACEHOLDER } from '../config/entry-fields.mjs';
 
 const {
@@ -17,12 +26,15 @@ const {
 };
 
 const isPlaceholder = text.trim() === SCRIPTURE_PLACEHOLDER;
+
+// Wrap \bLORD\b in a small-caps span. The underlying text stays "LORD" —
+// searchable, copy-pasteable, and correct for screen readers.
+const renderLORD = (s: string) =>
+  s.replace(/\bLORD\b/g, '<span class="smallcaps">LORD</span>');
 ---
 
 <figure class="scripture">
-  <blockquote class="scripture__text">
-    {isPlaceholder ? <em>Scripture text pending verification.</em> : text}
-  </blockquote>
+  <blockquote class="scripture__text" set:html={isPlaceholder ? '<em>Scripture text pending verification.</em>' : renderLORD(text)} />
   <figcaption>
     <cite class="scripture__ref">{reference} · {translation}</cite>
     {
@@ -32,3 +44,14 @@ const isPlaceholder = text.trim() === SCRIPTURE_PLACEHOLDER;
     }
   </figcaption>
 </figure>
+
+<style>
+  .scripture__text {
+    white-space: pre-line;
+  }
+  .smallcaps {
+    text-transform: lowercase;
+    font-variant: small-caps;
+    letter-spacing: 0.03em;
+  }
+</style>

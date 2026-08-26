@@ -8,7 +8,7 @@
 # Fully static (Astro output: 'static') — no functions, no runtime.
 
 [build]
-  command = "npm run build"
+  command = "npm run validate && npm test && npm run build"
   publish = "dist"
 
 [build.environment]

@@ -21,7 +21,7 @@ export const BASE_PATH = '/daily';
 // The site's operating timezone. Daily scheduling and rotation resolve "today"
 // against this zone so an entry flips at local midnight, not UTC midnight.
 // Use an IANA name. Change to the brand's home timezone.
-export const SITE_TIMEZONE = 'America/Denver';
+export const SITE_TIMEZONE = 'America/Chicago';
 
 // Default Scripture translation for new entries. The system NEVER alters or
 // invents Scripture; this only sets the default label expected during review.

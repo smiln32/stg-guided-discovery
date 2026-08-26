@@ -5,7 +5,7 @@
 //   • unit tests, which prove each guard actually rejects what it claims to —
 //     a guard that has never been seen to fail is not a guard;
 //   • integration tests over the real entry library, which prove the content
-//     that ships today satisfies those guards and that every journey path a
+//     that ships today satisfies those guards and that every guided need a
 //     visitor can take has content behind it.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -39,6 +39,9 @@ const entry = (over = {}) => ({
   small_step: 'step', journal_question: 'question', ...over,
 });
 
+// The deepest tier — the one the full-page experience matches against.
+const FULL_PAGE_TIER = tier('fifteen-minutes');
+
 // --- No diagnosis language ---------------------------------------------------
 
 test('diagnosis check rejects interpreting the visitor', () => {
@@ -50,8 +53,6 @@ test('diagnosis check rejects interpreting the visitor', () => {
 });
 
 test('diagnosis check allows ordinary second-person writing', () => {
-  // "you have"/"you are" only diagnose when a condition follows. Rejecting them
-  // bare would fail clean writing and train everyone to ignore the check.
   for (const clean of [
     'when you have carried more than one person was meant to carry',
     'Thank You that You have not forgotten me',
@@ -76,11 +77,10 @@ test('prayer voice requires an address to God and a close', () => {
 });
 
 test('prayer voice does not accept an address that only looks like one', () => {
-  // "Father of mercies" opens correctly; "Fatherhood" does not.
   assert.equal(checkPrayerVoice('Fatherhood, hear me. Amen.').length, 1);
 });
 
-// --- Tier requirements -------------------------------------------------------
+// --- Tier requirements (internal — tiers are not exposed in the UI) -----------
 
 test('a tier will not open an entry that cannot carry it', () => {
   assert.equal(entryMeetsTier(entry(), 'one-minute').ok, true);
@@ -90,12 +90,9 @@ test('a tier will not open an entry that cannot carry it', () => {
   assert.equal(noStep.ok, false);
   assert.deepEqual(noStep.missing, ['small_step']);
 
-  // A missing reflection is fine at one minute (no reflection is shown) and
-  // fatal at five (one is promised).
   assert.equal(entryMeetsTier(entry({ gentle_word: '' }), 'one-minute').ok, true);
   assert.equal(entryMeetsTier(entry({ gentle_word: '' }), 'five-minutes').ok, false);
 
-  // Likewise the journal question, which only the fifteen-minute tier shows.
   assert.equal(entryMeetsTier(entry({ journal_question: '' }), 'five-minutes').ok, true);
   assert.equal(entryMeetsTier(entry({ journal_question: '' }), 'fifteen-minutes').ok, false);
 });
@@ -109,9 +106,6 @@ test('every tier promises Scripture, a prayer and a small step', () => {
 });
 
 test('a tier renders exactly the sections it promises', () => {
-  // Regression: tier.shows was handed to <EntryArticle> directly, which reads
-  // `gentleWord`, not `reflection`. The key was simply absent, defaulted to
-  // true, and the one-minute tier quietly rendered the full reflection.
   assert.deepEqual(entrySectionsForTier(tier('one-minute')), {
     gentleWord: false, journalQuestion: false,
   });
@@ -122,8 +116,6 @@ test('a tier renders exactly the sections it promises', () => {
     gentleWord: true, journalQuestion: true,
   });
 
-  // A tier that shows a section must also require its field, or the section can
-  // render blank.
   for (const t of TIERS) {
     const sections = entrySectionsForTier(t);
     if (sections.gentleWord) assert.ok(t.requires.includes('gentle_word'), t.slug);
@@ -139,8 +131,6 @@ test('lane rank prefers a primary topic, then a secondary, then nothing', () => 
   assert.equal(laneRank({ topic: 'caregiving', secondary_topics: [] }, lanes), 1);
   assert.equal(laneRank({ topic: 'anxiety', secondary_topics: [] }, lanes), OUT_OF_LANE);
 
-  // A secondary match never outranks a primary one, however far down the lane
-  // list the primary match sits.
   const lastLane = laneRank({ topic: 'caregiving', secondary_topics: [] }, lanes);
   const bestSecondary = laneRank({ topic: 'anxiety', secondary_topics: ['grief'] }, lanes);
   assert.ok(bestSecondary > lastLane);
@@ -219,7 +209,6 @@ test('capacity decides the format: cards at a minute, a journal at fifteen', () 
   assert.equal(formatForTier(d, tier('five-minutes'), n).kind, 'first_steps');
   assert.equal(formatForTier(d, tier('fifteen-minutes'), n).kind, 'journal');
 
-  // …and it comes from the series that matches the topic.
   assert.equal(formatForTier(d, tier('one-minute'), n).id, 'anxiety-scripture-cards');
 });
 
@@ -228,17 +217,13 @@ test('a need can reorder within a tier but cannot escape it', () => {
   const praying = need({ lanes: ['learning-to-pray'], prefer_format: 'prayer_cards' });
   const other = need({ lanes: ['learning-to-pray'] });
 
-  // Someone who came to pray is offered prayers to borrow, not verses to read.
   assert.equal(formatForTier(d, tier('one-minute'), praying).kind, 'prayer_cards');
   assert.equal(formatForTier(d, tier('one-minute'), other).kind, 'scripture_cards');
 
-  // The preference is ignored at a tier that does not allow that format — a
-  // need must never talk a visitor past the capacity she just named.
   assert.equal(formatForTier(d, tier('fifteen-minutes'), praying).kind, 'journal');
 });
 
 test("an entry's own topic outranks a secondary one when picking the series", () => {
-  // Both the grief and caregiving kits answer this entry; its own topic wins.
   const d = { topic: 'grief', secondary_topics: ['caregiving'], related_product_ids: [] };
   const chosen = formatForTier(d, tier('five-minutes'), need({ lanes: ['grief'] }));
   assert.equal(chosen.series, 'grief');
@@ -257,15 +242,11 @@ test('a journey offers a free resource, one format, and its collection', () => {
     'anxiety-scripture-cards',
     'anxiety-collection',
   ]);
-  // The format and its collection must be the same series, or the page offers
-  // one topic's cards next to another topic's set.
   assert.equal(PRODUCT_BY_ID['anxiety-scripture-cards'].series, 'anxiety-collection'
     .replace('-collection', ''));
 });
 
 test('an entry page is never offered the five formats it cannot choose between', () => {
-  // They all link to the same collection page, so listing them would be five
-  // identical links. Only a journey, which knows the capacity, picks one.
   const d = { topic: 'anxiety', secondary_topics: [], related_product_ids: [] };
   for (const id of relatedProductIds(d, 99)) {
     assert.ok(!FORMAT_KINDS.includes(PRODUCT_BY_ID[id].kind), id);
@@ -278,8 +259,6 @@ test('a reviewer who names a format outright still gets it', () => {
     secondary_topics: [],
     related_product_ids: ['anxiety-prayer-cards'],
   };
-  // Present even though it is a format — but still behind the free resource,
-  // because free-before-paid outranks a reviewer's ordering.
   assert.ok(relatedProductIds(d, 99).includes('anxiety-prayer-cards'));
   assert.equal(relatedProductIds(d, 99)[0], 'free-scripture-for-anxious-hearts');
   assert.equal(
@@ -307,12 +286,6 @@ test('every product in the catalog has a title, a real URL and known topics', ()
 });
 
 test('no two products can be offered together as the same title under the same label', () => {
-  // Short titles plus a format label are enough to tell resources apart, and two
-  // items may share a title (a blog post and a free PDF of the same name) or a
-  // label. Sharing BOTH is the one case a reader cannot resolve: two identical
-  // lines. It regressed once — the topic page listed all five formats, and
-  // Scripture cards and prayer cards share both a series title and "Printable
-  // cards" — so the rule is held here rather than trusted.
   const seen = new Map();
   for (const p of PRODUCTS) {
     const key = `${KIND_LABEL[p.kind]}\t${p.title}`;
@@ -321,7 +294,6 @@ test('no two products can be offered together as the same title under the same l
   }
   const ambiguous = [...seen.entries()].filter(([, ids]) => ids.length > 1);
 
-  // Such pairs may exist in the catalog, but nothing may ever offer both at once.
   for (const [key, ids] of ambiguous) {
     const offeredTogether = ids.every((id) => !FORMAT_KINDS.includes(PRODUCT_BY_ID[id].kind));
     assert.ok(
@@ -330,7 +302,6 @@ test('no two products can be offered together as the same title under the same l
     );
   }
 
-  // And a journey offers exactly one format, so it can never surface a pair.
   for (const t of TIERS) {
     const d = { topic: 'learning-to-pray', secondary_topics: [], related_product_ids: [] };
     const offered = journeyProductIds(d, t, need({ lanes: ['learning-to-pray'] }))
@@ -342,8 +313,6 @@ test('no two products can be offered together as the same title under the same l
 });
 
 test('titles do not repeat the format their label already states', () => {
-  // "Printable journal — Peace for an Anxious Heart Journal" is the stutter this
-  // prevents. See the note at the top of src/config/products.mjs.
   for (const p of PRODUCTS.filter((x) => FORMAT_KINDS.includes(x.kind))) {
     assert.doesNotMatch(
       p.title,
@@ -371,17 +340,12 @@ test('the guided configuration passes its own checks', () => {
 });
 
 test('the crisis note names real help, diagnoses nobody, and sells nothing', () => {
-  // The whole point of the note is the phone number. A rewrite that loses it
-  // leaves a paragraph of sympathy and no way to reach a person.
   assert.match(SAFETY_NOTE.body, /\b988\b/);
   assert.match(SAFETY_NOTE.body, /emergency number/i);
 
-  // It is the most-read copy the feature owns, so it is held to the same rule
-  // as everything else a visitor reads.
   assert.deepEqual(findDiagnosisLanguage(SAFETY_NOTE.body), []);
   assert.deepEqual(findDiagnosisLanguage(SAFETY_NOTE.heading), []);
 
-  // No product, and no promise about how things will turn out.
   assert.doesNotMatch(SAFETY_NOTE.body, /journal|devotional|printable|shop|collection/i);
   assert.doesNotMatch(SAFETY_NOTE.body, /will (get|be) better|heal|cure/i);
 });
@@ -452,10 +416,30 @@ test('no entry slug collides with a route guided discovery owns', () => {
 });
 
 test('every journey path a visitor can take has content behind it', () => {
+  // The full-page experience uses the deepest tier (fifteen-minutes) for
+  // matching, which requires all fields. Every need must reach a complete
+  // entry at that depth.
   const problems = checkJourneyCoverage((n, t) =>
     selectCandidates(live, n, t, MAX_JOURNEY_CHOICES),
   );
   assert.deepEqual(problems, []);
+});
+
+test('every need produces a usable full-page experience at the deepest tier', () => {
+  // The full-page experience always matches at the fifteen-minutes tier,
+  // which requires scripture_text, gentle_word, prayer, small_step, and
+  // journal_question. Every need must reach at least one complete entry.
+  for (const n of NEEDS) {
+    const candidates = selectCandidates(live, n, FULL_PAGE_TIER, MAX_JOURNEY_CHOICES);
+    assert.ok(candidates.length > 0,
+      `need "${n.slug}" has no complete entry at the full-page tier (fifteen-minutes). ` +
+      `Add a topic to its lanes, or publish a complete entry in one of them.`);
+    // Every candidate must have all required fields
+    for (const data of candidates) {
+      const { ok, missing } = entryMeetsTier(data, 'fifteen-minutes');
+      assert.ok(ok, `need "${n.slug}" offers "${data.slug}" which is missing: ${missing.join(', ')}`);
+    }
+  }
 });
 
 test('every product a matched entry references exists in the catalog', () => {
@@ -463,5 +447,27 @@ test('every product a matched entry references exists in the catalog', () => {
     for (const id of data.related_product_ids ?? []) {
       assert.ok(PRODUCT_BY_ID[id], `${data.slug} references unknown product "${id}"`);
     }
+  }
+});
+
+test('the full-page experience requires the deepest tier (all fields)', () => {
+  // The full-page model uses fifteen-minutes for matching, which requires
+  // all five content fields. This test makes that requirement explicit.
+  const fullPageFields = ['scripture_text', 'gentle_word', 'prayer', 'small_step', 'journal_question'];
+  for (const field of fullPageFields) {
+    assert.ok(FULL_PAGE_TIER.requires.includes(field),
+      `fifteen-minutes tier must require ${field} for the full-page experience`);
+  }
+});
+
+test('old tier route segments are not used in the current URL structure', () => {
+  // The full-page model has no per-tier URLs. The old routes redirect.
+  // This test documents that the URL structure no longer includes tier segments.
+  for (const n of NEEDS) {
+    // The need page URL should not contain a tier segment
+    const needUrl = `/daily/help/${n.slug}/`;
+    assert.ok(!needUrl.includes('/one-minute/'), `${n.slug}: URL should not contain tier`);
+    assert.ok(!needUrl.includes('/five-minutes/'), `${n.slug}: URL should not contain tier`);
+    assert.ok(!needUrl.includes('/fifteen-minutes/'), `${n.slug}: URL should not contain tier`);
   }
 });

@@ -1,21 +1,25 @@
 ---
-// /daily/help/[need]/ — the two gentle questions.
+// /daily/help/[need]/ — the full-page guided experience.
 //
-// First an open one ("What feels hardest right now?"), which is received and
-// never interpreted: the box below has no form, no action and no script, so
-// what a visitor writes stays in the browser and disappears when they move on.
-// Nothing is sent, nothing is stored, and nothing is read back to them as a
-// conclusion about who they are.
+// The visitor picks a need, lands here, and scrolls through one continuous
+// page at her own pace: acknowledgment → Scripture → reflection → prayer →
+// small step → deeper context → longer prayer → related encouragement →
+// resources. No tier selection, no "how much time do you have," no
+// step-by-step wizard. Depth is controlled by scrolling, not by choosing.
 //
-// Then the one question this page actually acts on: how much capacity they
-// have. That choice, and only that choice, selects the tier.
+// Deep-linking: the main site can send a visitor directly with
+//   /daily/help/?need=comfort
+// which is equivalent to arriving at /daily/help/ and selecting "I need
+// comfort." The help index page handles that redirect; this page is the
+// destination.
 //
-// noindex: this is a step inside a tool, not a page anyone should land on from
-// search. The encouragement it leads to has its own permanent, indexable page.
+// noindex: a journey recombines content whose canonical home is
+// /daily/[slug]/. Search should find that page, not this one.
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
 import SafetyNote from '../../../../components/SafetyNote.astro';
-import { needs, tiers, candidatesFor, type Need, type Tier } from '../../../../lib/guided';
+import FullPageJourney from '../../../../components/FullPageJourney.astro';
+import { needs, candidatesFor, buildJourney, type Need } from '../../../../lib/guided';
 import { getVisibleEntries, buildNow } from '../../../../lib/entries';
 import { paths } from '../../../../lib/urls';
 
@@ -24,18 +28,22 @@ export async function getStaticPaths() {
   const visible = await getVisibleEntries(now);
   const out = [];
   for (const need of needs) {
-    // Only offer a tier that can actually deliver what it promises.
-    const available: Tier[] = [];
-    for (const tier of tiers) {
-      const candidates = await candidatesFor(need, tier, now, visible);
-      if (candidates.length > 0) available.push(tier);
-    }
-    out.push({ params: { need: need.slug }, props: { need, available } });
+    // The full page uses the deepest tier (fifteen-minutes) for matching,
+    // which requires all fields — so the full page always has complete content.
+    const fifteen = needs[0]; // placeholder; we iterate all needs
+    const tier = { slug: 'fifteen-minutes', minutes: 15, label: '', blurb: '', requires: ['scripture_text','gentle_word','prayer','small_step','journal_question'], formats: [], shows: { reflection: true, journalQuestion: true, goDeeper: true } };
+    const candidates = await candidatesFor(need, tier as any, now, visible);
+    if (candidates.length === 0) continue;
+    const journey = await buildJourney(need, tier as any, candidates[0], candidates, now, visible);
+    out.push({
+      params: { need: need.slug },
+      props: { need, journey },
+    });
   }
   return out;
 }
 
-const { need, available } = Astro.props as { need: Need; available: Tier[] };
+const { need, journey } = Astro.props as { need: Need; journey: any };
 
 const crumbs = [
   { label: 'Home', href: paths.home },
@@ -45,8 +53,8 @@ const crumbs = [
 ---
 
 <BaseLayout
-  title={need.short}
-  description="A gentle question, and then as much or as little time as you have."
+  title={`${need.short} — Scripture, a prayer, and one small step`}
+  description={`${need.question} A Scripture-centered encouragement page you can scroll through at your own pace.`}
   path={paths.helpNeed(need.slug)}
   noindex={true}
 >
@@ -58,111 +66,10 @@ const crumbs = [
       <h1>{need.question}</h1>
     </header>
 
-    <div class="share">
-      <label class="share__label" for="share-text">
-        Write as much or as little as you like. This is optional.
-      </label>
-      <textarea id="share-text" rows="5"></textarea>
-      <p class="share__note">
-        This box is for you, not for us. There is nothing to submit — what you
-        write is never sent anywhere, never saved, and never read back to you as
-        a conclusion about how you are doing. You are welcome to skip it
-        entirely.
-      </p>
+    <div style="margin-top: var(--space-md);">
+      <FullPageJourney journey={journey} />
     </div>
-
-    <section class="capacity" aria-labelledby="capacity-heading">
-      <h2 id="capacity-heading">How much do you have in you right now?</h2>
-      <p class="capacity__hint">
-        There is no better answer. A minute is a real answer.
-      </p>
-      {
-        available.length === 0 ? (
-          <p class="card">
-            There is nothing prepared here yet. You are welcome to
-            <a href={paths.topics}> browse by what you are carrying</a> instead.
-          </p>
-        ) : (
-          <ul>
-            {available.map((tier) => (
-              <li>
-                <a
-                  href={paths.helpJourney(need.slug, tier.slug)}
-                  data-track="guided_tier_selected"
-                  data-track-label={`${need.slug}/${tier.slug}`}
-                >
-                  <span class="capacity__label">{tier.label}</span>
-                  <span class="capacity__blurb">{tier.blurb}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </section>
-
-    <p class="back">
-      <a href={paths.help}>← Something else would help more</a>
-    </p>
 
     <SafetyNote />
   </div>
 </BaseLayout>
-
-<style>
-  .share {
-    margin-top: var(--space-lg);
-  }
-  .share__label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: var(--space-2xs);
-  }
-  .share__note {
-    margin-top: var(--space-2xs);
-    font-size: var(--step--1);
-    color: var(--text-muted);
-  }
-  .capacity {
-    margin-top: var(--space-lg);
-  }
-  .capacity__hint {
-    color: var(--text-muted);
-  }
-  .capacity ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: var(--space-xs);
-  }
-  .capacity a {
-    display: block;
-    min-height: 56px;
-    padding: var(--space-sm) var(--space-md);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    text-decoration: none;
-  }
-  .capacity a:hover {
-    border-color: var(--accent);
-  }
-  .capacity__label {
-    display: block;
-    font-family: var(--font-serif);
-    font-size: var(--step-1);
-    color: var(--text);
-  }
-  .capacity__blurb {
-    display: block;
-    font-size: var(--step--1);
-    color: var(--text-muted);
-  }
-  .back {
-    margin-top: var(--space-lg);
-  }
-  .back a {
-    color: var(--text-soft);
-  }
-</style>

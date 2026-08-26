@@ -1,57 +1,32 @@
 ---
-// /daily/help/[need]/[tier]/ — the journey this need + capacity opens with.
+// /daily/help/[need]/[tier]/ — REDIRECT to /daily/help/[need]/
 //
-// This page IS the best-matched entry's journey, so that entry gets no second
-// URL under [slug]; only the alternates do. One built page per journey.
-//
-// noindex: a journey recombines content that already has a permanent, canonical
-// home at /daily/[slug]/. Search should find that page, not this one.
-import BaseLayout from '../../../../../layouts/BaseLayout.astro';
-import Breadcrumbs from '../../../../../components/Breadcrumbs.astro';
-import GuidedJourney from '../../../../../components/GuidedJourney.astro';
-import SafetyNote from '../../../../../components/SafetyNote.astro';
-import {
-  needs, tiers, candidatesFor, buildJourney, journeyCrumbs, journeyDescription,
-  type Journey,
-} from '../../../../../lib/guided';
-import { getVisibleEntries, buildNow } from '../../../../../lib/entries';
+// The old 1/5/15-minute tier structure has been replaced by a single
+// full-page scroll experience. These routes redirect so old links don't
+// break. The permanent entry URLs at /daily/[slug]/ are unchanged.
+import { needs } from '../../../../../lib/guided';
+import { paths } from '../../../../../lib/urls';
 
 export async function getStaticPaths() {
-  const now = buildNow();
-  const visible = await getVisibleEntries(now);
-  const out = [];
-  for (const need of needs) {
-    for (const tier of tiers) {
-      const candidates = await candidatesFor(need, tier, now, visible);
-      // A need + tier with nothing to offer builds no page. `npm run validate`
-      // fails first if that ever happens, so this is a belt-and-braces guard.
-      if (candidates.length === 0) continue;
-      out.push({
-        params: { need: need.slug, tier: tier.slug },
-        props: {
-          journey: await buildJourney(need, tier, candidates[0], candidates, now, visible),
-        },
-      });
-    }
-  }
-  return out;
+  return needs.map((need) => ({
+    params: { need: need.slug, tier: 'any' },
+    props: { needSlug: need.slug },
+  }));
 }
 
-const { journey } = Astro.props as { journey: Journey };
-const crumbs = journeyCrumbs(journey);
+const { needSlug } = Astro.props as { needSlug: string };
+const target = paths.helpNeed(needSlug);
 ---
 
-<BaseLayout
-  title={journey.entry.data.page_title}
-  description={journeyDescription(journey)}
-  path={journey.url}
-  noindex={true}
->
-  <div class="container section">
-    <Breadcrumbs crumbs={crumbs} />
-    <div style="margin-top: var(--space-md);">
-      <GuidedJourney journey={journey} />
-    </div>
-    <SafetyNote />
-  </div>
-</BaseLayout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content={`0; url=${target}`} />
+  <title>Redirecting…</title>
+  <link rel="canonical" href={target} />
+</head>
+<body>
+  <p>This page has moved. <a href={target}>Continue to the guided experience.</a></p>
+</body>
+</html>

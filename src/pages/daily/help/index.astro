@@ -1,9 +1,15 @@
 ---
-// /daily/help/ — "Where do you need help today?"
+// /daily/help/ — "What are you carrying today?"
 //
-// The visitor-facing front door of guided discovery. One question, nine plain
-// answers, and a way out to browsing if none of them fit. Nothing is measured
-// here and nothing is stored; choosing an answer is only choosing a link.
+// The visitor-facing front door of guided discovery. One gentle question,
+// nine plain answers, and a way out to browsing if none of them fit.
+// Nothing is measured here and nothing is stored; choosing an answer is
+// only choosing a link.
+//
+// Deep-linking: the main site can send a visitor directly with
+//   /daily/help/?need=comfort
+// which redirects to /daily/help/comfort/. This page handles that
+// client-side so a static build can support it without a server.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import SafetyNote from '../../../components/SafetyNote.astro';
@@ -15,11 +21,14 @@ const crumbs = [
   { label: 'Home', href: paths.home },
   { label: 'Find help today', href: paths.help },
 ];
+
+// Build a lookup map for client-side deep-link redirect.
+const needSlugs = needs.map((n) => n.slug);
 ---
 
 <BaseLayout
-  title="Where do you need help today?"
-  description="Answer one gentle question and receive Scripture, a prayer, and one small step for whatever you are carrying today."
+  title="What are you carrying today?"
+  description="Answer one gentle question and receive Scripture, a prayer, and one small step for whatever you are carrying today. Scroll at your own pace."
   path={paths.help}
   jsonLd={[breadcrumbJsonLd(crumbs)]}
 >
@@ -28,11 +37,11 @@ const crumbs = [
 
     <header class="stack" style="margin-top: var(--space-md);">
       <p class="eyebrow">A place to begin</p>
-      <h1>Where do you need help today?</h1>
+      <h1>What are you carrying today?</h1>
       <p>
         You do not have to know exactly what you need, and you do not have to
         explain yourself. Choose whichever is closest to today. You can change
-        your mind at any point.
+        your mind at any point — and scroll as much or as little as you like.
       </p>
     </header>
 
@@ -60,12 +69,28 @@ const crumbs = [
     <p class="promise">
       Nothing on these pages asks you to sign up, and nothing you type is sent
       anywhere. Every verse shown has been checked against its translation
-      before it was published here.
+      before it was published here. You scroll at your own pace — a minute
+      or thirty, all in one place.
     </p>
 
     <SafetyNote />
   </div>
 </BaseLayout>
+
+<script is:inline define:{{ needSlugs }}>
+  // Deep-link: /daily/help/?need=comfort → /daily/help/comfort/
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var need = params.get('need');
+    if (need && needSlugs.indexOf(need) !== -1) {
+      var base = document.querySelector('base');
+      var dest = window.location.pathname.replace(/\/help\/?$/, '/help/' + need + '/');
+      // Ensure trailing slash
+      if (!dest.endsWith('/')) dest += '/';
+      window.location.replace(dest);
+    }
+  })();
+</script>
 
 <style>
   .needs {

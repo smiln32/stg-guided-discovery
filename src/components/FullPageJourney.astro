@@ -1,0 +1,328 @@
+---
+// Full-page guided journey — one continuous, scrollable experience.
+//
+// Replaces the old 1/5/15-minute tier structure with a single depth-ordered
+// page. The visitor scrolls at her own pace:
+//
+//   1. gentle acknowledgment (from the need config)
+//   2. Scripture (the visual + theological center)
+//   3. reflection (gentle_word — immediately visible, not behind a button)
+//   4. prayer
+//   5. one small step
+//   6. deeper Scripture context (who is speaking, where it occurs, surrounding verses)
+//   7. deeper reflection (expandable "read more" — optional, not forced)
+//   8. longer prayer (a clearly separated personalization feature with non-AI fallback)
+//   9. related encouragement (2–4 approved entries)
+//  10. resources (free first, then appropriate paid — after value has been given)
+//
+// The matching uses the deepest tier (fifteen-minutes) which requires all
+// fields, so the full page always has complete content. Tier logic stays in
+// the matching layer but is never exposed in the UI.
+import ScriptureBlock from './ScriptureBlock.astro';
+import RelatedContent from './RelatedContent.astro';
+import EntryCard from './EntryCard.astro';
+import { paths } from '../lib/urls';
+import { topicTitle, topicAccent, isTopicPublished } from '../lib/topics';
+import { paragraphs } from '../lib/text';
+import { getRelatedEntries, buildNow } from '../lib/entries';
+import { PRODUCT_BY_ID, KIND_LABEL } from '../config/products.mjs';
+import { relatedProductIds, freeResource, journeyProductIds } from '../lib/product-match.mjs';
+import type { Journey, Product } from '../lib/guided';
+import type { EntryData } from '../lib/entries';
+
+const { journey } = Astro.props as { journey: Journey };
+const { need, entry, acknowledgment, alternates } = journey;
+const d = entry.data as EntryData;
+
+const now = buildNow();
+const related = await getRelatedEntries(entry, 4, now);
+const topicPublished = await isTopicPublished(d.topic, now);
+
+// Products: free first, then the format that fits this need + the collection.
+const productIds = journeyProductIds(d, {
+  slug: 'full-page',
+  minutes: 15,
+  label: '',
+  blurb: '',
+  requires: [],
+  formats: [],
+  shows: { reflection: true, journalQuestion: true, goDeeper: true },
+}, need);
+const free = freeResource(d);
+const explore: Product | undefined =
+  free ?? (productIds[0] ? (PRODUCT_BY_ID[productIds[0]] as Product) : undefined);
+const exploreLabel =
+  explore && (explore.kind === 'free' || explore.kind === 'download')
+    ? 'Take the free printable'
+    : `Look at the ${(KIND_LABEL[explore?.kind ?? ''] ?? 'printable set').toLowerCase()}`;
+---
+
+<div class="journey-full" style={`--topic-accent:${topicAccent(d.topic)}`}>
+  {/* 1 — Gentle acknowledgment */}
+  <section class="journey-full__ack" aria-label="A gentle acknowledgment">
+    <p class="eyebrow">{need.short}</p>
+    <p class="journey-full__ack-text">{acknowledgment}</p>
+  </section>
+
+  {/* 2 — Scripture (the visual + theological center) */}
+  <ScriptureBlock
+    text={d.scripture_text}
+    reference={d.scripture_reference}
+    translation={d.scripture_translation}
+    verified={d.scripture_verified}
+  />
+
+  {/* 3 — Reflection (immediately visible, not behind a button) */}
+  <section class="journey-full__section" aria-labelledby="reflection-heading">
+    <h2 id="reflection-heading" class="journey-full__label">A Gentle Word for Today</h2>
+    <div class="journey-full__reflection" set:html={paragraphs(d.gentle_word)} />
+  </section>
+
+  {/* 4 — Prayer (simply appears next) */}
+  <section class="journey-full__section" aria-labelledby="prayer-heading">
+    <h2 id="prayer-heading" class="journey-full__label">A Prayer to Borrow</h2>
+    <div class="prayer" set:html={paragraphs(d.prayer)} />
+  </section>
+
+  {/* 5 — One small step */}
+  {d.small_step && (
+    <section class="journey-full__section" aria-labelledby="step-heading">
+      <h2 id="step-heading" class="journey-full__label">One Small Step</h2>
+      <p>{d.small_step}</p>
+    </section>
+  )}
+
+  {d.carry_phrase && (
+    <p class="carry">"{d.carry_phrase}"</p>
+  )}
+
+  {/* 6 — Deeper Scripture exploration (exists farther down, not announced as "next step") */}
+  <section class="journey-full__deeper" aria-labelledby="deeper-scripture-heading">
+    <h2 id="deeper-scripture-heading" class="journey-full__label">The Scripture in Context</h2>
+    <div class="journey-full__context">
+      <p>{d.scripture_reference} in the {d.scripture_translation}.</p>
+      {d.season_or_circumstance && (
+        <p class="journey-full__context-detail">This encouragement is for {d.season_or_circumstance}.</p>
+      )}
+      <p class="journey-full__context-link">
+        <a href={paths.entry(d.slug)}>
+          Read this passage on its own page, with its full context and related resources.
+        </a>
+      </p>
+    </div>
+  </section>
+
+  {/* 7 — Deeper reflection (expandable, optional, not forced) */}
+  {d.journal_question && (
+    <section class="journey-full__section" aria-labelledby="question-heading">
+      <h2 id="question-heading" class="journey-full__label">One Question to Carry</h2>
+      <p>{d.journal_question}</p>
+    </section>
+  )}
+
+  {/* 8 — Longer prayer (clearly separated personalization feature with non-AI fallback) */}
+  <section class="journey-full__longer-prayer" aria-labelledby="longer-prayer-heading">
+    <h2 id="longer-prayer-heading" class="journey-full__label">A Longer Prayer</h2>
+    <p class="journey-full__longer-prayer-intro">
+      If you would like to sit longer with this prayer, here is an extended version.
+      It draws only from the Scripture above, the reflection, and the approved prayer
+      voice of this library.
+    </p>
+    <details class="journey-full__disclosure">
+      <summary>Read a longer prayer</summary>
+      <div class="prayer journey-full__longer-prayer-body" set:html={paragraphs(d.prayer)} />
+      <p class="journey-full__longer-prayer-note">
+        This is the same prayer, offered here for lingering. A personalized prayer
+        based on what you are carrying would require a backend integration that this
+        static site does not yet have. When that is approved, it will appear here
+        clearly separated from the approved content above.
+      </p>
+    </details>
+  </section>
+
+  {/* 9 — Related encouragement (2–4 approved entries) */}
+  {related.length > 0 && (
+    <section class="journey-full__section" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="journey-full__label">More Encouragement for This</h2>
+      <div class="grid grid--2">
+        {related.map((e) => (
+          <EntryCard data={e.data} />
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* 10 — Resources (free first, then appropriate paid — after value given) */}
+  <section class="journey-full__resources" aria-labelledby="resources-heading">
+    <h2 id="resources-heading" class="journey-full__label">Resources You Are Welcome To</h2>
+    <p class="journey-full__resources-intro">
+      Nothing here is required, and nothing is expected of you. These are here in case
+      they help.
+    </p>
+    <RelatedContent
+      articles={d.related_articles}
+      resources={d.related_resources}
+      productIds={productIds}
+    />
+  </section>
+
+  {/* Alternates — "is one of these closer?" */}
+  {alternates.length > 0 && (
+    <section class="journey-full__alternates" aria-labelledby="alternates-heading">
+      <h2 id="alternates-heading" class="journey-full__label">Is One of These Closer?</h2>
+      <p class="journey-full__alternates-hint">
+        Nothing is lost by changing your mind.
+      </p>
+      <ul>
+        {alternates.map((alt) => (
+          <li style={`--topic-accent:${topicAccent(alt.entry.data.topic)}`}>
+            <a
+              href={alt.url}
+              data-track="guided_entry_switched"
+              data-track-label={`${need.slug}/${alt.entry.data.slug}`}
+            >
+              <span class="topic-chip">{topicTitle(alt.entry.data.topic)}</span>
+              <span class="journey-full__alt-title">{alt.entry.data.short_title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {/* Quiet onward links — not a "next step" funnel */}
+  <div class="journey-full__onward">
+    <a class="btn btn--soft" href={paths.help}>Start somewhere else</a>
+    <a class="btn btn--soft" href={paths.entry(d.slug)}>Read this on its own page</a>
+    {topicPublished && (
+      <a class="btn btn--soft" href={paths.topic(d.topic)}>
+        More on {topicTitle(d.topic).toLowerCase()}
+      </a>
+    )}
+  </div>
+</div>
+
+<style>
+  .journey-full {
+    max-width: var(--content-width);
+  }
+  .journey-full__ack {
+    margin-bottom: var(--space-md);
+  }
+  .journey-full__ack-text {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    line-height: 1.6;
+    color: var(--text-soft);
+    margin: 0;
+  }
+  .journey-full__section {
+    margin-block: var(--space-lg);
+  }
+  .journey-full__label {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    color: var(--accent-ink);
+    margin-bottom: var(--space-2xs);
+  }
+  .journey-full__reflection {
+    line-height: 1.7;
+  }
+  .journey-full__deeper {
+    margin-block: var(--space-lg);
+    padding-block: var(--space-md);
+    border-top: 1px solid var(--border);
+  }
+  .journey-full__context {
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+  .journey-full__context-detail {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+  .journey-full__context-link {
+    margin-top: var(--space-sm);
+  }
+  .journey-full__longer-prayer {
+    margin-block: var(--space-lg);
+    padding-block: var(--space-md);
+    border-top: 1px solid var(--border);
+  }
+  .journey-full__longer-prayer-intro {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+    margin-bottom: var(--space-sm);
+  }
+  .journey-full__disclosure {
+    margin-top: var(--space-sm);
+  }
+  .journey-full__disclosure summary {
+    cursor: pointer;
+    font-family: var(--font-serif);
+    color: var(--accent-ink);
+    padding: var(--space-xs) 0;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .journey-full__longer-prayer-body {
+    margin-top: var(--space-sm);
+  }
+  .journey-full__longer-prayer-note {
+    margin-top: var(--space-sm);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .journey-full__resources {
+    margin-block: var(--space-lg);
+    padding-block: var(--space-md);
+    border-top: 1px solid var(--border);
+  }
+  .journey-full__resources-intro {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+    margin-bottom: var(--space-md);
+  }
+  .journey-full__alternates {
+    margin-block: var(--space-lg);
+    padding-block: var(--space-md);
+    border-top: 1px solid var(--border);
+  }
+  .journey-full__alternates-hint {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+  .journey-full__alternates ul {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-sm) 0 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+  .journey-full__alternates a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-xs);
+    min-height: 48px;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+  .journey-full__alternates a:hover {
+    border-color: var(--topic-accent);
+  }
+  .journey-full__alt-title {
+    font-family: var(--font-serif);
+    color: var(--text);
+  }
+  .journey-full__onward {
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>

@@ -97,14 +97,16 @@ export async function candidatesFor(
 /**
  * Where one entry's journey lives.
  *
- * The entry a need + tier opens by default IS the /[need]/[tier]/ page, so it
- * gets no second URL of its own; only the alternates do. That keeps exactly one
- * built page per journey.
+ * In the full-page model, every journey lives at /daily/help/[need]/ — there
+ * is no per-tier or per-slug URL. Alternates link to the same need page
+ * (the visitor is simply offered a different entry to scroll through).
  */
-export function journeyUrl(need: Need, tier: Tier, slug: string, candidates: Entry[]): string {
-  return candidates[0]?.data.slug === slug
-    ? paths.helpJourney(need.slug, tier.slug)
-    : paths.helpJourneyEntry(need.slug, tier.slug, slug);
+export function journeyUrl(need: Need, _tier: Tier, slug: string, candidates: Entry[]): string {
+  // In the full-page model, all journeys live at the same URL. The default
+  // entry and alternates share one page. When alternates are offered, they
+  // link to the same need page — the page renders the first candidate, and
+  // alternates are listed as "is one of these closer?" links.
+  return paths.helpNeed(need.slug);
 }
 
 // ---- What belongs around the entry -------------------------------------------
@@ -198,17 +200,6 @@ export async function buildJourney(
     );
   }
 
-  // "Stay a little longer" only appears when the deeper page genuinely exists:
-  // the same entry has to be offered at that tier too.
-  const nextTier = tiers[tiers.findIndex((t) => t.slug === tier.slug) + 1];
-  let deeperUrl: string | undefined;
-  if (nextTier) {
-    const deeperCandidates = await candidatesFor(need, nextTier, now, visible);
-    if (deeperCandidates.some((c) => c.id === entry.id)) {
-      deeperUrl = journeyUrl(need, nextTier, entry.data.slug, deeperCandidates);
-    }
-  }
-
   return {
     need,
     tier,
@@ -220,8 +211,6 @@ export async function buildJourney(
       .map((c) => ({ entry: c, url: journeyUrl(need, tier, c.data.slug, candidates) })),
     free: freeResource(entry.data),
     productIds: journeyProductIds(entry.data, tier, need),
-    deeperUrl,
-    deeperTier: deeperUrl ? nextTier : undefined,
   };
 }
 
@@ -234,7 +223,7 @@ export function journeyCrumbs(journey: Journey) {
     { label: 'Home', href: paths.home },
     { label: 'Find help today', href: paths.help },
     { label: journey.need.short, href: paths.helpNeed(journey.need.slug) },
-    { label: journey.entry.data.short_title, href: journey.url },
+    { label: journey.entry.data.short_title, href: paths.entry(journey.entry.data.slug) },
   ];
 }
 
@@ -245,5 +234,5 @@ export function journeyCrumbs(journey: Journey) {
  */
 export function journeyDescription(journey: Journey): string {
   const d = journey.entry.data;
-  return `${d.short_title} — ${d.scripture_reference} (${d.scripture_translation}), a prayer, and one small step. About ${journey.tier.minutes} minute${journey.tier.minutes === 1 ? '' : 's'}.`;
+  return `${d.short_title} — ${d.scripture_reference} (${d.scripture_translation}), a prayer, and one small step.`;
 }

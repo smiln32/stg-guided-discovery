@@ -9,10 +9,18 @@
 //   3. reflection (gentle_word — immediately visible, not behind a button)
 //   4. prayer
 //   5. one small step
-//   6. deeper Scripture context (who is speaking, where it occurs, surrounding verses)
-//   7. one question to carry (journal_question)
-//   8. related encouragement (2–4 approved entries)
-//   9. resources (free first, then appropriate paid — after value has been given)
+//   6. one question to carry (journal_question)
+//   7. related encouragement (2–4 approved entries)
+//   8. resources (free first, then appropriate paid — after value has been given)
+//
+// There is also no "Scripture in context" section, for the same reason there is
+// no longer prayer. One was here, and under the heading it put the verse
+// reference and translation the ScriptureBlock had already captioned a few
+// sections above, then linked out "with its full context" — which the entry
+// page does not have either. Real context is who is speaking, where it falls,
+// what surrounds it: writing, and a field on the entry that does not exist.
+// A heading that announces context and restates a caption is worse than no
+// heading, so the caption does the job alone.
 //
 // There is deliberately no "longer prayer" section. One was here, promising an
 // extended version and then printing the same prayer again, followed by a note
@@ -105,23 +113,7 @@ const exploreLabel =
     <p class="carry">"{d.carry_phrase}"</p>
   )}
 
-  {/* 6 — Deeper Scripture exploration (exists farther down, not announced as "next step") */}
-  <section class="journey-full__deeper" aria-labelledby="deeper-scripture-heading">
-    <h2 id="deeper-scripture-heading" class="journey-full__label">The Scripture in Context</h2>
-    <div class="journey-full__context">
-      <p>{d.scripture_reference} in the {d.scripture_translation}.</p>
-      {d.season_or_circumstance && (
-        <p class="journey-full__context-detail">This encouragement is for {d.season_or_circumstance}.</p>
-      )}
-      <p class="journey-full__context-link">
-        <a href={paths.entry(d.slug)}>
-          Read this passage on its own page, with its full context and related resources.
-        </a>
-      </p>
-    </div>
-  </section>
-
-  {/* 7 — Deeper reflection (expandable, optional, not forced) */}
+  {/* 6 — One question to carry */}
   {d.journal_question && (
     <section class="journey-full__section" aria-labelledby="question-heading">
       <h2 id="question-heading" class="journey-full__label">One Question to Carry</h2>
@@ -129,7 +121,7 @@ const exploreLabel =
     </section>
   )}
 
-  {/* 8 — Related encouragement (2–4 approved entries) */}
+  {/* 7 — Related encouragement (2–4 approved entries) */}
   {related.length > 0 && (
     <section class="journey-full__section" aria-labelledby="related-heading">
       <h2 id="related-heading" class="journey-full__label">More Encouragement for This</h2>
@@ -141,7 +133,7 @@ const exploreLabel =
     </section>
   )}
 
-  {/* 9 — Resources (free first, then appropriate paid — after value given) */}
+  {/* 8 — Resources (free first, then appropriate paid — after value given) */}
   <section class="journey-full__resources" aria-labelledby="resources-heading">
     <h2 id="resources-heading" class="journey-full__label">Resources You Are Welcome To</h2>
     <p class="journey-full__resources-intro">
@@ -233,22 +225,6 @@ const exploreLabel =
   }
   .journey-full__reflection {
     line-height: 1.7;
-  }
-  .journey-full__deeper {
-    margin-block: var(--space-lg);
-    padding-block: var(--space-md);
-    border-top: 1px solid var(--border);
-  }
-  .journey-full__context {
-    color: var(--text-soft);
-    line-height: 1.6;
-  }
-  .journey-full__context-detail {
-    color: var(--text-muted);
-    font-size: var(--step--1);
-  }
-  .journey-full__context-link {
-    margin-top: var(--space-sm);
   }
   .journey-full__resources {
     margin-block: var(--space-lg);

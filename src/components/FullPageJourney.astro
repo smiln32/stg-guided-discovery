@@ -10,10 +10,17 @@
 //   4. prayer
 //   5. one small step
 //   6. deeper Scripture context (who is speaking, where it occurs, surrounding verses)
-//   7. deeper reflection (expandable "read more" — optional, not forced)
-//   8. longer prayer (a clearly separated personalization feature with non-AI fallback)
-//   9. related encouragement (2–4 approved entries)
-//  10. resources (free first, then appropriate paid — after value has been given)
+//   7. one question to carry (journal_question)
+//   8. related encouragement (2–4 approved entries)
+//   9. resources (free first, then appropriate paid — after value has been given)
+//
+// There is deliberately no "longer prayer" section. One was here, promising an
+// extended version and then printing the same prayer again, followed by a note
+// to the reader about a backend integration that does not exist. The page
+// already renders every field an entry carries, so there is nothing longer to
+// show: a second prayer would have to be written and approved like any other
+// content. Better to end on the prayer that is real than to offer more and
+// deliver a copy.
 //
 // The matching uses the deepest tier (fifteen-minutes) which requires all
 // fields, so the full page always has complete content. Tier logic stays in
@@ -122,27 +129,7 @@ const exploreLabel =
     </section>
   )}
 
-  {/* 8 — Longer prayer (clearly separated personalization feature with non-AI fallback) */}
-  <section class="journey-full__longer-prayer" aria-labelledby="longer-prayer-heading">
-    <h2 id="longer-prayer-heading" class="journey-full__label">A Longer Prayer</h2>
-    <p class="journey-full__longer-prayer-intro">
-      If you would like to sit longer with this prayer, here is an extended version.
-      It draws only from the Scripture above, the reflection, and the approved prayer
-      voice of this library.
-    </p>
-    <details class="journey-full__disclosure">
-      <summary>Read a longer prayer</summary>
-      <div class="prayer journey-full__longer-prayer-body" set:html={paragraphs(d.prayer)} />
-      <p class="journey-full__longer-prayer-note">
-        This is the same prayer, offered here for lingering. A personalized prayer
-        based on what you are carrying would require a backend integration that this
-        static site does not yet have. When that is approved, it will appear here
-        clearly separated from the approved content above.
-      </p>
-    </details>
-  </section>
-
-  {/* 9 — Related encouragement (2–4 approved entries) */}
+  {/* 8 — Related encouragement (2–4 approved entries) */}
   {related.length > 0 && (
     <section class="journey-full__section" aria-labelledby="related-heading">
       <h2 id="related-heading" class="journey-full__label">More Encouragement for This</h2>
@@ -154,7 +141,7 @@ const exploreLabel =
     </section>
   )}
 
-  {/* 10 — Resources (free first, then appropriate paid — after value given) */}
+  {/* 9 — Resources (free first, then appropriate paid — after value given) */}
   <section class="journey-full__resources" aria-labelledby="resources-heading">
     <h2 id="resources-heading" class="journey-full__label">Resources You Are Welcome To</h2>
     <p class="journey-full__resources-intro">
@@ -262,36 +249,6 @@ const exploreLabel =
   }
   .journey-full__context-link {
     margin-top: var(--space-sm);
-  }
-  .journey-full__longer-prayer {
-    margin-block: var(--space-lg);
-    padding-block: var(--space-md);
-    border-top: 1px solid var(--border);
-  }
-  .journey-full__longer-prayer-intro {
-    color: var(--text-muted);
-    font-size: var(--step--1);
-    margin-bottom: var(--space-sm);
-  }
-  .journey-full__disclosure {
-    margin-top: var(--space-sm);
-  }
-  .journey-full__disclosure summary {
-    cursor: pointer;
-    font-family: var(--font-serif);
-    color: var(--accent-ink);
-    padding: var(--space-xs) 0;
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-  }
-  .journey-full__longer-prayer-body {
-    margin-top: var(--space-sm);
-  }
-  .journey-full__longer-prayer-note {
-    margin-top: var(--space-sm);
-    font-size: var(--step--1);
-    color: var(--text-muted);
   }
   .journey-full__resources {
     margin-block: var(--space-lg);

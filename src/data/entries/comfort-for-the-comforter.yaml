@@ -1,6 +1,6 @@
 id: comfort-for-the-comforter
 status: published
-is_sample: true
+is_sample: false
 
 publish_date: 2026-07-06
 rotation_eligible: true
@@ -84,10 +84,10 @@ social_title: Comfort for the Comforter
 social_description: Even the comforter gets comforted. One verse, one prayer, one small step for the strong one.
 
 author: Simplify to Glorify
-reviewed_by: Sample Reviewer (demonstration)
+reviewed_by: Simplify to Glorify
 content_review_status: approved
 scripture_review_status: approved
-last_reviewed_date: 2026-07-06
+last_reviewed_date: 2026-08-26
 version: 1
 created_at: 2026-07-02
 updated_at: 2026-07-06

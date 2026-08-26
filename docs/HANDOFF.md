@@ -212,6 +212,14 @@ same list through the same `<RelatedContent>`, so they inherit this too.
 ## Remaining launch steps (in order)
 
 ### 1. Decide how this connects to simplifytoglorify.com (strategic — decide first)
+
+> **Owner's direction, 2026-08-26:** this is to be *"a separate page on the
+> site,"* linked to from any other page when she wants to send someone there —
+> a destination rather than something folded into the main navigation. That
+> rules out the third route below (porting into the React repo). It does **not**
+> by itself settle subdomain versus proxied subpath, and `SITE_URL` still
+> depends on which — see the two paragraphs after this list.
+
 This repo is the one codebase for the feature. It is an **add-on module, not a
 website** — everything it owns lives under `/daily`, and it builds standalone
 only so it can be previewed and reviewed before this is settled. Remaining
@@ -318,7 +326,39 @@ broken; the build is green.
 
 The largest gap between what the site *is* and what it *says it is*. All 17
 entries carry `is_sample: true` and 15 name `Sample Reviewer (demonstration)`.
-The Scripture is real now; the banner still says it isn't. See launch step 2.
+The Scripture is real now; the banner still says it isn't.
+
+**The mechanism is built (2026-08-26); the reviewing is not.** Three things
+changed, and none of them touched entry data:
+
+- **`npm run approve -- <slug>`** records a review: `is_sample: false`,
+  `reviewed_by` (default `Simplify to Glorify`), and `last_reviewed_date`. It
+  edits those three lines in place rather than round-tripping the YAML, so the
+  diff is three lines and the block scalars survive. It deliberately leaves
+  `updated_at` alone — that field drives the rotation order and the guided
+  tie-break, and reviewing an entry is not editing it. `--dry-run` and `--all`
+  both work.
+- **`npm run validate` now guards the attestation.** Clearing the banner while
+  `reviewed_by` still names nobody (`sample`, `demonstration`, `placeholder`,
+  empty) is an **error**, because that failure is silent — the notice just stops
+  appearing and the page reads as reviewed. The reverse, an entry still flagged
+  as a sample, is only a **warning**: that is the honest state to be in while
+  working through a backlog, and it names the command to run. Expect 17 warnings
+  until the last entry is done.
+- **The banner now reaches guided discovery.** It only ever rendered through
+  `<EntryArticle>`, so the 27 pages under `/daily/help/` showed the same
+  Scripture, reflection and prayer with no notice at all — disclaimed on one
+  page, presented as finished on another. It is now a shared `<SampleBanner>`
+  used by both surfaces: 43 of 58 built pages carry it, up from 16.
+
+What remains is the part no tool can do: read each entry, then run the command
+for it. Worth knowing before starting — the publish gate is *already* satisfied
+on all 15 live entries (`content_review_status: approved`,
+`scripture_review_status: approved`, `scripture_verified: true`), signed by the
+placeholder reviewer. So this is not granting approval that was withheld; it is
+replacing an attestation nobody made with one somebody did.
+
+See launch step 2.
 
 ### Publish the gratitude entry
 

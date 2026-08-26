@@ -83,7 +83,22 @@ Open a terminal in the project folder for the commands below.
 ### 3. Approve the content
 
 When the gentle word, prayer, question, and step read the way you want:
-set `content_review_status: approved` and `reviewed_by` to your name.
+set `content_review_status: approved`, then record the review:
+
+```bash
+npm run approve -- your-slug             # or: --reviewer "Your Name"
+npm run approve -- your-slug --dry-run   # show what would change, write nothing
+```
+
+That sets three things and nothing else: `is_sample: false` (which removes the
+"demonstration content" banner), `reviewed_by`, and `last_reviewed_date`. It
+leaves `updated_at` alone on purpose — reviewing an entry is not editing it, and
+`updated_at` decides the daily rotation order.
+
+Clearing `is_sample` is a claim that a person read the entry and stands behind
+it, so `npm run validate` fails if the banner is gone while `reviewed_by` still
+names nobody. Do it one entry at a time as you finish each one; `--all` will
+sweep every remaining entry if you would rather.
 
 ### 4. Preview before publishing
 
@@ -266,7 +281,7 @@ Back up everything to a spreadsheet anytime with `npm run export:csv`.
 |---|---|
 | `id`, `slug` | Kebab-case; usually the same. `slug` is the permanent URL. |
 | `status` | Lifecycle (see status flow above). |
-| `is_sample` | `true` shows a "demonstration content" banner. Set `false` for real content. |
+| `is_sample` | `true` shows a "demonstration content" banner on every page the entry appears on. Cleared by `npm run approve`, not by hand — see step 3. |
 | `publish_date`, `featured_date`, `expiration_date` | Dates (`YYYY-MM-DD`). |
 | `rotation_eligible`, `rotation_priority`, `exclusion_dates` | Evergreen rotation controls. |
 | `page_title`, `short_title` | Long title for the page; short title for cards/lists. |

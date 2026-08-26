@@ -83,6 +83,33 @@ for (const { file, data } of entries) {
     warn('Scripture is a placeholder (fine while in review; must be replaced before publishing)');
   }
 
+  // Review attestation.
+  //
+  // `is_sample: false` is the claim that a person read this entry and stands
+  // behind it, so it may not sit above a reviewer name that names nobody. This
+  // is an ERROR rather than a warning because the failure it guards is silent:
+  // the banner simply stops appearing and the page reads as reviewed.
+  //
+  // The reverse case is only a warning, because it is the honest state to be in
+  // while working through a backlog: the entry says outright that it has not
+  // been reviewed. `npm run approve -- <slug>` sets both halves together, which
+  // is why the two can never drift apart when the tool is used.
+  const reviewer = String(data.reviewed_by || '').trim();
+  const unnamed = !reviewer || /sample|demonstration|placeholder|tbd|todo|xxx/i.test(reviewer);
+  if (isLive && data.is_sample !== true && unnamed) {
+    err(
+      `is_sample is not true, so this page claims to be reviewed, but reviewed_by is ` +
+        `${reviewer ? `"${reviewer}"` : 'empty'}. Record who reviewed it: npm run approve -- ${data.slug}`,
+    );
+  }
+  if (data.is_sample === true) {
+    warn(
+      'still shows the demonstration banner' +
+        (isLive ? ' while its review fields say "approved"' : '') +
+        ` — run: npm run approve -- ${data.slug}`,
+    );
+  }
+
   // --- Guided-discovery content safeguards ---------------------------------
   // These apply to every entry, not only the ones a journey happens to open:
   // any entry can be matched once the library grows or a need's lanes change.

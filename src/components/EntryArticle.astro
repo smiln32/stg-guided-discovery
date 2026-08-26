@@ -8,6 +8,7 @@
 // question. It never changes what a section says, only whether it appears, so
 // there is still one renderer for entry content.
 import ScriptureBlock from './ScriptureBlock.astro';
+import SampleBanner from './SampleBanner.astro';
 import { paths } from '../lib/urls';
 import { topicTitle, topicAccent, isTopicPublished } from '../lib/topics';
 import { paragraphs } from '../lib/text';
@@ -27,14 +28,7 @@ const topicLinked = await isTopicPublished(data.topic);
 
 <article class="entry stack" style={`--topic-accent:${accent}`}>
   <slot name="before-header" />
-  {
-    data.is_sample && (
-      <p class="sample-banner" role="note">
-        <strong>Demonstration content.</strong> This sample entry is not yet
-        reviewed for publication.
-      </p>
-    )
-  }
+  <SampleBanner data={data} />
 
   <header class="entry__head stack">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}

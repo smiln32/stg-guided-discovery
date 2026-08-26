@@ -19,6 +19,7 @@
 // fields, so the full page always has complete content. Tier logic stays in
 // the matching layer but is never exposed in the UI.
 import ScriptureBlock from './ScriptureBlock.astro';
+import SampleBanner from './SampleBanner.astro';
 import RelatedContent from './RelatedContent.astro';
 import EntryCard from './EntryCard.astro';
 import { paths } from '../lib/urls';
@@ -58,6 +59,8 @@ const exploreLabel =
 ---
 
 <div class="journey-full" style={`--topic-accent:${topicAccent(d.topic)}`}>
+  <SampleBanner data={d} />
+
   {/* 1 — Gentle acknowledgment */}
   <section class="journey-full__ack" aria-label="A gentle acknowledgment">
     <p class="journey-full__ack-text">{acknowledgment}</p>

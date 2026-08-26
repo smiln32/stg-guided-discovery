@@ -56,6 +56,7 @@ nothing is written twice and nothing can drift. See
 ```bash
 npm run validate                                   # check all entries + publish gate
 npm test                                           # safeguards + journey coverage
+npm run approve -- my-slug                         # record a review; clears the sample banner
 npm run import:csv -- content/my-file.csv          # dry-run import preview
 npm run import:csv -- content/my-file.csv --commit # write YAML entries
 npm run export:csv                                 # back up all entries to CSV
@@ -99,7 +100,7 @@ src/
   layouts/ components/  UI
   lib/             queries, daily resolver, search, guided matching + safeguards
   pages/           routes (daily, permanent, topics, search, help)
-scripts/           validate, import-csv, export-csv
+scripts/           validate, approve, import-csv, export-csv
 tests/             guided safeguards + journey coverage (node --test)
 docs/              owner guide, discovery map, topic coverage, handoff
 ```

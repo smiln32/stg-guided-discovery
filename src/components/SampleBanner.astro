@@ -1,0 +1,22 @@
+---
+// The demonstration notice, in one place.
+//
+// It used to live inline in <EntryArticle>, which meant it appeared on the
+// permanent entry pages and the daily page and nowhere else. Guided discovery
+// renders the same Scripture, reflection and prayer through <FullPageJourney>,
+// which does not use <EntryArticle> — so a sample-flagged entry was disclaimed
+// on one page and presented as finished on another.
+//
+// Rendering nothing unless `is_sample` is true keeps every caller a one-liner,
+// so the next surface that shows entry content has no reason to leave it out.
+const { data } = Astro.props as { data: { is_sample?: boolean } };
+---
+
+{
+  data.is_sample && (
+    <p class="sample-banner" role="note">
+      <strong>Demonstration content.</strong> This sample entry is not yet
+      reviewed for publication.
+    </p>
+  )
+}

@@ -12,6 +12,7 @@
     "astro": "astro",
     "test": "node --test \"tests/**/*.test.mjs\"",
     "validate": "node scripts/validate.mjs",
+    "approve": "node scripts/approve.mjs",
     "import:csv": "node scripts/import-csv.mjs",
     "export:csv": "node scripts/export-csv.mjs"
   },

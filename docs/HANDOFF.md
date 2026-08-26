@@ -1,14 +1,18 @@
-# stg-guided-discovery — Handoff (updated 2026-08-06)
+# stg-guided-discovery — Handoff (updated 2026-08-26)
 
-> **Latest change (2026-08-06):** all seventeen entries now carry **NASB 2020**
-> Scripture in place of the demonstration WEB text, and everything has been
-> merged to `main` and pushed. The entries are still flagged `is_sample: true`,
-> so every page still shows a demonstration banner — see
-> [What is open](#what-is-open) for that and the rest.
+> **Read [What needs to be done](#what-needs-to-be-done) first.** It is the
+> complete list, in priority order, marked for what blocks launch and what
+> does not.
 
-> **2026-08-04:** guided discovery — the "Where do you need help today?" entry
-> point from `stg-meet-me-where-i-am` — is integrated. See
-> [Guided discovery](#guided-discovery-integrated-2026-08-04) below.
+> **Latest changes (2026-08-26).** Guided discovery was rebuilt as a single
+> full-page scroll, replacing the 1/5/15-minute tiers, then reviewed and
+> repaired. Two silent breakages are fixed: the `?need=` deep link never fired,
+> and the "is one of these closer?" links pointed at the page they were already
+> on. Two sections that promised more than they delivered are gone — "A Longer
+> Prayer", which reprinted the same prayer, and "The Scripture in Context",
+> which restated a caption. The demonstration banner is cleared from all 15
+> published entries. The documentation was corrected to describe the site that
+> exists, and `docs/destinations.md` is now generated rather than hand-tallied.
 
 Current state of the project and the exact remaining steps to launch.
 For *how to operate* the system (add/approve/publish content), see
@@ -16,8 +20,19 @@ For *how to operate* the system (add/approve/publish content), see
 
 ## Where things stand
 
-**The system is engineering-complete.** All 12 audit findings fixed
-(AUDIT-LOG.md, score 18/20); `npm run validate` and `npm run build` are clean.
+**Green, and not deployed.** As of 2026-08-26: `npm run validate` clean with 2
+warnings (the two unreviewed drafts), `npm test` 37/37, `npm run build` clean at
+58 pages. All 12 original audit findings fixed (AUDIT-LOG.md, score 18/20).
+Nothing has ever been deployed, and no URL on the live site points here yet.
+
+| | |
+| --- | --- |
+| Entries | 17 — 15 published, 2 drafts |
+| Pages built | 58, of which 28 are guided discovery under `/daily/help/` |
+| Indexed | 28 URLs in the sitemap; everything under `/help/` except the entry point is `noindex` |
+| Topic archives | 10 of 20 topics have the 3 entries an archive needs |
+| Shop destinations reachable | 14 of 79 — see [item 1](#1-no-printable-is-reachable-from-any-journey) |
+| Demonstration banner | cleared; the 2 drafts keep it, correctly |
 
 **Scope (2026-08-03):** both distribution modules were removed from this repo.
 
@@ -58,6 +73,222 @@ go stale silently.
 **Naming (2026-08-04):** the project was renamed `stg-website-interactives` →
 `stg-guided-discovery` (package name, README, docs, config header comments).
 Cosmetic only — no route, import, or config value depends on it.
+
+## What needs to be done
+
+Everything outstanding, in the order I would take it. Nothing here is broken:
+`npm run validate`, `npm test` and `npm run build` are all clean today, and
+nothing is deployed.
+
+| # | What | Blocks launch? | Whose job |
+| --- | --- | --- | --- |
+| 1 | No printable is reachable from any journey | **Yes — commercially** | a decision, then ~1 line |
+| 2 | Subdomain or subpath, then set `SITE_URL` | **Yes** | a decision |
+| 3 | Deploy to Netlify | **Yes** | 20 minutes |
+| 4 | Poetic verses still read as prose | No, but it is Scripture | data, ~9 entries |
+| 5 | Confirm the site timezone | No | a one-line answer |
+| 6 | Publish the two drafts | No | review |
+| 7 | Write for the topics nothing reaches | No | writing |
+| 8 | Page-design questions | No | decisions |
+| 9 | Code cleanup | No | ~10 minutes |
+| 10 | Logo and favicon | No | design |
+| 11 | The care pathway — the listen-first redesign | No | design; the biggest piece |
+
+---
+
+### 1. No printable is reachable from any journey
+
+**The most consequential open item, and the least obvious.** Guided discovery
+offers a free PDF and a whole collection. It offers no individual printable at
+all — not the journal, the devotional, the Scripture cards, the prayer cards or
+the First Steps Guide, in any of the twelve collections. **0 of 60.**
+
+Not a content gap; no amount of writing changes it. Each collection's five
+printables used to be chosen against the capacity a visitor named — the
+1/5/15-minute question. The page stopped asking, so `formatForTier` now receives
+an empty `formats` list and returns nothing every time. It is one deliberately
+commented line in
+[`FullPageJourney.astro`](../src/components/FullPageJourney.astro).
+
+It was left that way rather than quietly re-enabled, because "which printable
+suits her?" needs something to be true about her, and the page no longer asks
+anything. Three ways out:
+
+- **Offer the ladder unconditionally.** First Steps first because it asks the
+  least, cards alongside as complements, journal and devotional last because
+  they ask most. No question needed; the order carries the meaning. Cheapest,
+  and closest to the product-ladder thinking in the care pathway below.
+- **Ask a different question** — not minutes but appetite, "how much do you want
+  to take on?" That is the care pathway's own proposal, so decide it there
+  rather than ahead of it.
+- **Leave it.** Defensible: the collection page sells all five anyway, so no
+  sale is lost, only specificity. But say so out loud if this is the choice,
+  because as it stands it looks like an accident rather than a decision.
+
+Reachability is generated — `npm run report:discovery` writes
+[destinations.md](destinations.md). **14 of 79** destinations today.
+
+### 2. Decide how this connects to simplifytoglorify.com, then set `SITE_URL`
+
+**Owner's direction, 2026-08-26:** a separate page on the site, linked to from
+any other page when she wants to send someone there. That rules out folding it
+into the main React repo. It does not settle the remaining choice:
+
+| | What it means | Cost |
+| --- | --- | --- |
+| **Subdomain** — `today.simplifytoglorify.com` | Its own Netlify deploy; the main site links to it | `SITE_URL` becomes the subdomain, nothing else changes. Separate origin, so it shares no search authority with the main domain |
+| **Subpath** — `simplifytoglorify.com/daily/` | Its own build; the main site proxies `/daily/*` to it | `SITE_URL` becomes the main domain. `BASE_PATH` already matches. Delete [`src/pages/index.astro`](../src/pages/index.astro), the placeholder root |
+
+`SITE_URL` must be the origin the pages are *actually served from* — canonical
+tags, Open Graph tags and the sitemap all derive from it
+([`site.mjs`](../src/config/site.mjs)). Point it at the main domain while serving
+from a subdomain and every page advertises a canonical URL it does not live at:
+it looks fine in a browser and quietly costs search visibility.
+
+### 3. Deploy
+
+Connect the repo to Netlify. [`netlify.toml`](../netlify.toml) already sets the
+build command and publish directory, and it runs
+`npm run validate && npm test && npm run build`, so every content gate and
+guided safeguard must pass before anything ships. Set `SITE_URL` in the Netlify
+UI. Fully static, no runtime, nothing else to configure.
+
+### 4. Poetic verses still read as prose
+
+**Half-fixed, which is worse than untouched, because it looks done.**
+[`ScriptureBlock`](../src/components/ScriptureBlock.astro) carries
+`white-space: pre-line` and renders `LORD` in small capitals correctly. But the
+verses are still stored as folded scalars (`>-`), which strips the line breaks
+before the CSS ever sees them. There is nothing left for `pre-line` to render.
+
+So Psalm 23 still reads:
+
+> …He guides me in the paths of righteousness **For** the sake of **His** name.
+
+Those stray capitals are line-initial capitals from the printed poetry, folded
+into a sentence. The fix is data, not code, and not a word of Scripture changes:
+convert the poetic entries' `scripture_text` from `>-` to `|-` and keep the
+printed line breaks. Psalms first — 23:1-3, 27:14, 34:18, 40:1, 46:10 — then
+Isaiah 40:29 and 40:31, Lamentations 3:22-23, and Proverbs 3:5-6.
+
+### 5. Confirm the site timezone
+
+`SITE_TIMEZONE` was changed from `America/Denver` to `America/Chicago` during the
+2026-08-26 rebuild. It decides when the daily entry flips. Worth one deliberate
+confirmation that Chicago is right, because nothing else will ever catch it
+being wrong.
+
+### 6. Publish the two drafts
+
+`looking-for-the-light-in-the-middle-of-it` and `when-you-feel-far-from-god` both
+sit at `status: needs_scripture_verification` with both reviews pending. They
+carry their NASB text already. They are the only two entries still flagged
+`is_sample: true`, which is correct — they genuinely have not been reviewed, and
+neither is built, so no visitor sees the banner. `npm run validate` lists them as
+its only two warnings.
+
+Publishing the first makes the **Gratitude Collection** reachable, the first of
+the four unreachable collections to get there. Its `secondary_topics` is
+currently `faith`; `hope` is arguably truer, since what the entry gives is hope
+and gratitude is the door.
+
+To publish either: review it, set `status: published` and both review statuses to
+`approved`, then run `npm run approve -- <slug>`.
+
+### 7. Write for the topics nothing reaches
+
+Four collections cannot be reached because no published entry carries their
+topic — **depression, chronic-pain, gratitude, adhd**. All four are already in a
+need's lanes, so one entry each is enough and no code changes. Separately
+`regret` has an entry but no need points at it, which is one line of `lanes` in
+[`guided.mjs`](../src/config/guided.mjs).
+
+A topic archive needs three entries to publish. One entry away: **grief** (2),
+**feeling-far-from-god** (2), **patience** (2). Two away: **regret**,
+**loneliness**, **forgiveness** (1 each).
+
+See [topic-coverage.md](topic-coverage.md) for what a new entry needs in order to
+close a gap, and [destinations.md](destinations.md) for the current counts.
+
+### 8. Page-design questions on the guided page
+
+Raised in review, none of them broken, all of them judgement calls:
+
+- **The heading asks a question with nowhere to answer it.** Each need page is
+  titled with its question — *"What has been on your heart lately?"* — and then
+  answers itself with Scripture. That worked as an invitation before a choice;
+  as the title of a page that immediately speaks, it reads like being asked and
+  then talked over. The care pathway's text box would give it somewhere to go.
+- **`carry_phrase` reads as a closing line, but three sections follow it.**
+- **Scripture runs the full 68rem width** while the prose sections stop at
+  48rem, so the verse gets the longest line on the page.
+
+### 9. Code cleanup
+
+- [`GuidedJourney.astro`](../src/components/GuidedJourney.astro) — the old
+  tier-based component. Nothing imports it.
+- `deeperUrl` and `deeperTier` on the `Journey` interface in
+  [`guided.ts`](../src/lib/guided.ts) — declared, documented, never set.
+- The test *"old tier route segments are not used in the current URL structure"*
+  in [`guided.test.mjs`](../tests/guided.test.mjs) builds a string from a
+  template literal, then asserts the template's own segments are absent from it.
+  It cannot fail and guards nothing.
+- Old `/daily/help/[need]/[tier]/` URLs 404. Probably fine — the whole `/help/`
+  tree except the entry point has always been `noindex` on a feature that never
+  launched, so there is likely nothing to preserve. If redirects are wanted, a
+  `[[redirects]]` block in `netlify.toml` is the right shape: a real 301, not
+  built pages.
+
+### 10. Logo and favicon
+
+A new brand logo and favicon were promised and never received.
+[`public/favicon.svg`](../public/favicon.svg) is still the placeholder.
+
+---
+
+### 11. The care pathway (design, not yet built)
+
+The owner's direction as of 2026-08-06, and the largest unbuilt piece. It is
+last here because nothing else waits on it — but it is the one that decides
+what this feature becomes, and item 1 above is really a part of it. The site
+should **listen first**: she types what she is carrying into a text box, and gets
+back an acknowledgement plus *"Are you experiencing any of these?"* — between one
+and six options drawn only from real paths, always ending with "None of these".
+Fewer options means more confidence, and showing that honestly is the point. She
+picks one, and only then does the response come: understanding, faith
+encouragement, one free resource and at most one paid one.
+
+Three things this changes:
+
+- **The topics are the shop's shape, not hers.** Route on the *emotional need*.
+  Divorce, betrayal and marriage strain will never be collections and do not need
+  to be; faith, trusting God and prayer are the honest answer, and that is where
+  "None of these" leads.
+- **The confirmation step is what makes it safe.** The site proposes and she
+  confirms, so nothing is ever asserted about her without her agreement. Note
+  that the acknowledgement language does *not* trip `DIAGNOSIS_PATTERNS` — that
+  guard blocks "you seem / you appear / you are + condition", not "it makes sense
+  that you'd feel…". The constraint is narrower than it looks.
+- **The product ladder is capacity-of-appetite, not minutes-today.** First Steps
+  first because it asks the least, journal and devotional last because they ask
+  most, cards alongside as complements rather than substitutes. The old
+  `TIERS` conflated "how many minutes do you have" with "how big a commitment do
+  you want", which is how First Steps ended up offered to exactly one tier. The
+  tiers went on 2026-08-26, taking the conflation and the format selection with
+  them, so nothing answers either question now. That makes this the decision to
+  take rather than a critique of what exists.
+
+There is no text box on the page — the need question is asked in the heading and
+nothing invites an answer. The promise that nothing she types is sent anywhere is
+still made on `/daily/help/`, and is still true. If a box is ever added, that
+promise has to be revisited honestly rather than quietly dropped.
+
+---
+
+## Where things stood before today
+
+The sections below record how the project got here. They are history rather than
+instructions; where something in them has been superseded it is marked.
 
 ## Guided discovery (integrated 2026-08-04)
 
@@ -215,241 +446,3 @@ PRINTABLE SET  Grief Collection
 Same topic, two formats, told apart at a glance — and the blurb and contents
 line that only the PDF carries do the rest. Guided-discovery journeys render the
 same list through the same `<RelatedContent>`, so they inherit this too.
-
-## Remaining launch steps (in order)
-
-### 1. Decide how this connects to simplifytoglorify.com (strategic — decide first)
-
-> **Owner's direction, 2026-08-26:** this is to be *"a separate page on the
-> site,"* linked to from any other page when she wants to send someone there —
-> a destination rather than something folded into the main navigation. That
-> rules out the third route below (porting into the React repo). It does **not**
-> by itself settle subdomain versus proxied subpath, and `SITE_URL` still
-> depends on which — see the two paragraphs after this list.
-
-This repo is the one codebase for the feature. It is an **add-on module, not a
-website** — everything it owns lives under `/daily`, and it builds standalone
-only so it can be previewed and reviewed before this is settled. Remaining
-choice is how it connects to the main site: a plain link, a subdomain (e.g.
-`today.simplifytoglorify.com`), a proxied subpath at `simplifytoglorify.com/daily/`,
-or folding it into the main site's repo later. The trade-offs are tabled in the
-README under *Adding it to the site*.
-
-Two things bear on that decision:
-
-**`SITE_URL` must be the origin the feature is actually served from.** Canonical
-tags, Open Graph tags, and the sitemap all derive from it
-([`src/config/site.mjs`](../src/config/site.mjs)). Point it at the main domain
-while the pages are served from a subdomain and every page advertises a
-canonical URL it does not live at — the kind of error that looks fine in a
-browser and quietly costs search visibility. Whichever route is chosen, set this
-first.
-
-**The routes are not equally expensive.** `BASE_PATH` is already `/daily`, so the
-proxied subpath is nearly free — delete the placeholder root
-([`src/pages/index.astro`](../src/pages/index.astro)), let the main site own `/`,
-and every internal link already resolves. The subdomain is almost as cheap but is
-a separate origin, so it shares no search authority with the main domain. Folding
-into the React repo is the expensive one, and not because of the pages: the
-publish gate, the no-diagnosis check, and the journey-coverage tests in
-[`scripts/`](../scripts/) and [`tests/`](../tests/) are the product here, not
-scaffolding around it. They have to come along or be rebuilt, and a port that
-drops them ships the content without the guarantees that made it safe to ship.
-
-(Note: an earlier, separate attempt ported this into the main
-simplifytoglorify.com repo as a React branch. That branch was never merged
-and is tracked separately — it does not affect this repo or this decision.)
-
-### 2. Scripture — done 2026-08-06; the sample flags are not
-All seventeen entries now carry NASB 2020, retrieved from Bible Gateway
-(`version=NASB`) and checked against 2020 markers rather than 1995 ones — *Stop
-striving* not *Cease striving*, *weary and burdened* not *heavy-laden*, *I will
-not be in need* not *I shall not want*. Both placeholders are gone and validate
-reports no warnings.
-
-Two things about that swap are worth carrying forward. The first retrieval
-silently flattened the small-capital divine name to "Lord" in seven verses; they
-were re-fetched with an explicit instruction and now read `LORD`. **That is the
-failure mode any summarising fetch introduces into Scripture** — assume it will
-happen again and check for it. And poetic line-initial capitals were kept as
-printed rather than lowercased to read as prose, which is why Psalm 23 currently
-renders as *"…in the paths of righteousness For the sake of His name."* Folding
-poetry into prose is this repo's existing convention; rewording the verse to suit
-it is not. The fix is rendering, not editing — see
-[What is open](#what-is-open).
-
-**Still outstanding from this step:** every entry is still `is_sample: true`, so
-[EntryArticle](../src/components/EntryArticle.astro) shows *"Demonstration
-content. This sample entry is not yet reviewed for publication."* on all 17
-pages, and 15 still name `Sample Reviewer (demonstration)` in `reviewed_by`. The
-verses are real; the governance metadata is still scaffolding from the original
-build. Per entry: review it, set `reviewed_by` to the real reviewer, set
-`is_sample: false`.
-
-The references, for the record:
-
-| Entry | Reference |
-|---|---|
-| a-gentle-place-to-begin | Psalm 46:10 |
-| when-you-are-worried-about-what-comes-next | Matthew 6:34 |
-| for-the-caregiver-who-is-running-on-empty | Matthew 11:28 |
-| when-the-waiting-feels-too-long | Psalm 27:14 |
-| when-the-grief-comes-in-waves | Psalm 34:18 |
-| for-the-thing-you-cannot-undo | Lamentations 3:22-23 |
-| when-you-dont-know-what-to-pray | Romans 8:26 |
-| when-the-worry-will-not-quiet | Philippians 4:6-7 |
-| when-the-list-is-longer-than-the-day | Psalm 23:1-3 |
-| when-you-cannot-see-the-way-forward | Proverbs 3:5-6 |
-| for-the-tiredness-sleep-does-not-fix | Isaiah 40:29 |
-| when-your-faith-feels-small | Mark 9:24 |
-| strength-for-the-long-wait | Isaiah 40:31 |
-| when-the-same-prayer-has-no-answer-yet | Psalm 40:1 |
-| comfort-for-the-comforter | 2 Corinthians 1:3-4 |
-| _draft-when-you-feel-far-from-god (draft) | James 4:8 |
-| looking-for-the-light-in-the-middle-of-it (draft) | 1 Thessalonians 5:18 |
-
-Both drafts additionally need `status: published` and approvals — see
-[What is open](#what-is-open).
-
-### 3. Deploy (if this repo is the vehicle)
-Connect the GitHub repo to Netlify — `netlify.toml` already configures the
-build command and publish directory. Set `SITE_URL` in the Netlify UI. There
-is nothing else to configure; the site is fully static.
-
-### 4. Nice-to-haves (not blockers)
-
-- One more entry each for **grief**, **feeling-far-from-god**, and
-  **patience** publishes those three archives.
-- Site nav on the main site — deliberately untouched so far
-  ("URL only for now").
-- New brand logo/favicon (was promised, not yet received).
-
-## What is open
-
-Everything below is decided-but-undone or awaiting a decision. Nothing here is
-broken; the build is green.
-
-### Clear the demonstration flags
-
-The largest gap between what the site *is* and what it *says it is*. All 17
-entries carry `is_sample: true` and 15 name `Sample Reviewer (demonstration)`.
-The Scripture is real now; the banner still says it isn't.
-
-**The mechanism is built (2026-08-26); the reviewing is not.** Three things
-changed, and none of them touched entry data:
-
-- **`npm run approve -- <slug>`** records a review: `is_sample: false`,
-  `reviewed_by` (default `Simplify to Glorify`), and `last_reviewed_date`. It
-  edits those three lines in place rather than round-tripping the YAML, so the
-  diff is three lines and the block scalars survive. It deliberately leaves
-  `updated_at` alone — that field drives the rotation order and the guided
-  tie-break, and reviewing an entry is not editing it. `--dry-run` and `--all`
-  both work.
-- **`npm run validate` now guards the attestation.** Clearing the banner while
-  `reviewed_by` still names nobody (`sample`, `demonstration`, `placeholder`,
-  empty) is an **error**, because that failure is silent — the notice just stops
-  appearing and the page reads as reviewed. The reverse, an entry still flagged
-  as a sample, is only a **warning**: that is the honest state to be in while
-  working through a backlog, and it names the command to run. Expect 17 warnings
-  until the last entry is done.
-- **The banner now reaches guided discovery.** It only ever rendered through
-  `<EntryArticle>`, so the 27 pages under `/daily/help/` showed the same
-  Scripture, reflection and prayer with no notice at all — disclaimed on one
-  page, presented as finished on another. It is now a shared `<SampleBanner>`
-  used by both surfaces: 43 of 58 built pages carry it, up from 16.
-
-What remains is the part no tool can do: read each entry, then run the command
-for it. Worth knowing before starting — the publish gate is *already* satisfied
-on all 15 live entries (`content_review_status: approved`,
-`scripture_review_status: approved`, `scripture_verified: true`), signed by the
-placeholder reviewer. So this is not granting approval that was withheld; it is
-replacing an attestation nobody made with one somebody did.
-
-See launch step 2.
-
-### Publish the gratitude entry
-
-`looking-for-the-light-in-the-middle-of-it` has its NASB text but sits at
-`status: needs_scripture_verification` with both reviews pending, so it is not
-live. Publishing it makes the **Gratitude Collection** reachable — the first of
-the four unreachable collections to get there. Its `secondary_topics` is
-currently `faith`; `hope` is arguably truer, since what the entry gives is hope
-and gratitude is the door. See [topic-coverage.md](topic-coverage.md).
-
-### Two ScriptureBlock rendering fixes
-
-Both live in [ScriptureBlock.astro](../src/components/ScriptureBlock.astro) and
-want doing together, because the Psalms are where both problems appear.
-
-1. **Small-caps `LORD`.** NASB sets the divine name in small capitals. The YAML
-   should keep plain `LORD` — searchable, copy-pasteable, survives the CSV round
-   trip — and the component should wrap `\bLORD\b` in a span styled
-   `text-transform: lowercase; font-variant: small-caps`. Unicode small-cap
-   characters would look right and break search and screen readers.
-2. **Poetic line breaks.** Store the poetic verses as `|-` block scalars and add
-   `white-space: pre-line` to `.scripture__text`. This is what fixes the stray
-   mid-sentence capitals without touching a word of Scripture.
-
-### 65 of 79 destinations cannot be reached
-
-**Recounted 2026-08-26, and it got much worse.** This section previously said 46
-of 79, with the devotional singled out as the one format nowhere on the site.
-Both numbers were tallied by hand against the three capacity tiers, and neither
-survived their removal. [destinations.md](destinations.md) is now **generated** —
-`npm run report:discovery` — so it cannot drift like that again.
-
-| | Then (2026-08-05) | Now |
-| --- | --- | --- |
-| Reachable | 33 | **14** |
-| Unreachable | 46 | **65** |
-| Individual formats reachable | 15 of 60 | **0 of 60** |
-
-**No individual printable has a pathway any more** — not the devotional, and not
-the journal, Scripture cards, prayer cards or First Steps Guide either. Journeys
-offer a free PDF and a whole collection, nothing narrower.
-
-This is not a content gap and no amount of writing fixes it. A format used to be
-chosen against the capacity a visitor named, and the page stopped asking, so
-`formatForTier` receives an empty `formats` list and returns nothing every time.
-It is one line in `FullPageJourney.astro`, marked with a comment. Deciding what
-should replace the capacity question is the same decision as the care pathway
-below — see the product-ladder point in it.
-
-What remains genuinely about content: no published entry carries `depression`,
-`chronic-pain`, `gratitude` or `adhd`, so those four collections are unreachable
-whatever else changes, and no need's lanes point at `regret`.
-
-### The care pathway (design, not yet built)
-
-The owner's direction as of 2026-08-06, and the largest open piece. The site
-should **listen first**: she types what she is carrying into a text box, and gets
-back an acknowledgement plus *"Are you experiencing any of these?"* — between one
-and six options drawn only from real paths, always ending with "None of these".
-Fewer options means more confidence, and showing that honestly is the point. She
-picks one, and only then does the response come: understanding, faith
-encouragement, one free resource and at most one paid one.
-
-Three things this changes:
-
-- **The topics are the shop's shape, not hers.** Route on the *emotional need*.
-  Divorce, betrayal and marriage strain will never be collections and do not need
-  to be; faith, trusting God and prayer are the honest answer, and that is where
-  "None of these" leads.
-- **The confirmation step is what makes it safe.** The site proposes and she
-  confirms, so nothing is ever asserted about her without her agreement. Note
-  that the acknowledgement language does *not* trip `DIAGNOSIS_PATTERNS` — that
-  guard blocks "you seem / you appear / you are + condition", not "it makes sense
-  that you'd feel…". The constraint is narrower than it looks.
-- **The product ladder is capacity-of-appetite, not minutes-today.** First Steps
-  first because it asks the least, journal and devotional last because they ask
-  most, cards alongside as complements rather than substitutes. The old
-  `TIERS` conflated "how many minutes do you have" with "how big a commitment do
-  you want", which is how First Steps ended up offered to exactly one tier. The
-  tiers went on 2026-08-26, taking the conflation and the format selection with
-  them, so nothing answers either question now. That makes this the decision to
-  take rather than a critique of what exists.
-
-There is no text box on the page — the need question is asked in the heading and
-nothing invites an answer. The promise that nothing she types is sent anywhere is
-still made on `/daily/help/`, and is still true. If a box is ever added, that
-promise has to be revisited honestly rather than quietly dropped.

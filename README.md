@@ -41,10 +41,10 @@ Open **/daily/** for today's encouragement, or **/daily/help/** for
 
 - **/daily/** — today's encouragement, plus topic archives and search. For the
   visitor who came to read.
-- **/daily/help/** — **guided discovery.** One gentle question, then as much or
-  as little time as she has, and she is met with Scripture, a prayer, one small
-  step, and a free resource where one exists. For the visitor who is not sure
-  what she needs.
+- **/daily/help/** — **guided discovery.** She names what she is carrying and
+  is met with Scripture, a prayer, one small step, and a free resource where one
+  exists — one continuous page she reads as far down as she wants. For the
+  visitor who is not sure what she needs.
 
 Guided discovery adds no content of its own. It is a matching layer over the
 same approved entries, topics, and products the rest of the module uses, so
@@ -60,6 +60,7 @@ npm run approve -- my-slug                         # record a review; clears the
 npm run import:csv -- content/my-file.csv          # dry-run import preview
 npm run import:csv -- content/my-file.csv --commit # write YAML entries
 npm run export:csv                                 # back up all entries to CSV
+npm run report:discovery                           # regenerate docs/destinations.md
 ```
 
 A blank template is in [`content/sample-import-template.csv`](content/sample-import-template.csv).
@@ -78,14 +79,17 @@ A blank template is in [`content/sample-import-template.csv`](content/sample-imp
 - **No diagnosis language.** Nothing tells a visitor what she is or has. The
   check runs over every entry, and over the guided-discovery copy itself.
 - **Prayers keep the approved voice.** Addressed to God, and finished.
-- **A journey never opens onto a blank section.** A tier that promises a
-  reflection will not open an entry that has none, and a need with nothing to
-  offer fails validation rather than shipping a dead end.
+- **A journey never opens onto a blank section.** The page renders every part
+  of an entry, so it only ever opens one that carries all of them, and a need
+  with nothing to offer fails validation rather than shipping a dead end.
 - **Support is offered, never pushed.** Free resources come before paid ones
   everywhere, and no path requires a purchase to reach the end.
-- **What is offered fits the capacity she named.** A visitor with a minute is
-  shown printable cards, not a thirty-day journal that asks her to write daily.
-  Each tier names the formats whose writing load suits it.
+- **Free before paid, everywhere.** A journey offers the free resource first
+  and the collection second. It no longer picks out one printable format: that
+  choice used to be made against the minutes a visitor named, and the page
+  stopped asking. Until something replaces the question, no journey reaches an
+  individual journal, devotional, or card set — see
+  [`docs/destinations.md`](docs/destinations.md).
 - **A way to reach a person is on every guided page.** The crisis note is
   checked for the same no-diagnosis rule as the rest of the copy, and validation
   fails if it ever loses its phone number.
@@ -100,7 +104,7 @@ src/
   layouts/ components/  UI
   lib/             queries, daily resolver, search, guided matching + safeguards
   pages/           routes (daily, permanent, topics, search, help)
-scripts/           validate, approve, import-csv, export-csv
+scripts/           validate, approve, report-discovery, import-csv, export-csv
 tests/             guided safeguards + journey coverage (node --test)
 docs/              owner guide, discovery map, topic coverage, handoff
 ```
@@ -116,8 +120,10 @@ order to close a gap.
 
 [`docs/discovery-map.md`](docs/discovery-map.md) is the flat reference behind it:
 every topic, every entry point and every destination, and what each journey
-actually opens and offers. Both are references, not gates — nothing fails
-because of them.
+actually opens and offers. [`docs/destinations.md`](docs/destinations.md) is
+**generated** — `npm run report:discovery` recomputes it from the same matching
+the pages run, so it cannot drift the way a hand-tallied count does. All three
+are references, not gates — nothing fails because of them.
 
 ## Configuration
 

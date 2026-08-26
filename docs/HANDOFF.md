@@ -70,12 +70,20 @@ automatically and nothing is written twice.
 
 ### The flow
 
-`/daily/help/` (need) → `/daily/help/[need]/` (one gentle question + how much
-time) → `/daily/help/[need]/[tier]/` (the journey). Alternates get
-`/daily/help/[need]/[tier]/[slug]/`; the default match deliberately has no
-second URL, so there is exactly one built page per journey. 91 pages, all
+> **Superseded 2026-08-26.** The three capacity tiers described in this section
+> were replaced by a single continuous page. What follows is current; the tier
+> references further down this section are kept as a record of the original
+> integration, not as a description of the site.
+
+`/daily/help/` (need) → `/daily/help/[need]/` (the journey, one continuous page
+she scrolls as far as she wants). Alternates get `/daily/help/[need]/[slug]/`;
+the entry a need opens by default deliberately has no second URL, so there is
+exactly one built page per entry a need can open. 28 pages under `/help/`, all
 `noindex` except the `/daily/help/` entry point, and the sitemap filter agrees
 with the meta tag.
+
+The main site can also link straight in with `/daily/help/?need=comfort`, which
+the entry page redirects client-side.
 
 ### What came across, and where it went
 
@@ -84,8 +92,8 @@ with the meta tag.
 | 8 entry points | 9 needs in `src/config/guided.mjs`, merging the original 8 with the brief's "practical next step" |
 | gentle question per journey | `question` on each need — free text, no form, no script, nothing stored |
 | acknowledgments pool | `acknowledgment` on each need, one deterministic line (a static site cannot rotate per visitor, and rotation was never the point) |
-| 1 / 5 / 15-minute tiers | `TIERS`, each declaring the entry fields it requires |
-| journey structure | `src/components/GuidedJourney.astro` |
+| 1 / 5 / 15-minute tiers | `TIERS`, each declaring the entry fields it requires — **removed 2026-08-26**, see the note above |
+| journey structure | `src/components/FullPageJourney.astro` (was `GuidedJourney.astro`, now unused) |
 | passages / reflections / prayers / small steps | **not imported** — these are `scripture_text`, `gentle_word`, `prayer`, `small_step` on entries here, already verified and approved. The imported CSVs were an unverified parallel library. |
 | `resource_paths.csv` | **not imported** — its 17 URLs were placeholders (`/products/peace-for-an-anxious-heart`) that do not exist on the live store. `src/config/products.mjs` is the real, verified mapping and is what journeys use. |
 | `qa_gate.py` checks | `src/lib/guided-guards.mjs`, run by `npm run validate` and `npm test` |
@@ -113,10 +121,9 @@ with the meta tag.
 
 ### Notable decisions
 
-- **Every tier includes the prayer.** The original omitted the reflection *and*
-  the prayer at one minute; the brief's journey structure lists a prayer. Since
-  a prayer reads in seconds and "I need to pray" is one of the nine needs, the
-  one-minute tier drops only the reflection.
+- ~~**Every tier includes the prayer.**~~ Moot since 2026-08-26: there are no
+  tiers, and the single page shows the prayer along with everything else the
+  entry carries.
 - **Matching never guesses twice.** An entry outside a need's topic lanes can be
   a single fallback so a need never dead-ends, but it is never offered as one of
   the "is this closer to what you are carrying?" choices.
@@ -383,22 +390,34 @@ want doing together, because the Psalms are where both problems appear.
    `white-space: pre-line` to `.scripture__text`. This is what fixes the stray
    mid-sentence capitals without touching a word of Scripture.
 
-### 46 of 79 destinations cannot be reached
+### 65 of 79 destinations cannot be reached
 
-Full breakdown in [destinations.md](destinations.md); the map of topics, entry
-points and destinations is in [discovery-map.md](discovery-map.md). Three causes
-needing three different fixes:
+**Recounted 2026-08-26, and it got much worse.** This section previously said 46
+of 79, with the devotional singled out as the one format nowhere on the site.
+Both numbers were tallied by hand against the three capacity tiers, and neither
+survived their removal. [destinations.md](destinations.md) is now **generated** —
+`npm run report:discovery` — so it cannot drift like that again.
 
-| Cause | Count | Fix |
+| | Then (2026-08-05) | Now |
 | --- | --- | --- |
-| No entry carries the topic | 24 | writing — depression, chronic-pain, gratitude, adhd |
-| Loses a tie-break | 16 | a sort rule; no writing at all |
-| No need points at it | 6 | one line of `lanes` — regret |
+| Reachable | 33 | **14** |
+| Unreachable | 46 | **65** |
+| Individual formats reachable | 15 of 60 | **0 of 60** |
 
-**The devotional has no pathway in any of the twelve collections.** It loses to
-the journal at the fifteen-minute tier every time, in the six collections that
-are reachable, and the other six are unreachable anyway. It is the only format
-that is nowhere on the site.
+**No individual printable has a pathway any more** — not the devotional, and not
+the journal, Scripture cards, prayer cards or First Steps Guide either. Journeys
+offer a free PDF and a whole collection, nothing narrower.
+
+This is not a content gap and no amount of writing fixes it. A format used to be
+chosen against the capacity a visitor named, and the page stopped asking, so
+`formatForTier` receives an empty `formats` list and returns nothing every time.
+It is one line in `FullPageJourney.astro`, marked with a comment. Deciding what
+should replace the capacity question is the same decision as the care pathway
+below — see the product-ladder point in it.
+
+What remains genuinely about content: no published entry carries `depression`,
+`chronic-pain`, `gratitude` or `adhd`, so those four collections are unreachable
+whatever else changes, and no need's lanes point at `regret`.
 
 ### The care pathway (design, not yet built)
 
@@ -423,9 +442,14 @@ Three things this changes:
   that you'd feel…". The constraint is narrower than it looks.
 - **The product ladder is capacity-of-appetite, not minutes-today.** First Steps
   first because it asks the least, journal and devotional last because they ask
-  most, cards alongside as complements rather than substitutes. The current
-  `TIERS` conflate "how many minutes do you have" with "how big a commitment do
-  you want", which is how First Steps ended up offered to exactly one tier.
+  most, cards alongside as complements rather than substitutes. The old
+  `TIERS` conflated "how many minutes do you have" with "how big a commitment do
+  you want", which is how First Steps ended up offered to exactly one tier. The
+  tiers went on 2026-08-26, taking the conflation and the format selection with
+  them, so nothing answers either question now. That makes this the decision to
+  take rather than a critique of what exists.
 
-The current text box is deliberately inert and its copy promises she is never
-read. That promise has to be revisited honestly, not quietly dropped.
+There is no text box on the page — the need question is asked in the heading and
+nothing invites an answer. The promise that nothing she types is sent anywhere is
+still made on `/daily/help/`, and is still true. If a box is ever added, that
+promise has to be revisited honestly rather than quietly dropped.

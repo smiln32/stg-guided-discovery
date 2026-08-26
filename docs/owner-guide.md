@@ -164,12 +164,12 @@ not sure. `/daily/help/` is for the second kind.
    Nothing she types is sent, saved, or analyzed — the box has no form behind
    it and no script attached. It is there because naming something helps, not
    because the system wants it.
-3. **"How much do you have in you right now?"** — about a minute, five minutes,
-   or fifteen.
-4. **A journey**: a line that receives what she may be carrying, then one of
-   your published entries — its Scripture, its prayer, its small step, and (at
-   the longer tiers) its gentle word and its question — followed by a free
-   resource where one exists, related printables, and somewhere to go next.
+3. **One continuous page**: a line that receives what she may be carrying, then
+   one of your published entries in full — its Scripture, its gentle word, its
+   prayer, its small step and its question — followed by a free resource where
+   one exists, related printables, and somewhere to go next. She is not asked
+   how much time she has; she reads as far down the page as she wants and stops
+   wherever she likes.
 
 ### What it does *not* do
 

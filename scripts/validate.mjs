@@ -167,7 +167,7 @@ if (liveEntries.length === 0) {
 
 console.log(
   `\nChecked ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}, ` +
-    `and ${NEEDS.length} need${NEEDS.length === 1 ? '' : 's'} × ${TIERS.length} tiers of guided discovery.`,
+    `and ${NEEDS.length} need${NEEDS.length === 1 ? '' : 's'} of guided discovery.`,
 );
 if (warnings.length) {
   console.log(`\n${warnings.length} warning(s):`);

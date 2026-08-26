@@ -57,13 +57,14 @@ Three things decide whether a new entry actually closes the gap.
 **1. Set `topic:` to the slug itself** — `depression`, `chronic-pain`, `adhd`,
 `gratitude`. A main topic outranks every secondary match
 ([`laneRank`](../src/lib/guided-guards.mjs)), and it is also what makes
-`formatForTier` prefer that topic's own series over a neighbour's. A secondary
+the product match prefer that topic's own series over a neighbour's. A secondary
 mention is not enough to do either reliably.
 
-**2. Fill all five tier fields** — `scripture_text`, `gentle_word`, `prayer`,
-`small_step`, `journal_question`. With all five the entry serves all three
-capacity tiers. Leave out `journal_question` and it silently never appears at
-fifteen minutes, which is the tier where the journal and devotional are offered.
+**2. Fill all five content fields** — `scripture_text`, `gentle_word`, `prayer`,
+`small_step`, `journal_question`. The guided page renders all five, so it only
+opens entries that carry all five. Leave out `journal_question` and the entry is
+never offered by guided discovery at all — silently, because it is still a
+perfectly good entry everywhere else on the site.
 
 **3. Know where it will land.** Lanes are tried in order, so writing the entry is
 not always the same as opening the journey with it:
@@ -203,8 +204,8 @@ costs one line in [`src/config/guided.mjs`](../src/config/guided.mjs).
   in order, so put it where it belongs, not at the end.
 - **A borrowed topic that deserves its own resource** — that is a decision about
   the shop, not about this repo. When the series exists, add it to `SERIES` in
-  [`src/config/products.mjs`](../src/config/products.mjs); the five formats and
-  the tier matching come with it.
+  [`src/config/products.mjs`](../src/config/products.mjs); the collection
+  becomes reachable as soon as a published entry carries its topic.
 
 ## Where the numbers come from
 

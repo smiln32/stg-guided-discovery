@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="title desc">
+  <title id="title">Simplify to Glorify Guided Discovery</title>
+  <desc id="desc">A branded illustration showing Guided Discovery helping a visitor name what she is carrying and find Scripture-centered support.</desc>
+  <rect width="1200" height="440" rx="28" fill="#fbf9f6"/>
+  <circle cx="88" cy="72" r="150" fill="#e6d7d3" opacity=".48"/>
+  <circle cx="1138" cy="390" r="180" fill="#c6b5c8" opacity=".25"/>
+  <path d="M0 354 C190 307 322 418 515 369 C704 320 824 396 1200 320 L1200 440 L0 440 Z" fill="#b2c6b1" opacity=".28"/>
+
+  <g transform="translate(72 72)">
+    <text x="0" y="25" fill="#7b9fb3" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">SIMPLIFY TO GLORIFY</text>
+    <text x="0" y="84" fill="#404040" font-family="Georgia, serif" font-size="54" font-weight="700">Guided Discovery</text>
+    <text x="0" y="124" fill="#404040" font-family="Arial, sans-serif" font-size="22">A calm, Scripture-centered path for the woman who</text>
+    <text x="0" y="155" fill="#404040" font-family="Arial, sans-serif" font-size="22">knows she needs help, but may not know where to begin.</text>
+
+    <g transform="translate(0 205)">
+      <rect x="0" y="0" width="146" height="42" rx="21" fill="#b2c6b1"/>
+      <text x="73" y="27" text-anchor="middle" fill="#404040" font-family="Arial, sans-serif" font-size="15" font-weight="700">Scripture-led</text>
+      <rect x="158" y="0" width="140" height="42" rx="21" fill="#c6b5c8" opacity=".78"/>
+      <text x="228" y="27" text-anchor="middle" fill="#404040" font-family="Arial, sans-serif" font-size="15" font-weight="700">Human-reviewed</text>
+      <rect x="310" y="0" width="142" height="42" rx="21" fill="#e6d7d3"/>
+      <text x="381" y="27" text-anchor="middle" fill="#404040" font-family="Arial, sans-serif" font-size="15" font-weight="700">Free-first</text>
+    </g>
+  </g>
+
+  <g transform="translate(700 52)">
+    <rect x="0" y="0" width="430" height="330" rx="22" fill="#ffffff" stroke="#c4c4c4" stroke-width="2"/>
+    <rect x="0" y="0" width="430" height="46" rx="22" fill="#f3f0ed"/>
+    <rect x="0" y="25" width="430" height="21" fill="#f3f0ed"/>
+    <circle cx="24" cy="23" r="6" fill="#e6d7d3"/>
+    <circle cx="44" cy="23" r="6" fill="#b2c6b1"/>
+    <circle cx="64" cy="23" r="6" fill="#c6b5c8"/>
+    <text x="215" y="29" text-anchor="middle" fill="#777" font-family="Arial, sans-serif" font-size="12">simplifytoglorify.com/daily/help</text>
+
+    <text x="32" y="91" fill="#404040" font-family="Georgia, serif" font-size="24" font-weight="700">Where do you need help today?</text>
+    <text x="32" y="119" fill="#666" font-family="Arial, sans-serif" font-size="14">Choose what feels closest. You do not have to name it perfectly.</text>
+
+    <g font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#404040">
+      <rect x="32" y="146" width="112" height="42" rx="14" fill="#edf3ec" stroke="#b2c6b1"/>
+      <text x="88" y="172" text-anchor="middle">Anxiety</text>
+      <rect x="154" y="146" width="102" height="42" rx="14" fill="#f2edf3" stroke="#c6b5c8"/>
+      <text x="205" y="172" text-anchor="middle">Grief</text>
+      <rect x="266" y="146" width="128" height="42" rx="14" fill="#f7efed" stroke="#e6d7d3"/>
+      <text x="330" y="172" text-anchor="middle">Caregiving</text>
+      <rect x="32" y="198" width="160" height="42" rx="14" fill="#eef3f5" stroke="#7b9fb3"/>
+      <text x="112" y="224" text-anchor="middle">Feeling far from God</text>
+      <rect x="202" y="198" width="192" height="42" rx="14" fill="#f7f7f7" stroke="#c4c4c4"/>
+      <text x="298" y="224" text-anchor="middle">I am not sure</text>
+    </g>
+
+    <path d="M48 277 H382" stroke="#ddd" stroke-width="1"/>
+    <text x="32" y="303" fill="#7b9fb3" font-family="Arial, sans-serif" font-size="13" font-weight="700">ONE GENTLE PATH FORWARD</text>
+    <text x="32" y="325" fill="#404040" font-family="Arial, sans-serif" font-size="13">Scripture  •  Prayer  •  One small step  •  Helpful resource</text>
+  </g>
+</svg>

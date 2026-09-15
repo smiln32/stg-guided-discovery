@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+  <title id="title">Two ways into the STG daily support system</title>
+  <desc id="desc">A visual comparison between the Daily Encouragement path and Guided Discovery path, both using the same approved content source.</desc>
+  <rect width="1200" height="470" rx="28" fill="#fbf9f6"/>
+  <text x="600" y="52" text-anchor="middle" fill="#404040" font-family="Georgia, serif" font-size="34" font-weight="700">Two ways in. One reviewed source of truth.</text>
+  <text x="600" y="82" text-anchor="middle" fill="#6c6c6c" font-family="Arial, sans-serif" font-size="16">Visitors can arrive knowing what they want — or needing help discovering it.</text>
+
+  <g transform="translate(72 126)">
+    <rect width="300" height="250" rx="22" fill="#ffffff" stroke="#b2c6b1" stroke-width="3"/>
+    <circle cx="48" cy="48" r="24" fill="#b2c6b1"/>
+    <path d="M40 48 h16 M48 40 v16" stroke="#404040" stroke-width="3" stroke-linecap="round"/>
+    <text x="32" y="96" fill="#404040" font-family="Georgia, serif" font-size="26" font-weight="700">Today’s Encouragement</text>
+    <text x="32" y="128" fill="#7b9fb3" font-family="Arial, sans-serif" font-size="15" font-weight="700">/daily/</text>
+    <text x="32" y="166" fill="#555" font-family="Arial, sans-serif" font-size="15">For the visitor who came to read.</text>
+    <text x="32" y="194" fill="#555" font-family="Arial, sans-serif" font-size="15">Daily feature • archives • search</text>
+    <rect x="32" y="214" width="236" height="6" rx="3" fill="#edf3ec"/>
+  </g>
+
+  <g transform="translate(828 126)">
+    <rect width="300" height="250" rx="22" fill="#ffffff" stroke="#c6b5c8" stroke-width="3"/>
+    <circle cx="48" cy="48" r="24" fill="#c6b5c8"/>
+    <path d="M39 47 q9 -14 18 0 q-9 16 -18 0" fill="none" stroke="#404040" stroke-width="3" stroke-linecap="round"/>
+    <text x="32" y="96" fill="#404040" font-family="Georgia, serif" font-size="26" font-weight="700">Guided Discovery</text>
+    <text x="32" y="128" fill="#7b9fb3" font-family="Arial, sans-serif" font-size="15" font-weight="700">/daily/help/</text>
+    <text x="32" y="166" fill="#555" font-family="Arial, sans-serif" font-size="15">For the visitor who is not sure what she needs.</text>
+    <text x="32" y="194" fill="#555" font-family="Arial, sans-serif" font-size="15">Name the need • follow a gentle path</text>
+    <rect x="32" y="214" width="236" height="6" rx="3" fill="#f2edf3"/>
+  </g>
+
+  <path d="M372 250 C430 250 438 250 474 250" fill="none" stroke="#c4c4c4" stroke-width="3"/>
+  <path d="M828 250 C770 250 762 250 726 250" fill="none" stroke="#c4c4c4" stroke-width="3"/>
+  <path d="M462 243 l14 7 -14 7" fill="#c4c4c4"/>
+  <path d="M738 243 l-14 7 14 7" fill="#c4c4c4"/>
+
+  <g transform="translate(474 142)">
+    <rect width="252" height="216" rx="26" fill="#404040"/>
+    <text x="126" y="50" text-anchor="middle" fill="#fbf9f6" font-family="Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="2">ONE APPROVED ENTRY</text>
+    <rect x="36" y="76" width="180" height="18" rx="9" fill="#b2c6b1"/>
+    <rect x="36" y="108" width="144" height="11" rx="5.5" fill="#c6b5c8"/>
+    <rect x="36" y="132" width="166" height="11" rx="5.5" fill="#e6d7d3"/>
+    <rect x="36" y="156" width="124" height="11" rx="5.5" fill="#7b9fb3"/>
+    <text x="126" y="195" text-anchor="middle" fill="#fbf9f6" font-family="Georgia, serif" font-size="18">Write once. Review once. Reuse safely.</text>
+  </g>
+
+  <g transform="translate(170 407)" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#404040">
+    <circle cx="0" cy="0" r="8" fill="#b2c6b1"/><text x="16" y="5">Permanent page</text>
+    <circle cx="222" cy="0" r="8" fill="#c6b5c8"/><text x="238" y="5">Topic library</text>
+    <circle cx="405" cy="0" r="8" fill="#e6d7d3"/><text x="421" y="5">Guided journey</text>
+    <circle cx="592" cy="0" r="8" fill="#7b9fb3"/><text x="608" y="5">Resource connection</text>
+  </g>
+</svg>

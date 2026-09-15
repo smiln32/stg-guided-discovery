@@ -16,10 +16,6 @@ This repository is **not the main Simplify to Glorify website**. It is a self-co
 
 ## What it does
 
-<p align="center">
-  <img src="docs/readme/two-paths.svg" alt="Two ways into STG Daily Support: Today's Encouragement and Guided Discovery, both powered by one approved content source" width="100%">
-</p>
-
 There are two ways into the experience:
 
 | Entry point | Best for | What happens |
@@ -80,167 +76,126 @@ That means content is **written once, reviewed once, and reused consistently**.
   <img src="docs/readme/guardrails.svg" alt="Guided Discovery guardrails: Scripture verified, human approved, free before paid, and no dead ends" width="100%">
 </p>
 
-The calm visitor experience sits on top of stricter publishing rules:
+The system enforces a few non-negotiables before content reaches a visitor:
 
-- **Scripture is never invented or silently altered.** It is stored exactly as supplied, with its reference and translation.
-- **Nothing publishes without approval.** An entry cannot be `published` or `scheduled` unless content review and Scripture review are approved and `scripture_verified` is true.
+- **Scripture is never invented or altered.** It is stored exactly as supplied, always with its reference and translation.
+- **Nothing publishes unless it is approved.** Published or scheduled entries must pass both content review and Scripture review, with `scripture_verified: true`.
 - **Drafts stay private.** Unapproved entries are not built and do not appear in the sitemap.
-- **Permanent URLs stay permanent.** Inbound links point to `/daily/[slug]/`, never to the rotating daily page.
-- **No diagnosis language.** The system checks both entries and Guided Discovery copy so the site does not tell a visitor what condition she has.
-- **Prayers keep the approved voice.** They are addressed to God and completed as prayers rather than fragments.
-- **Journeys cannot open into blank sections.** If a path lacks what it needs, validation fails instead of shipping a dead end.
-- **Free support comes before paid products.** A visitor never has to purchase something to reach the end of a path.
-- **A human-help option stays present.** Guided pages keep the crisis/support note and its phone number; validation checks that it remains intact.
+- **No diagnosis language.** The system checks both content entries and Guided Discovery copy so the site does not tell a visitor what she “has” or “is.”
+- **Prayers keep the approved voice.** They are addressed to God and remain within the established style.
+- **A journey cannot open onto an empty section.** Missing required content causes validation to fail instead of shipping a dead end.
+- **Free resources come before paid products.** No visitor has to purchase something to complete a path.
+- **A way to reach a person remains available.** The guided pages retain the crisis-support note and phone number.
 
 ---
 
 ## Content workflow
 
-```text
-Write or import
-      ↓
-Validate structure
-      ↓
-Review content
-      ↓
-Verify Scripture
-      ↓
-Approve
-      ↓
-Schedule or publish
-      ↓
-Daily page + permanent page + topics + Guided Discovery
-```
-
-### Common commands
-
-```bash
-npm run validate                                   # check entries + publish gates
-npm test                                           # safeguards + journey coverage
-npm run approve -- my-slug                         # record an approval
-npm run import:csv -- content/my-file.csv          # dry-run CSV import
-npm run import:csv -- content/my-file.csv --commit # write YAML entries
-npm run export:csv                                 # back up all entries to CSV
-npm run report:discovery                           # regenerate discovery destinations
-```
-
-A blank CSV template is available at [`content/sample-import-template.csv`](content/sample-import-template.csv).
-
----
-
-## Quick start
-
-Built with **Astro** as a fully static module. No application server or database is required.
-
 ```bash
 npm install
-npm run dev        # local dev server: http://localhost:4321
-npm run build      # production build → dist/
-npm run preview    # preview the production build
+npm run dev
+npm run build
+npm run preview
+
+npm run validate
+npm test
+npm run approve -- my-slug
+npm run import:csv -- content/my-file.csv
+npm run import:csv -- content/my-file.csv --commit
+npm run export:csv
+npm run report:discovery
 ```
 
-Then open:
+A blank import template lives at:
 
-- **`/daily/`** — Today's Encouragement
-- **`/daily/help/`** — Guided Discovery
-
-> New to maintaining the content? Start with [`docs/owner-guide.md`](docs/owner-guide.md). It explains adding, verifying, approving, scheduling, and publishing in plain language.
+`content/sample-import-template.csv`
 
 ---
 
-## Project map
+## Project structure
 
 ```text
-stg-guided-discovery/
-│
-├── content/                    CSV import template and working content files
-├── docs/
-│   ├── owner-guide.md          plain-language operating guide
-│   ├── discovery-map.md        all entry points and destinations
-│   ├── destinations.md         generated matching report
-│   ├── topic-coverage.md       gaps between topics, entries, and resources
-│   └── HANDOFF.md              decisions, history, and integration notes
-│
-├── scripts/
-│   ├── validate               publishing + content safeguards
-│   ├── approve                review/approval workflow
-│   ├── import-csv             CSV → YAML
-│   ├── export-csv             YAML → CSV backup
-│   └── report-discovery       regenerate destination report
-│
-├── src/
-│   ├── config/                site, topics, products, Guided Discovery rules
-│   ├── data/entries/          one YAML file per approved content entry
-│   ├── layouts/ + components/ UI building blocks
-│   ├── lib/                   queries, search, matching, safeguards
-│   ├── pages/                 daily, permanent, topic, search, help routes
-│   └── content.config.ts      schema + publish gate
-│
-└── tests/                     Guided Discovery safeguards + journey coverage
+src/
+  config/             site, topics, products, entry field lists, guided discovery
+  content.config.ts   entry schema + publish gate
+  data/entries/       one YAML file per approved content entry
+  layouts/            page layouts
+  components/         reusable UI
+  lib/                queries, daily resolver, search, matching + safeguards
+  pages/              daily, permanent, topic, search, and help routes
+
+scripts/               validation, approval, reports, CSV import/export
+tests/                 safeguards + journey coverage
+docs/                  owner guide, maps, coverage, handoff notes
 ```
 
 ---
 
-## How Guided Discovery decides where to send someone
+## Useful docs
 
-The matching configuration lives in [`src/config/guided.mjs`](src/config/guided.mjs).
-
-It connects a visitor's selected need to the same approved entries and topic structure used elsewhere. It does **not** generate new spiritual guidance on demand.
-
-Three documents help keep that system understandable:
-
-| Document | Purpose |
+| Document | What it helps with |
 | --- | --- |
-| [`docs/discovery-map.md`](docs/discovery-map.md) | Flat reference showing topics, entry points, destinations, and what each journey opens. |
-| [`docs/destinations.md`](docs/destinations.md) | Generated report recomputed from the actual matching logic so it cannot quietly drift from the code. |
-| [`docs/topic-coverage.md`](docs/topic-coverage.md) | Shows where topics, entries, and product/resource collections do not yet line up. |
+| [`docs/owner-guide.md`](docs/owner-guide.md) | Plain-language guide for adding, verifying, approving, scheduling, and publishing content |
+| [`docs/topic-coverage.md`](docs/topic-coverage.md) | Shows where topics, entries, and shop collections do or do not line up |
+| [`docs/discovery-map.md`](docs/discovery-map.md) | Flat reference of entry points, topics, destinations, and journeys |
+| [`docs/destinations.md`](docs/destinations.md) | Generated destination report based on the same matching logic the site uses |
+| [`docs/HANDOFF.md`](docs/HANDOFF.md) | Integration history and unresolved deployment decisions |
 
-These reports help answer an important editorial question: **What should be written next?**
+---
+
+## Deciding what to write next
+
+`docs/topic-coverage.md` helps reveal gaps between the topics the site wants to support and the content/products that currently exist.
+
+`docs/discovery-map.md` shows every topic, entry point, and destination.
+
+`docs/destinations.md` is generated by:
+
+```bash
+npm run report:discovery
+```
+
+Because it is generated from the same matching logic the pages use, it is much less likely to drift from the actual visitor experience.
 
 ---
 
 ## Configuration
 
-Copy `.env.example` to `.env` and set the same value in Netlify.
+Copy `.env.example` to `.env`.
 
-`SITE_URL` is the important deployment setting. Canonical URLs, Open Graph metadata, and the sitemap derive from it.
-
-```text
-SITE_URL=https://the-origin-that-actually-serves-this-feature
-```
-
-If the feature is eventually served from a subdomain, `SITE_URL` should be that subdomain. If it lives under the main site at `/daily/`, it should use the main site origin.
+`SITE_URL` is the important setting. It must match the origin where this feature is actually served because canonical URLs, Open Graph URLs, and the sitemap all derive from it.
 
 ---
 
-## How it can attach to Simplify to Glorify
+## Adding it to Simplify to Glorify
 
-**The final integration route has not been chosen yet.** The module currently builds as its own static site so it can be developed and reviewed independently.
+The final integration route is still open.
 
-| Route | What it means | Change required here |
-| --- | --- | --- |
-| **Subdomain** — `today.simplifytoglorify.com` | Separate Netlify deployment; main site links to it. | Set `SITE_URL` to the subdomain. |
-| **Subpath** — `simplifytoglorify.com/daily/` | Separate build, proxied or rewritten beneath the main domain. | Set `SITE_URL` to the main domain. `BASE_PATH` already matches. Remove the placeholder root page. |
-| **Fold into the main repo** | Port the feature into the main Simplify to Glorify codebase. | Bring the content pipeline, validation gates, and tests with it — those safeguards are part of the feature, not disposable scaffolding. |
+| Route | What it means |
+| --- | --- |
+| **Subdomain** — `today.simplifytoglorify.com` | Separate Netlify deploy; the main site links to it |
+| **Subpath** — `simplifytoglorify.com/daily/` | Separate build served beneath the main domain |
+| **Fold into the main repo** | Port the feature directly into the main Simplify to Glorify codebase |
 
-Until that decision is made, `netlify.toml` supports a standalone static build (`npm run build` → `dist`).
-
-The decision history and handoff notes live in [`docs/HANDOFF.md`](docs/HANDOFF.md).
+For now, `netlify.toml` supports a standalone static build for review and preview.
 
 ---
 
-## Design language
+## Brand palette
 
-The README intentionally mirrors the Simplify to Glorify visual system:
-
-| Brand role | Hex |
+| Role | Hex |
 | --- | --- |
 | Ivory | `#fbf9f6` |
 | Sage | `#b2c6b1` |
 | Lavender | `#c6b5c8` |
 | Slate Blue | `#7b9fb3` |
-| Tan Rose | `#e6d7d3` |
+| Tan-Rose | `#e6d7d3` |
 | Light Gray | `#c4c4c4` |
 | Charcoal | `#404040` |
 
-The visual goal is the same as the product goal: **gentle to enter, clear to follow, carefully structured underneath.**
+---
+
+<p align="center">
+  <strong>Simplify to Glorify</strong><br>
+  Scripture-guided resources for women in tender seasons.
+</p>

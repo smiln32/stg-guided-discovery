@@ -1,153 +1,201 @@
-# stg-guided-discovery
+<p align="center">
+  <img src="docs/readme/hero.svg" alt="Simplify to Glorify Guided Discovery — a calm Scripture-centered path for women who may not know where to begin" width="100%">
+</p>
 
-A calm, Scripture-centered content system for **Simplify to Glorify**.
-One approved content entry becomes a permanent page, a daily feature, a
-topic-library entry, and a guided journey — all from a single reviewed source
-of truth.
+# STG Guided Discovery
 
-**This is not simplifytoglorify.com.** It is one feature module meant to be
-added to that site. Everything it publishes lives under a single base path
-(`/daily`, set by `BASE_PATH` in [`src/config/site.mjs`](src/config/site.mjs)),
-and every internal link and canonical URL derives from it. The module owns no
-other part of the site — no home page, no nav, no global styles beyond its own
-pages. The bare root, [`src/pages/index.astro`](src/pages/index.astro), is only a
-placeholder that forwards to `/daily/`; it exists so a standalone build has
-something at `/`, and it goes away when the feature sits under a real site.
+**A calm, Scripture-centered content system for [Simplify to Glorify](https://simplifytoglorify.com).**
 
-How it will attach to the main site is still open — see
-[Adding it to the site](#adding-it-to-the-site).
+One approved content entry can become a permanent page, a daily feature, a topic-library entry, and part of a guided journey — without creating four separate versions of the same message.
 
-Built with **Astro** (static output). No server and no database required; content
-lives in version-controlled YAML files and is edited directly or via a validated
-CSV importer.
+> **In plain English:** this is the part of Simplify to Glorify designed for the woman who arrives thinking, *“I know I need something, but I do not know what I need.”* Guided Discovery helps her name what she is carrying and gently connects her with appropriate Scripture-centered encouragement and resources.
 
-> **New to running this?** Read [`docs/owner-guide.md`](docs/owner-guide.md)
-> — a plain-language guide to adding, verifying, approving, scheduling, and
-> publishing content.
+This repository is **not the main Simplify to Glorify website**. It is a self-contained feature module intended to live with that site. Everything it publishes sits beneath `/daily`.
 
-## Quick start
+---
 
-```bash
-npm install
-npm run dev        # local dev server at http://localhost:4321
-npm run build      # production build to dist/
-npm run preview    # serve the built site locally
+## What it does
+
+There are two ways into the experience:
+
+| Entry point | Best for | What happens |
+| --- | --- | --- |
+| **`/daily/`** | A visitor who came to read | She sees today's encouragement and can browse topic archives or search. |
+| **`/daily/help/`** | A visitor who is not sure what she needs | She names what she is carrying and follows a continuous path through Scripture, prayer, one small step, and relevant resources. |
+
+Guided Discovery does **not** create a second library of content. It is a matching layer over the same reviewed entries, topics, and products used by the rest of the module. That keeps the system from drifting into multiple slightly different versions of the same guidance.
+
+---
+
+## The visitor experience
+
+A Guided Discovery journey is intentionally simple:
+
+```text
+I need help
+   ↓
+What feels closest to what I am carrying?
+   ↓
+A matched, approved encouragement
+   ↓
+Scripture
+   ↓
+Prayer
+   ↓
+One small step
+   ↓
+A free resource, when one exists
+   ↓
+Optional related collection
 ```
 
-Open **/daily/** for today's encouragement, or **/daily/help/** for
-"Where do you need help today?".
+The visitor does not need to understand the site's categories, product names, or navigation first. The system does that translation for her.
 
-## Two ways in
+---
 
-- **/daily/** — today's encouragement, plus topic archives and search. For the
-  visitor who came to read.
-- **/daily/help/** — **guided discovery.** She names what she is carrying and
-  is met with Scripture, a prayer, one small step, and a free resource where one
-  exists — one continuous page she reads as far down as she wants. For the
-  visitor who is not sure what she needs.
+## One source of truth
 
-Guided discovery adds no content of its own. It is a matching layer over the
-same approved entries, topics, and products the rest of the module uses, so
-nothing is written twice and nothing can drift. See
-[`src/config/guided.mjs`](src/config/guided.mjs).
+Each approved content entry lives as a YAML file in `src/data/entries/`.
+
+From that one entry, the system can create or support:
+
+- a permanent `/daily/[slug]/` page
+- the rotating daily feature
+- topic archives and search
+- Guided Discovery matching
+- related free resources
+- optional paid collections
+
+That means content is **written once, reviewed once, and reused consistently**.
+
+---
+
+## Built-in guardrails
+
+<p align="center">
+  <img src="docs/readme/guardrails.svg" alt="Guided Discovery guardrails: Scripture verified, human approved, free before paid, and no dead ends" width="100%">
+</p>
+
+The system enforces a few non-negotiables before content reaches a visitor:
+
+- **Scripture is never invented or altered.** It is stored exactly as supplied, always with its reference and translation.
+- **Nothing publishes unless it is approved.** Published or scheduled entries must pass both content review and Scripture review, with `scripture_verified: true`.
+- **Drafts stay private.** Unapproved entries are not built and do not appear in the sitemap.
+- **No diagnosis language.** The system checks both content entries and Guided Discovery copy so the site does not tell a visitor what she “has” or “is.”
+- **Prayers keep the approved voice.** They are addressed to God and remain within the established style.
+- **A journey cannot open onto an empty section.** Missing required content causes validation to fail instead of shipping a dead end.
+- **Free resources come before paid products.** No visitor has to purchase something to complete a path.
+- **A way to reach a person remains available.** The guided pages retain the crisis-support note and phone number.
+
+---
 
 ## Content workflow
 
 ```bash
-npm run validate                                   # check all entries + publish gate
-npm test                                           # safeguards + journey coverage
-npm run approve -- my-slug                         # record a review; clears the sample banner
-npm run import:csv -- content/my-file.csv          # dry-run import preview
-npm run import:csv -- content/my-file.csv --commit # write YAML entries
-npm run export:csv                                 # back up all entries to CSV
-npm run report:discovery                           # regenerate docs/destinations.md
+npm install
+npm run dev
+npm run build
+npm run preview
+
+npm run validate
+npm test
+npm run approve -- my-slug
+npm run import:csv -- content/my-file.csv
+npm run import:csv -- content/my-file.csv --commit
+npm run export:csv
+npm run report:discovery
 ```
 
-A blank template is in [`content/sample-import-template.csv`](content/sample-import-template.csv).
+A blank import template lives at:
 
-## Key rules the system enforces
+`content/sample-import-template.csv`
 
-- **Scripture is never invented or altered.** It is stored exactly as supplied,
-  always with its reference and translation.
-- **Nothing publishes unless it is approved.** An entry cannot be `published` or
-  `scheduled` unless both content review and Scripture review are `approved` and
-  `scripture_verified` is true — otherwise the build fails with a clear message.
-- **Permanent URLs.** Every entry has a stable `/daily/[slug]/` page. Inbound
-  links always point there, never to the rotating daily page.
-- **Drafts stay private.** Unapproved entries are not built and never appear in
-  the sitemap.
-- **No diagnosis language.** Nothing tells a visitor what she is or has. The
-  check runs over every entry, and over the guided-discovery copy itself.
-- **Prayers keep the approved voice.** Addressed to God, and finished.
-- **A journey never opens onto a blank section.** The page renders every part
-  of an entry, so it only ever opens one that carries all of them, and a need
-  with nothing to offer fails validation rather than shipping a dead end.
-- **Support is offered, never pushed.** Free resources come before paid ones
-  everywhere, and no path requires a purchase to reach the end.
-- **Free before paid, everywhere.** A journey offers the free resource first
-  and the collection second. It no longer picks out one printable format: that
-  choice used to be made against the minutes a visitor named, and the page
-  stopped asking. Until something replaces the question, no journey reaches an
-  individual journal, devotional, or card set — see
-  [`docs/destinations.md`](docs/destinations.md).
-- **A way to reach a person is on every guided page.** The crisis note is
-  checked for the same no-diagnosis rule as the rest of the copy, and validation
-  fails if it ever loses its phone number.
+---
 
 ## Project structure
 
 ```text
 src/
-  config/          site, topics, products, entry field lists, guided discovery
-  content.config.ts  the entry schema + publish gate (Zod)
-  data/entries/    one YAML file per entry (the source of truth)
-  layouts/ components/  UI
-  lib/             queries, daily resolver, search, guided matching + safeguards
-  pages/           routes (daily, permanent, topics, search, help)
-scripts/           validate, approve, report-discovery, import-csv, export-csv
-tests/             guided safeguards + journey coverage (node --test)
-docs/              owner guide, discovery map, topic coverage, handoff
+  config/             site, topics, products, entry field lists, guided discovery
+  content.config.ts   entry schema + publish gate
+  data/entries/       one YAML file per approved content entry
+  layouts/            page layouts
+  components/         reusable UI
+  lib/                queries, daily resolver, search, matching + safeguards
+  pages/              daily, permanent, topic, search, and help routes
+
+scripts/               validation, approval, reports, CSV import/export
+tests/                 safeguards + journey coverage
+docs/                  owner guide, maps, coverage, handoff notes
 ```
+
+---
+
+## Useful docs
+
+| Document | What it helps with |
+| --- | --- |
+| [`docs/owner-guide.md`](docs/owner-guide.md) | Plain-language guide for adding, verifying, approving, scheduling, and publishing content |
+| [`docs/topic-coverage.md`](docs/topic-coverage.md) | Shows where topics, entries, and shop collections do or do not line up |
+| [`docs/discovery-map.md`](docs/discovery-map.md) | Flat reference of entry points, topics, destinations, and journeys |
+| [`docs/destinations.md`](docs/destinations.md) | Generated destination report based on the same matching logic the site uses |
+| [`docs/HANDOFF.md`](docs/HANDOFF.md) | Integration history and unresolved deployment decisions |
+
+---
 
 ## Deciding what to write next
 
-[`docs/topic-coverage.md`](docs/topic-coverage.md) lines the twenty topics up
-against the entries and the shop series and shows where they do not meet — the
-four collections guided discovery cannot reach because nothing is written for
-them, the topics answered by a collection named for something else, and the
-topics no guided answer points at. It also records what a new entry needs in
-order to close a gap.
+`docs/topic-coverage.md` helps reveal gaps between the topics the site wants to support and the content/products that currently exist.
 
-[`docs/discovery-map.md`](docs/discovery-map.md) is the flat reference behind it:
-every topic, every entry point and every destination, and what each journey
-actually opens and offers. [`docs/destinations.md`](docs/destinations.md) is
-**generated** — `npm run report:discovery` recomputes it from the same matching
-the pages run, so it cannot drift the way a hand-tallied count does. All three
-are references, not gates — nothing fails because of them.
+`docs/discovery-map.md` shows every topic, entry point, and destination.
+
+`docs/destinations.md` is generated by:
+
+```bash
+npm run report:discovery
+```
+
+Because it is generated from the same matching logic the pages use, it is much less likely to drift from the actual visitor experience.
+
+---
 
 ## Configuration
 
-Copy `.env.example` to `.env` (and set the same key in the Netlify UI).
-`SITE_URL` is the only setting that matters, and it must be the origin the
-feature is actually served from — canonical tags, Open Graph tags, and the
-sitemap all derive from it. If the module ends up on a subdomain, `SITE_URL` is
-that subdomain, not the main domain.
+Copy `.env.example` to `.env`.
 
-## Adding it to the site
+`SITE_URL` is the important setting. It must match the origin where this feature is actually served because canonical URLs, Open Graph URLs, and the sitemap all derive from it.
 
-**This decision has not been made yet.** The module builds and runs today as its
-own static site, which is what makes it reviewable before the choice is settled;
-that is a convenience, not the intended end state. Three routes:
+---
 
-| Route | What it means | What changes here |
-| --- | --- | --- |
-| **Subdomain** — `today.simplifytoglorify.com` | Own Netlify deploy. The main site links to it. | `SITE_URL` becomes the subdomain. Nothing else. Cross-domain, so it shares no SEO authority with the main site. |
-| **Subpath** — `simplifytoglorify.com/daily/` | Still its own build; the main site proxies or rewrites `/daily/*` to it. | `SITE_URL` becomes the main domain. `BASE_PATH` already matches. Delete the placeholder root page — the main site owns `/`. |
-| **Fold into the main repo** | Ported into the simplifytoglorify.com React codebase as pages there. | Largest job by far. The Astro build, the YAML content pipeline, and the validation gates in `scripts/` and `tests/` have to come along or be rebuilt — those gates are the product, not scaffolding. |
+## Adding it to Simplify to Glorify
 
-Until then, `netlify.toml` configures a **standalone build** (`npm run build` →
-`dist`), which is useful for previews and review. Set `SITE_URL` in the Netlify
-UI. Fully static — there is no server-side runtime.
+The final integration route is still open.
 
-The decision, and the history behind it, is tracked in
-[`docs/HANDOFF.md`](docs/HANDOFF.md).
+| Route | What it means |
+| --- | --- |
+| **Subdomain** — `today.simplifytoglorify.com` | Separate Netlify deploy; the main site links to it |
+| **Subpath** — `simplifytoglorify.com/daily/` | Separate build served beneath the main domain |
+| **Fold into the main repo** | Port the feature directly into the main Simplify to Glorify codebase |
+
+For now, `netlify.toml` supports a standalone static build for review and preview.
+
+---
+
+## Brand palette
+
+| Role | Hex |
+| --- | --- |
+| Ivory | `#fbf9f6` |
+| Sage | `#b2c6b1` |
+| Lavender | `#c6b5c8` |
+| Slate Blue | `#7b9fb3` |
+| Tan-Rose | `#e6d7d3` |
+| Light Gray | `#c4c4c4` |
+| Charcoal | `#404040` |
+
+---
+
+<p align="center">
+  <strong>Simplify to Glorify</strong><br>
+  Scripture-guided resources for women in tender seasons.
+</p>

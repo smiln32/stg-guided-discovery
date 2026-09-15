@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Guided Discovery built-in guardrails</title>
+  <desc id="desc">Four safeguards: Scripture verified, human approved, free before paid, and no dead-end journeys.</desc>
+  <rect width="1200" height="360" rx="28" fill="#fbf9f6"/>
+  <text x="600" y="54" text-anchor="middle" fill="#404040" font-family="Georgia, serif" font-size="34" font-weight="700">Gentle on the surface. Strict underneath.</text>
+  <text x="600" y="83" text-anchor="middle" fill="#6c6c6c" font-family="Arial, sans-serif" font-size="16">The experience is calm because the system does the checking before anything publishes.</text>
+
+  <g transform="translate(54 122)">
+    <g>
+      <rect width="252" height="174" rx="20" fill="#ffffff" stroke="#b2c6b1" stroke-width="2"/>
+      <circle cx="42" cy="42" r="20" fill="#b2c6b1"/><path d="M33 42 l7 7 12 -15" fill="none" stroke="#404040" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="86" fill="#404040" font-family="Georgia, serif" font-size="22" font-weight="700">Scripture verified</text>
+      <text x="28" y="118" fill="#555" font-family="Arial, sans-serif" font-size="14">Reference and translation stay</text>
+      <text x="28" y="139" fill="#555" font-family="Arial, sans-serif" font-size="14">attached to supplied Scripture.</text>
+    </g>
+
+    <g transform="translate(280 0)">
+      <rect width="252" height="174" rx="20" fill="#ffffff" stroke="#c6b5c8" stroke-width="2"/>
+      <circle cx="42" cy="42" r="20" fill="#c6b5c8"/><path d="M31 43 l8 8 14 -17" fill="none" stroke="#404040" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="86" fill="#404040" font-family="Georgia, serif" font-size="22" font-weight="700">Human approved</text>
+      <text x="28" y="118" fill="#555" font-family="Arial, sans-serif" font-size="14">Drafts cannot quietly become</text>
+      <text x="28" y="139" fill="#555" font-family="Arial, sans-serif" font-size="14">published content.</text>
+    </g>
+
+    <g transform="translate(560 0)">
+      <rect width="252" height="174" rx="20" fill="#ffffff" stroke="#e6d7d3" stroke-width="2"/>
+      <circle cx="42" cy="42" r="20" fill="#e6d7d3"/><path d="M42 29 v26 M32 42 h20" stroke="#404040" stroke-width="3" stroke-linecap="round"/>
+      <text x="28" y="86" fill="#404040" font-family="Georgia, serif" font-size="22" font-weight="700">Free before paid</text>
+      <text x="28" y="118" fill="#555" font-family="Arial, sans-serif" font-size="14">Support comes first. A purchase</text>
+      <text x="28" y="139" fill="#555" font-family="Arial, sans-serif" font-size="14">is never required to finish a path.</text>
+    </g>
+
+    <g transform="translate(840 0)">
+      <rect width="252" height="174" rx="20" fill="#ffffff" stroke="#7b9fb3" stroke-width="2"/>
+      <circle cx="42" cy="42" r="20" fill="#7b9fb3"/><path d="M31 42 h22 M46 34 l8 8 -8 8" fill="none" stroke="#fbf9f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="86" fill="#404040" font-family="Georgia, serif" font-size="22" font-weight="700">No dead ends</text>
+      <text x="28" y="118" fill="#555" font-family="Arial, sans-serif" font-size="14">Incomplete journeys fail validation</text>
+      <text x="28" y="139" fill="#555" font-family="Arial, sans-serif" font-size="14">instead of reaching a visitor.</text>
+    </g>
+  </g>
+</svg>
